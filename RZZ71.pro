@@ -1,0 +1,74 @@
+TARGET = RZZ71
+TEMPLATE = app
+QT -= gui
+QT = core network
+
+CONFIG += c++17 console
+CONFIG -= app_bundle
+QMAKE_CXXFLAGS += -Wall -Wextra -pedantic -std=c++17
+
+# You can make your code fail to compile if it uses deprecated APIs.
+# In order to do so, uncomment the following line.
+#DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
+
+SOURCES += \
+        src/MtbModules.cpp \
+        src/logging.cpp \
+        src/main.cpp \
+        src/rzz/blok.cpp \
+        src/rzz/blokK.cpp \
+        src/rzz/blokPr.cpp \
+        src/rzz/blokS.cpp \
+        src/rzz/blokQ.cpp \
+        src/rzz/blokTC.cpp \
+        src/rzz/blokV.cpp \
+        src/rzz/cesty.cpp \
+        src/rzz/dohledcesty.cpp \
+        src/rzz/voliciskupina.cpp \
+        src/rzz71.cpp \
+        src/tcpsocket.cpp \
+        src/tmtbConnector.cpp
+
+HEADERS += \
+  src/MtbModules.h \
+  src/logging.h \
+  src/main.h \
+  src/rzz/blok.h \
+  src/rzz/blokK.h \
+  src/rzz/blokPr.h \
+  src/rzz/blokS.h \
+  src/rzz/blokQ.h \
+  src/rzz/blokTC.h \
+  src/rzz/blokV.h \
+  src/rzz/cesty.h \
+  src/rzz/dohledcesty.h \
+  src/rzz/obecne.h \
+  src/rzz/voliciskupina.h \
+  src/rzz71.h \
+  src/tcpsocket.h \
+  src/termcolor.h \
+  src/tmtbConnector.h
+
+INCLUDEPATH += \
+        src
+
+#TRANSLATIONS += \
+#    RZZ71_cs_CZ.ts
+#CONFIG += lrelease
+#CONFIG += embed_translations
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+
+
+VERSION_MAJOR = 0
+VERSION_MINOR = 1
+
+DEFINES += "VERSION_MAJOR=$$VERSION_MAJOR" "VERSION_MINOR=$$VERSION_MINOR"
+
+#Target version
+VERSION = $${VERSION_MAJOR}.$${VERSION_MINOR}
+DEFINES += "VERSION=\\\"$${VERSION}\\\""
