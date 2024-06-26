@@ -9,10 +9,12 @@ void Tcesty::load()
     Tcesta *pC;
     TblokTC *pTC;
     TblokV *pV;
+    Tblok *pB;
     int cnt = 0;
     QStringList linelist;
     QStringList lineTC;
     QStringList lineV;
+    QStringList lineB;
     QFile inputFile("cesty.csv");
     if (inputFile.open(QIODevice::ReadOnly | QIODevice::Text))
     {
@@ -24,11 +26,12 @@ void Tcesty::load()
                 continue;
             }
             linelist = line.split(";");
-            if (linelist.count() < 3) {
+            if (linelist.count() < 4) {
                 continue;
             }
             lineTC = linelist[1].split(',');
             lineV  = linelist[2].split(',');
+            lineB  = linelist[3].split(',');
 
             pC = new Tcesta;
             pC->num = cnt++;
@@ -60,6 +63,14 @@ void Tcesty::load()
                 v.minus = (poloha == "-");
                 v.pBlokV = pV;
                 pC->polohy.append(v);
+            }
+            foreach (QString sB, lineB) {
+                pB = Tblok::findBlokByName(sB);
+                if (!pB) {
+                    log(QString("cesty: nelze najít blok \"%1\" pro cestu %2").arg(sB).arg(pC->num), logging::LogLevel::Error);
+                    continue;
+                }
+                pC->bloky.append(pB);
             }
             cesty.append(pC);
 

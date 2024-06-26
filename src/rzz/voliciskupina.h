@@ -2,7 +2,7 @@
 #define VOLICISKUPINA_H
 
 #include <QList>
-//#include "rzz/obecne.h"
+#include "rzz/obecne.h"
 //#include "rzz/blok.h"
 #include "rzz/blokTC.h"
 #include "rzz/cesty.h"
@@ -15,16 +15,23 @@ public:
     Tvoliciskupina();
     //QList<Tcesta*> cesty;
     QList<int> cestyPostavene;
-    bool bProbihaVolba;
-    QString sPocatek;
-    TblokTC *pocatek; // ukazatel na první počátek cesty
+    QList<int> cestyMozne;
+    QList<TblokTC *> tlacitkaAktivni;
+    //bool bProbihaVolba;
+    //TblokTC *pocatek; // ukazatel na první počátek cesty
+
+    mtbpin mtbInRuseniVolby;
+    mtbpin mtbOutProbihaVolba;
 
     void ruseniVolbyCesty();
     //bool kontrolaTZ(TblokTC *pTC);
     //bool pocatekJeVCeste(Tblok *p);
     bool vstupZmena(TblokTC *p, bool state);
+    void postavCestu(int i);
+    void ruseniVolby();
+    bool evaluate();
 };
 
-
+extern Tvoliciskupina voliciskupina;
 
 #endif // VOLICISKUPINA_H

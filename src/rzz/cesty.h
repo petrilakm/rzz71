@@ -15,6 +15,7 @@ public:
     //Tblok *pocatek;
     QList<TblokTC *> tlacitka;
     QList<struct Tvyh> polohy;
+    QList<Tblok *> bloky;
     int num;
     //Tblok *navestidlo;
     //QList<TblokU> useky;

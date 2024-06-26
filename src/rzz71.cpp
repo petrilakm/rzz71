@@ -4,6 +4,8 @@
 #include "rzz/blokK.h"
 #include "rzz/blokS.h"
 #include "rzz/blokQ.h"
+#include "rzz/voliciskupina.h"
+#include "rzz/dohledcesty.h"
 
 bool rKPV;
 bool rBlik50;
@@ -20,8 +22,6 @@ TRZZ71::TRZZ71(QObject *parent)
     tim_eval.setSingleShot(false);
     connect(&tim_eval, SIGNAL(timeout()), this, SLOT(oneval()));
 }
-
-
 
 void TRZZ71::init()
 {
@@ -102,6 +102,10 @@ void TRZZ71::init()
 
             if (type == "KPV") {
                 pinKPV = mtbLoadInputs[0];
+            }
+            if (type == "volsk") {
+                voliciskupina.mtbInRuseniVolby = mtbLoadInputs[0];
+                voliciskupina.mtbOutProbihaVolba = mtbLoadOutputs[0];
             }
             if (type == "TC") {
                 // blokTC - tlačítko cestové
@@ -249,6 +253,9 @@ void TRZZ71::oneval()
     //log(QString("rzz: eval"), logging::LogLevel::Info);
     timer.start();
     rKPV = pinKPV.value();
+    // volici skupina udělá svoje akce
+    voliciskupina.evaluate();
+    dohledCesty.evaluate();
     for (i = 0; i < 30; ++i) {
         changed = false;
         // pro všechny bloky

@@ -1,4 +1,5 @@
 #include "blokTC.h"
+#include "voliciskupina.h"
 
 TblokTC::TblokTC() {
     typ = btTC;
@@ -14,14 +15,17 @@ bool TblokTC::evaluate()
     bool mtbVolba = mtbIns[mtbInVolba].value();
     bool mtbZrus  = mtbIns[mtbInRuseni].value();
     if (mtbVolba && !r[TZ] && !r[TK]) {
-        r[TK] = true;
+        //r[TK] = true;
         log("blokTC: probíhá volba", logging::LogLevel::Debug);
+        bool platnaVolba = voliciskupina.vstupZmena(this, false);
+        r[TZ] = platnaVolba;
     }
-    if (mtbZrus && r[TZ] && !r[TP]) {
+    if (mtbZrus && r[TZ] && !r[TK]) {
         r[TZ] = false;
         log("blokTC: volba zrušena", logging::LogLevel::Debug);
     }
     bool out = (r[TZ]) ? rBlik50 : false;
+    out |= r[TK];
     if (out != mtbOut[mtbOutIndikace].valueOutBool()) {
         mtbOut[mtbOutIndikace].setValue(out);
     }
