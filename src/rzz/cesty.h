@@ -3,20 +3,32 @@
 
 #include "rzz/blokTC.h"
 #include "rzz/blokV.h"
+#include "rzz/blokQ.h"
 
 class Tcesta
 {
 public:
     struct Tvyh {
         bool minus;
-        TblokV *pBlokV;
+        Tblok *pBlok;
+    };
+
+    struct Tvyh_odv {
+        bool minus;
+        Tblok *pBlok;
+        TblokS *pBlokS;
     };
 
     //Tblok *pocatek;
     QList<TblokTC *> tlacitka;
     QList<struct Tvyh> polohy;
+    QList<struct Tvyh_odv> odvraty;
     QList<Tblok *> bloky;
+    TblokQ *Navestidlo;
+    TblokQ *nasledneNavestidlo;
+    int navZnak;
     int num;
+    bool posun;
     //Tblok *navestidlo;
     //QList<TblokU> useky;
 };

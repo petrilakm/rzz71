@@ -16,8 +16,11 @@
 static BOOL WINAPI console_ctrl_handler(DWORD dwCtrlType);
 #endif
 
+QConsoleListener *console;
+
 int main(int argc, char *argv[])
 {
+    console = new QConsoleListener;
     DaemonCoreApplication a(argc, argv);
 #ifdef Q_OS_WIN
     SetConsoleCtrlHandler(console_ctrl_handler, TRUE);
@@ -79,6 +82,7 @@ DaemonCoreApplication::DaemonCoreApplication(int &argc, char **argv)
 #ifdef Q_OS_WIN
     SetConsoleOutputCP(CP_UTF8);
 #endif
+
     log("Start RZZ71 v"+QString(VERSION)+"...", logging::LogLevel::Info);
     this->configFileName = (argc > 1) ? argv[1] : DEFAULT_CONFIG_FILENAME;
     try {
@@ -101,9 +105,13 @@ DaemonCoreApplication::DaemonCoreApplication(int &argc, char **argv)
     mtb.loadConfig(this->config);
     rzz = new TRZZ71(this);
 
+
     connect(&mtb, SIGNAL(ChangedInput(int,int,int)), rzz, SLOT(getInput(int,int,int)));
     connect(rzz, SIGNAL(setOutput(int,int,int)), &mtb, SLOT(setOutput(int,int,int)));
     connect(rzz, SIGNAL(subscribeModule(int)), &mtb, SLOT(subscribeModule(int)));
+
+    connect(console, SIGNAL(newLine(QString)), rzz, SLOT(readCommand(QString)));
+
     //connect(&mtb, SIGNAL(mtbConnected()), rzz, SLOT(init()));
     rzz->init();
 

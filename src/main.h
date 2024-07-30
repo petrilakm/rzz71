@@ -5,8 +5,10 @@
 #include <QJsonObject>
 #include <QTcpSocket>
 #include <QTimer>
+#include "qconsolelistener.h"
 #include "tmtbConnector.h"
 #include "rzz71.h"
+
 
 const QString DEFAULT_CONFIG_FILENAME = "config.json";
 
@@ -44,6 +46,12 @@ private:
     QString configFileName;
 
     StartupError startError = StartupError::Ok;
+
+#ifdef Q_OS_WIN
+    QWinEventNotifier *notifier;
+#else
+    QSocketNotifier *notifier;
+#endif
 
     void loadConfig(const QString &filename);
     void saveConfig(const QString &filename);

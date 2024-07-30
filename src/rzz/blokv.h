@@ -31,9 +31,9 @@ public:
     };
 
     bool evaluate() override;
-    //        0   1   2   3   4   5   6  7  8    9    10  11  12  13  14  15 16  17  18   19   20   21   22    23
-    enum rel {KP, KM, DP, DM, SP, SM, J, Z, VOP, VOM, RP, RM, RN, IP, IM, IN,PB, PC, PBP, PCP, PBM, PCM, PrCP, PrCM};
-    #define RELAY_COUNT_V (25)
+    //        0   1   2   3   4   5   6  7  8    9    10  11  12  13  14  15  16  17  18   19   20   21   22    23
+    enum rel {KP, KM, DP, DM, SP, SM, J, Z, VOP, VOM, RP, RM, RN, IP, IM, INe, PB, PC, PBP, PCP, PBM, PCM, PrCP, PrCM};
+    #define RELAY_COUNT_V (24)
     // KP - kontrola +
     // KM - kontrola -
     // DP - dohled +
@@ -56,6 +56,8 @@ public:
 
     //TblokS *blokS; // pro obsazení a závěr
     Tblok *predBlok; // předchozí blok ve směru proti hrotu
+    bool predZ;
+    QList<Tblok *> odvratneBloky; // seznam bloků, kterým toto V tvoří odvrat
     bool predBlokMinus; // false == plus
     bool rezimMaster;
     bool rezimSlave;

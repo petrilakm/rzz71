@@ -10,21 +10,22 @@ public:
     TblokQ();
 
     enum mtbeIns {
-        mtbInObsaz = 0,
     };
     enum mtbeOut {
-        mtbOutHorniZluta = 0,
-        mtbOutZelena = 1,
-        mtbOutCervena = 2,
-        mtbOutBila = 3,
-        mtbOutDolniZluta = 4,
-        mtbOutScom = 5,
+        mtbOutScom = 0,
+        mtbOutMakHorniZluta = 1,
+        mtbOutMakZelena = 2,
+        mtbOutMakCervena = 3,
+        mtbOutMakBila = 4,
+        mtbOutMakDolniZluta = 5,
     };
 
     bool evaluate() override;
 
-    enum rel {A, B, V, R, J, U};
-    #define RELAY_COUNT_Q (6)
+    enum rel {N};
+    #define RELAY_COUNT_Q (1)
+
+    int navestniZnak;
 };
 
 #endif // BLOKS_Q

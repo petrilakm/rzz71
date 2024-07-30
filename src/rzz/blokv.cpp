@@ -3,7 +3,9 @@
 TblokV::TblokV() {
     typ = btV;
     predBlok = NULL;
+    predZ = false;
     dvojceBlok = NULL;
+    odvratneBloky.clear();
     rezimMaster = false;
     rezimSlave = false;
     simulace = false;
@@ -22,6 +24,7 @@ TblokV::TblokV() {
 bool TblokV::evaluate()
 {
     QList<bool> rLast = r;
+    bBlikUsed = false;
     // logika
     // vstupy z MTB
     if (rezimSlave) {
@@ -45,6 +48,16 @@ bool TblokV::evaluate()
     r[RM] = mtbIns[mtbInRadicMinus].value();
     r[RN] = mtbIns[mtbInRadicNouzove].value();
 
+    // závěry z jiných bloků
+    r[Z] = false;
+    r[Z] |= predZ;
+    for (Tblok *b : odvratneBloky) {
+        if (b->typ == btS) {
+            r[Z] |= b->r[TblokS::rel::Z];
+            if (!b->r[TblokS::rel::Z]) odvratneBloky.removeOne(b);
+        }
+    }
+
     // stavění výhýbky
     r[SP] &= !(r[SM] || r[KP] || r[KM]);
     if (rezimSlave) {
@@ -62,12 +75,12 @@ bool TblokV::evaluate()
 
     // dohledové relé
     if (rezimMaster) {
-        r[DP] = r[KP] && !r[KM] && !r[SP] && !r[SM] && dvojceBlok->r[KP] && !dvojceBlok->r[KM] && !dvojceBlok->r[SP] && !dvojceBlok->r[SM];
-        r[DM] = !r[KP] && r[KM] && !r[SP] && !r[SM] && !dvojceBlok->r[KP] && dvojceBlok->r[KM] && !dvojceBlok->r[SP] && !dvojceBlok->r[SM];
+            r[DP] = r[KP] && !r[KM] && !r[SP] && !r[SM] &&  dvojceBlok->r[KP] && !dvojceBlok->r[KM] && !dvojceBlok->r[SP] && !dvojceBlok->r[SM];
+            r[DM] = !r[KP] && r[KM] && !r[SP] && !r[SM] && !dvojceBlok->r[KP] &&  dvojceBlok->r[KM] && !dvojceBlok->r[SP] && !dvojceBlok->r[SM];
     } else {
         if (rezimSlave) {
-            r[DP] = r[KP] && !r[KM] && !r[SP] && !r[SM] && dvojceBlok->r[KP] && !dvojceBlok->r[KM] && !dvojceBlok->r[SP] && !dvojceBlok->r[SM];
-            r[DM] = !r[KP] && r[KM] && !r[SP] && !r[SM] && !dvojceBlok->r[KP] && dvojceBlok->r[KM] && !dvojceBlok->r[SP] && !dvojceBlok->r[SM];
+            r[DP] = r[KP] && !r[KM] && !r[SP] && !r[SM] &&  dvojceBlok->r[KP] && !dvojceBlok->r[KM] && !dvojceBlok->r[SP] && !dvojceBlok->r[SM];
+            r[DM] = !r[KP] && r[KM] && !r[SP] && !r[SM] && !dvojceBlok->r[KP] &&  dvojceBlok->r[KM] && !dvojceBlok->r[SP] && !dvojceBlok->r[SM];
         } else {
             // samostatná výhybka
             r[DP] = r[KP] && !r[KM] && !r[SP] && !r[SM];
@@ -80,10 +93,10 @@ bool TblokV::evaluate()
         r[IP] = ((rKPV || dvojceBlok->r[RP]) && (r[KP] && !r[KM]));
         r[IM] = ((rKPV || dvojceBlok->r[RM]) && (r[KM]));
     } else {
-        r[IP] = ((rKPV || r[RP]) && (r[KP] && !r[KM]));
-        r[IM] = ((rKPV || r[RM]) && (r[KM]));
+        r[IP] = ((rKPV || r[RP]) && (r[KP] && !r[KM] && !r[SM]));
+        r[IM] = ((rKPV || r[RM]) && (r[KM] && !r[KP] && !r[SP]));
     }
-    r[IN] = !(r[DP] || r[DM]);
+    r[INe] = !(r[DP] || r[DM]);
 
     // vstup průchozích průsvitek, z předchozího bloku a J, V
     if (predBlok) {
@@ -96,15 +109,17 @@ bool TblokV::evaluate()
                 r[PC] = predBlok->r[TblokV::rel::PCP];
             }
             r[J] = predBlok->r[TblokV::rel::J];
-            r[Z] = predBlok->r[TblokV::rel::Z];
+            predZ = predBlok->r[TblokV::rel::Z];
 
         }
         if (predBlok->typ == btS) {
             r[PB] = predBlok->r[TblokS::rel::PrB];
             r[PC] = predBlok->r[TblokS::rel::PrC];
             r[J] = predBlok->r[TblokS::rel::J];
-            r[Z] = predBlok->r[TblokS::rel::Z];
+            predZ = predBlok->r[TblokS::rel::Z];
         }
+    } else {
+        predZ = false;
     }
 
     // průsvitky průchozí
@@ -117,9 +132,25 @@ bool TblokV::evaluate()
     if (rezimMaster) {
         r[PrCP] = (r[KP] && dvojceBlok->r[KP]) ? r[PC] : ((!r[KM] || !dvojceBlok->r[KM]) && rBlik50) ;
         r[PrCM] = (r[KM] && dvojceBlok->r[KM]) ? r[PC] : ((!r[KP] || !dvojceBlok->r[KP]) && rBlik50) ;
+        /*
+        if (r[KP] && dvojceBlok->r[KP]) {
+            r[PrCP] =  r[PC];
+        } else {
+            r[PrCP] = ((!r[KM] || !dvojceBlok->r[KM]) && rBlik50);
+            bBlikUsed |= (!r[KM] || !dvojceBlok->r[KM]);
+        }
+        if (r[KM] && dvojceBlok->r[KM]) {
+            r[PrCM] = r[PC];
+        } else {
+            r[PrCM] = ((!r[KP] || !dvojceBlok->r[KP]) && rBlik50);
+            bBlikUsed |= (!r[KP] || !dvojceBlok->r[KP]);
+        }
+        */
+
     } else {
         r[PrCP] = (r[KP]) ? r[PC] : (!r[KM] && rBlik50) ;
         r[PrCM] = (r[KM]) ? r[PC] : (!r[KP] && rBlik50) ;
+        //bBlikUsed |= (!r[KP] && !r[KM]);
     }
 
     // simulace stavění
@@ -139,7 +170,7 @@ bool TblokV::evaluate()
     mtbOut[mtbOutStaveniMinus].setValueBool(r[SM]);
     mtbOut[mtbOutIndikacePlus].setValueBool(r[IP]);
     mtbOut[mtbOutIndikaceMinus].setValueBool(r[IM]);
-    mtbOut[mtbOutIndikaceNepoloha].setValueBool(r[IN]);
+    mtbOut[mtbOutIndikaceNepoloha].setValueBool(r[INe]);
     mtbOut[mtbOutPrusvPlusCervena].setValueBool(r[PrCP]);
     mtbOut[mtbOutPrusvMinusCervena].setValueBool(r[PrCM]);
 

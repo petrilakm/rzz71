@@ -3,7 +3,7 @@
 TblokS::TblokS() {
     typ = btS;
     typM = false;
-    for (int i = 0; i < 16; ++i) {
+    for (int i = 0; i < RELAY_COUNT_S; ++i) {
         r.append(false);
     }
 }
@@ -14,7 +14,16 @@ bool TblokS::evaluate()
     // logika
 
     r[J] = mtbIns[mtbInObsaz].value();
-    r[Z] = r[A] || r[B];
+    r[V] |= (mtbIns[mtbInNuz].value() && (r[Z]));
+    r[V] &= (r[Z]);
+    //r[Z] = r[A] || r[B];
+    if (r[V]) {
+        r[R] = (rD3V);
+    } else {
+        r[R] = false; // doplnit
+    }
+    r[Z] &= !r[R];
+    //r[B] &= !r[R];
 
     if ((r[Z])) {
         r[PrB] = !r[J] && ((r[V]) ? rBlik50 : 1);

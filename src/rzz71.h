@@ -20,11 +20,20 @@ private:
     QTimer blik;
     QTimer tim_eval;
     QElapsedTimer timer;
+    bool bFirstRun = false;
+
+    QTimer t3V; // 3 min
+    QTimer t3C; // 3 min
+    QTimer t1C; // 1 min
+    QTimer t5C; // 5 s
     //QList<mtbpin> blikpin;
     //bool blikOut;
     //void blikpinAdd(mtbpin p);
     //void blikpinRemove(mtbpin p);
-    mtbpin pinKPV;
+    mtbpin pinInKPV;
+    mtbpin pinInNUZ;
+    mtbpin pinOutNUZ;
+    mtbpin pinOutKmitac;
     Tblok* findBlokByName(QString name);
 
 signals:
@@ -34,10 +43,15 @@ signals:
 public slots:
     void getInput(int addr, int pin, int state);
     void init();
+    void readCommand(QString);
 
 private slots:
     void onblik();
     void oneval();
+    void ont3V();
+    void ont3C();
+    void ont1C();
+    void ont5C();
 };
 
 #endif // RZZ71_H

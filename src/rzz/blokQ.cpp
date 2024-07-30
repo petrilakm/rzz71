@@ -5,6 +5,7 @@ TblokQ::TblokQ() {
     for (int i = 0; i < RELAY_COUNT_Q; ++i) {
         r.append(false);
     }
+    navestniZnak = 0;
 }
 
 bool TblokQ::evaluate()

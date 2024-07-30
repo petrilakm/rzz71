@@ -70,6 +70,9 @@ public:
 
 extern bool rKPV; // konrola poloy výměn
 extern bool rRV; // rušení volby
+extern bool rZ3V; // NUZ, je něco vybráno
+extern bool rQTV; // NUZ, probíhá měření času
+extern bool rD3V; // NUZ, odměřeno, zruší se závěry
 extern bool rBlik50; // výstup kmitače
 
 class Tblok;

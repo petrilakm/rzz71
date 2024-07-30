@@ -11,16 +11,15 @@ public:
 
     enum mtbeIns {
         mtbInObsaz = 0,
+        mtbInNuz = 1,
     };
     enum mtbeOut {
-      //  mtbOutBila = 0,
-      //  mtbOutCervena = 1,
     };
 
     bool evaluate() override;
 
-    enum rel {A, B, Z, V, R, J, U, PrB, PrC};
-    #define RELAY_COUNT_S (9)
+    enum rel {Z, V, R, J, U, PrB, PrC};
+    #define RELAY_COUNT_S (7)
 
     bool typM;
 };

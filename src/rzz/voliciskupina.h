@@ -28,7 +28,6 @@ public:
     //bool pocatekJeVCeste(Tblok *p);
     bool vstupZmena(TblokTC *p, bool state);
     void postavCestu(int i);
-    void ruseniVolby();
     bool evaluate();
 };
 

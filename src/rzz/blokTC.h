@@ -18,8 +18,11 @@ public:
 
     bool evaluate() override;
 
-    enum rel {TK, TZ};
-    #define RELAY_COUNT_TC (2)
+    enum rel {TK, PO, TZ};
+    #define RELAY_COUNT_TC (3)
+    // TK - tlačítko volba
+    // PO - protiopakovací relé
+    // TZ - trvalé svícení
 };
 
 #endif // BLOKTC_H

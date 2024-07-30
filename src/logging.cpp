@@ -30,6 +30,9 @@ void log(const QString& message, logging::LogLevel loglevel) {
 	logger.log(message, loglevel);
 }
 
+void term(const QString& message) {
+    std::cout << message.toStdString() << std::endl;
+}
 
 void Logger::log(const QString& message, logging::LogLevel loglevel) {
 	this->termLog(message, loglevel);

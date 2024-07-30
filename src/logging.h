@@ -23,6 +23,8 @@ enum class LogLevel {
 
 void log(const QString&, logging::LogLevel);
 
+void term(const QString&);
+
 struct LogRecord {
 	QDateTime time;
 	QString message;

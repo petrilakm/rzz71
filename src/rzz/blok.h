@@ -13,7 +13,7 @@ class Tblok : public QObject
 public:
     Tblok();
 
-    enum bloktyp {btNULL, btTC, btPr, btV, btS, btK, btQ, btSimV};
+    enum bloktyp {btNULL, btTC, btPr, btEMZ, btV, btS, btK, btQ, btSimV};
 
     virtual bool evaluate(); // if change return true
 
@@ -22,6 +22,7 @@ public:
     mtbpin mtbOut[BLOK_MTB_MAX];
     QString name;
     enum bloktyp typ = btNULL;
+    bool bBlikUsed; // zda používáme kmitač
 
     static Tblok* findBlokByName(QString name);
 };

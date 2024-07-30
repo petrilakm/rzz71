@@ -68,7 +68,7 @@ void tcpsocket::socket_disconnected()
 
 void tcpsocket::bytesWritten(qint64 bytes)
 {
-    log("socket: data zapsány", logging::LogLevel::Debug);
+    log(QString("socket: data zapsány (%1 bytes)").arg(bytes), logging::LogLevel::Debug);
 
 }
 

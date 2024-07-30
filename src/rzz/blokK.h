@@ -11,6 +11,7 @@ public:
 
     enum mtbeIns {
         mtbInObsaz = 0,
+        mtbInNuz = 1,
     };
     enum mtbeOut {
         mtbOutBila = 0,
@@ -20,8 +21,11 @@ public:
 
     bool evaluate() override;
 
-    enum rel {A, B, V, R, J, U, X1, X2};
+    enum rel {V, R, J, U, X1, X2, K1, K2};
     #define RELAY_COUNT_K (8)
+
+    Tblok * predBlok1;
+    Tblok * predBlok2;
 };
 
 #endif // BLOKS_K

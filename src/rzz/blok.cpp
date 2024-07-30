@@ -7,8 +7,14 @@ QList<Tblok *> bl;
 Tblok::Tblok() {
     for(int i = 0; i < BLOK_MTB_MAX; i++) {
         mtbIns[i].valid = false;
+        mtbOut[i].valid = false;
     }
+    typ = btNULL;
     name = "nil";
+    bBlikUsed = false;
+    for(int i = 0; i< r.count(); i++) {
+        r[i] = false;
+    }
 }
 
 bool Tblok::evaluate()
@@ -18,7 +24,7 @@ bool Tblok::evaluate()
 
 Tblok* Tblok::findBlokByName(QString name)
 {
-    foreach (Tblok *b, bl) {
+    for(Tblok *b : bl) {
         if (b->name == name) return b;
     }
     return NULL;
