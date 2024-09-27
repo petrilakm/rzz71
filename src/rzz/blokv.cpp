@@ -64,14 +64,14 @@ bool TblokV::evaluate()
         r[SP] |= (dvojceBlok->r[KP] && !dvojceBlok->r[SM]);
     }
     r[SP] |= (r[RP] && !r[J]) || (r[RP] && r[J] && r[RN]) || (!r[RP] && !r[RM] && r[VOP] && !r[J]);
-    r[SP] &= !(r[KP] || r[Z]);
+    r[SP] &= !(r[KP] || r[Z] || r[BP]);
 
     r[SM] &= !(r[SP] || r[KP] || r[KM]);
     if (rezimSlave) {
         r[SM] |= (dvojceBlok->r[KM] && !dvojceBlok->r[SP]);
     }
     r[SM] |= (!r[RP] && r[RM] && !r[J]) || (!r[RP] && r[RM] && r[J] && r[RN]) || (!r[RP] && !r[RM] && !r[VOP] && r[VOM] && !r[J]);
-    r[SM] &= !(r[KM] || r[Z]);
+    r[SM] &= !(r[KM] || r[Z] || r[BP]);
 
     // dohledové relé
     if (rezimMaster) {

@@ -13,10 +13,11 @@ public:
         Tblok *pBlok;
     };
 
+    // odvrat, co můžeme kontrolovat
     struct Tvyh_odv {
         bool minus;
-        Tblok *pBlok;
-        TblokS *pBlokS;
+        Tblok *pBlokVymena;
+        Tblok *pBlokUsek;
     };
 
     //Tblok *pocatek;

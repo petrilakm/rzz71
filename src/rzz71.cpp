@@ -50,6 +50,7 @@ TRZZ71::TRZZ71(QObject *parent)
 
 void TRZZ71::readCommand(QString cmd)
 {
+    TblokV *pBlokV;
     //
     log(QString("rzz: command \"%1\"").arg(cmd), logging::LogLevel::Debug);
 
@@ -87,6 +88,36 @@ void TRZZ71::readCommand(QString cmd)
                 Tblok *b = Tblok::findBlokByName(cmdList[1]);
                 if (b) {
                     switch (b->typ) {
+                    case Tblok::btV:
+                        term(QString("blok V"));
+                        pBlokV = static_cast<TblokV*>(b);
+                        term(QString(" - master = %1").arg(pBlokV->rezimMaster));
+                        term(QString(" - slave  = %1").arg(pBlokV->rezimSlave));
+                        if (pBlokV->dvojceBlok) term(QString(" -- dvojceBlok = %1").arg(pBlokV->dvojceBlok->name));
+                        if (pBlokV->predBlok) term(QString(" -- predBlok = %1").arg(pBlokV->predBlok->name));
+                        if (pBlokV->odvratneBloky.count() > 0) {
+                            term(QString(" - odvrané bloky:"));
+                            for (Tblok *odvBlok : pBlokV->odvratneBloky) {
+                                term(QString("   - %1").arg(odvBlok->name));
+                            }
+                        }
+                        term(QString(" - J   = %1").arg(b->r[TblokV::J]));
+                        term(QString(" - Z   = %1").arg(b->r[TblokV::Z]));
+                        term(QString(" - BP  = %1").arg(b->r[TblokV::BP]));
+                        term(QString(" - DP  = %1").arg(b->r[TblokV::DP]));
+                        term(QString(" - DM  = %1").arg(b->r[TblokV::DM]));
+                        term(QString(" - VOP = %1").arg(b->r[TblokV::VOP]));
+                        term(QString(" - VOM = %1").arg(b->r[TblokV::VOM]));
+                        term(QString(" - SP  = %1").arg(b->r[TblokV::SP]));
+                        term(QString(" - SM  = %1").arg(b->r[TblokV::SM]));
+                        term(QString(" - INe = %1").arg(b->r[TblokV::INe]));
+                        break;
+                    case Tblok::btEMZ:
+                        term(QString("blok EMZ"));
+                        term(QString(" - UK = %1").arg(b->r[TblokEMZ::UK]));
+                        term(QString(" - ZP = %1").arg(b->r[TblokEMZ::ZP]));
+                        term(QString(" - Z  = %1").arg(b->r[TblokEMZ::Z]));
+                        break;
                     case Tblok::btS:
                         term(QString("blok S"));
                         term(QString(" - J = %1").arg(b->r[TblokS::J]));
@@ -344,7 +375,23 @@ void TRZZ71::init()
                 // blokEMZ - elektromagnetický zámek - simulovaný
                 pBlokEMZ = new TblokEMZ();
                 pBlokEMZ->name = name;
-
+                for (int i = 0; i < mtbLoadInputs.count(); i++) {
+                    pBlokEMZ->mtbIns[i] = mtbLoadInputs[i];
+                }
+                for (int i = 0; i < mtbLoadOutputs.count(); i++) {
+                    pBlokEMZ->mtbOut[i] = mtbLoadOutputs[i];
+                }
+                // načtení, které výmeny zámek zamyká
+                for (int i = 0; i < lineparam.count(); i++) {
+                    QString vymenaName = lineparam[i];
+                    pBlok = Tblok::findBlokByName(vymenaName);
+                    if (!pBlok) log(QString("rzz: blok %1 nemuže najít blok pro EMZ \"%2\"").arg(name).arg(vymenaName), logging::LogLevel::Error);
+                    if (pBlok) {
+                        if (pBlok->typ == Tblok::btV) {
+                            pBlokEMZ->vym.append(static_cast<TblokV*>(pBlok));
+                        }
+                    }
+                }
                 bl.append(static_cast<Tblok*>(pBlokEMZ));
                 log(QString("rzz: načten blok EMZ_%1").arg(name), logging::LogLevel::Debug);
             };

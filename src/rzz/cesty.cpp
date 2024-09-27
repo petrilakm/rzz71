@@ -11,6 +11,7 @@ void Tcesty::load()
     TblokV *pV;
     TblokS *pS;
     Tblok *pB;
+    Tblok *pB2;
     int cnt = 0;
     QStringList linelist;
     QStringList lineTC;
@@ -77,34 +78,34 @@ void Tcesty::load()
             // 3 - odvraty a jejich bloky
             for(int i=0; i < lineO.count(); i+=2) {
             //foreach (QString sO, lineO) {
-                QString sBlokS;
-                QString sBlokV;
+                QString sBlokUsek;
+                QString sBlokVymena;
                 QString poloha;
                 if ((i+1) >= lineO.count()) continue;
-                sBlokV = lineO.at(i);
-                sBlokS = lineO.at(i+1);
-                if (sBlokV.endsWith('+') || sBlokV.endsWith('-')) {
-                    poloha = sBlokV.last(1);
-                    sBlokV.chop(1); // cut last character
+                sBlokVymena = lineO.at(i);
+                sBlokUsek = lineO.at(i+1);
+                if (sBlokVymena.endsWith('+') || sBlokVymena.endsWith('-')) {
+                    poloha = sBlokVymena.last(1);
+                    sBlokVymena.chop(1); // cut last character
                 } else {
                     poloha = "+";
-                    log(QString("cesty: cesta %1 nemá definovanou polohu odvratné výhybky \"%2\"").arg(pC->num).arg(sBlokV), logging::LogLevel::Warning);
+                    log(QString("cesty: cesta %1 nemá definovanou polohu odvratné výhybky \"%2\"").arg(pC->num).arg(sBlokVymena), logging::LogLevel::Warning);
                 }
 
-                pB = static_cast<Tblok*>(Tblok::findBlokByName(sBlokV));
+                pB = Tblok::findBlokByName(sBlokVymena);
                 if (!pB) {
-                    log(QString("cesty: nelze najít blokV \"%1\" pro odvrat cesty %2").arg(sBlokV).arg(pC->num), logging::LogLevel::Error);
+                    log(QString("cesty: nelze najít blokV/EMZ \"%1\" pro odvrat cesty %2").arg(sBlokVymena).arg(pC->num), logging::LogLevel::Error);
                     continue;
                 }
-                pS = static_cast<TblokS*>(Tblok::findBlokByName(sBlokS));
-                if (!pS) {
-                    log(QString("cesty: nelze najít blokS/M \"%1\" pro odvrat cesty %2").arg(sBlokS).arg(pC->num), logging::LogLevel::Error);
+                pB2 = Tblok::findBlokByName(sBlokUsek);
+                if (!pB2) {
+                    log(QString("cesty: nelze najít blokS/M/K \"%1\" pro odvrat cesty %2").arg(sBlokUsek).arg(pC->num), logging::LogLevel::Error);
                     continue;
                 }
                 Tcesta::Tvyh_odv v;
                 v.minus = (poloha == "-");
-                v.pBlok = pB;
-                v.pBlokS = pS;
+                v.pBlokVymena = pB;
+                v.pBlokUsek = pB2;
                 pC->odvraty.append(v);
             }
 

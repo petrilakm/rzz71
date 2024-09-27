@@ -22,6 +22,7 @@ void TdohledCesty::postavCestu(int i) {
     c = cesty->cesty.at(i);
 
     // nastaví polohy prvkům v cestě
+    //sepne VOP/VOM a simuluje výměnová automatická relé
     for (struct Tcesta::Tvyh v : c->polohy) {
         log(QString("dohled: aktivace %1 na výměne %2").arg((v.minus) ? "VOM" : "VOP").arg(v.pBlok->name), logging::LogLevel::Info);
         if (v.pBlok->typ == Tblok::btV) {
@@ -101,7 +102,10 @@ void TdohledCesty::evaluate()
     QList<struct cestaPodDohledem *> cestyNaSmazani;
     cestyNaSmazani.clear();
     TblokK *pBlokK;
+    //Tblok *pBlok;
     bool stavOK;
+    bool obv1 = false;
+    bool obv2 = false;
     for (struct cestaPodDohledem *d : cestyPostavene) {
         c = cesty->cesty.at(d->num);
 
@@ -113,7 +117,6 @@ void TdohledCesty::evaluate()
                 if (blok->typ == Tblok::btS) {
                     if (blok->r[TblokS::V]) {
                         cestyNaSmazani.append(d);
-
                     }
                 }
             }
@@ -122,7 +125,7 @@ void TdohledCesty::evaluate()
         // vytáhnutí tlačítka ruší cestu, ale jen v počátečních fázích
         if (c->tlacitka[0]->mtbIns[TblokTC::mtbeIns::mtbInRuseni].value()) {
             // počáteční tlačítko je vytažené
-            if ((d->stav == scStavime) || (d->stav == scZavery) || (d->stav == scKontrolaDN) || (d->stav == scDN)) {
+            if ((d->stav == scStavime) || (d->stav == scZavery) || (d->stav == scDN)) {
                 // zruší závěry - debug
                 // doplnit aktivaci časového souboru
                 if (d->stav != scStavime) { // ruší závěry jen postavené cesty, ne čekající
@@ -135,7 +138,6 @@ void TdohledCesty::evaluate()
                 }
                 // cestu lze zrušit
                 cestyNaSmazani.append(d);
-
             }
         }
 
@@ -214,35 +216,49 @@ void TdohledCesty::evaluate()
                         }
                     }
                 };
+                log(QString("dohled: nastavení závěru odvratným výměnám"), logging::LogLevel::Debug);
+                // nastaví závěrné useky odvratným výhybkám
+                //for (int i =0; i < c->odvraty.count(); i++) {
+                for (struct Tcesta::Tvyh_odv odv : c->odvraty) {
+                    log(QString("dohled:  - výmena %1").arg(odv.pBlokVymena->name), logging::LogLevel::Info);
+                    if (odv.pBlokVymena->typ == Tblok::btV) {
+                        static_cast<TblokV*>(odv.pBlokVymena)->odvratneBloky.append(odv.pBlokUsek);
+                    }
+                    if (odv.pBlokVymena->typ == Tblok::btEMZ) {
+                        static_cast<TblokEMZ*>(odv.pBlokVymena)->odvratneBloky.append(odv.pBlokUsek);
+                    }
+                }
+                log(QString("dohled: zhasne tlačítka"), logging::LogLevel::Debug);
                 zhasniTlacitka(c->num);
                 d->stav = scDN;
-
             }
             break;
         case scDN:
             stavOK = kontrolaCelistvostiCesty(c);
             if (stavOK) {
-                c->Navestidlo->navestniZnak = urciNavest(c->navZnak, c->nasledneNavestidlo);
-                c->Navestidlo->r[TblokQ::N] = true;
+                if (c->Navestidlo) {
+                    c->Navestidlo->navestniZnak = urciNavest(c->navZnak, c->nasledneNavestidlo);
+                    c->Navestidlo->r[TblokQ::N] = true;
+                }
             } else {
-                c->Navestidlo->navestniZnak = 0;
-                c->Navestidlo->r[TblokQ::N] = false;
+                if (c->Navestidlo) {
+                    c->Navestidlo->navestniZnak = 0;
+                    c->Navestidlo->r[TblokQ::N] = false;
+                }
                 d->stav = scPrujezdVlaku;
             }
             break;
         case scPrujezdVlaku:
-            bool obv1 = false;
-            bool obv2 = false;
             if (d->vlakCelo >= 0) {
                 if ((d->vlakCelo+1) < c->bloky.count()) {
                     // zjístí obsazení u čela vlaku
                     if (c->bloky[d->vlakCelo]->typ == Tblok::btS) {
                         obv1 = static_cast<TblokS*>(c->bloky[d->vlakCelo])->r[TblokS::J];
                     }
-                    if ((c->bloky[d->vlakCelo+1]->typ == Tblok::btS)) {
+                    if (c->bloky[d->vlakCelo+1]->typ == Tblok::btS) {
                         obv2 = static_cast<TblokS*>(c->bloky[d->vlakCelo+1])->r[TblokS::J];
                     }
-                    if ((c->bloky[d->vlakCelo+1]->typ == Tblok::btK)) {
+                    if (c->bloky[d->vlakCelo+1]->typ == Tblok::btK) {
                         obv2 = static_cast<TblokK*>(c->bloky[d->vlakCelo+1])->r[TblokK::J];
                     }
                     // vyhodnotí posun čela vlaku
@@ -255,7 +271,7 @@ void TdohledCesty::evaluate()
                 }
             }
             break;
-        default: // bad states
+        case scRC: // bad states
             d->stav = scRC;
             break;
         }
