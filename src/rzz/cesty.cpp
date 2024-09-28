@@ -9,7 +9,6 @@ void Tcesty::load()
     Tcesta *pC;
     TblokTC *pTC;
     TblokV *pV;
-    TblokS *pS;
     Tblok *pB;
     Tblok *pB2;
     int cnt = 0;

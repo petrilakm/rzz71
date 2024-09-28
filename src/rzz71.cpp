@@ -12,7 +12,7 @@
 
 bool rKPV;
 bool rZ3V; // NUZ, je něco vybráno
-bool rQTV; // NUZ, probíhá měření čas
+bool rQTV; // NUZ, probíhá měření času
 bool rD3V; // NUZ, odměřeno, ruší se závěry
 bool rBlik50;
 
@@ -79,7 +79,7 @@ void TRZZ71::readCommand(QString cmd)
         if (cmd == 'd') { // dohledcesty
             term(QString("Postavené cesty = %1").arg(dohledCesty.cestyPostavene.count()));
             for (struct TdohledCesty::cestaPodDohledem *cpd : dohledCesty.cestyPostavene) {
-                term(QString(" - %1 -> %2").arg(cpd->num).arg(cpd->stav));
+                term(QString(" - %1 -> stav %2-%3 (vlak v bloku č. %4 až %5)").arg(cpd->num).arg(cpd->stav).arg(dohledCesty.stavCesty2QString(cpd->stav)).arg(cpd->vlakCelo).arg((cpd->vlakKonec)));
             }
 
         }
@@ -140,6 +140,10 @@ void TRZZ71::readCommand(QString cmd)
                         term(QString(" - PO = %1").arg(b->r[TblokTC::PO]));
                         term(QString(" - TK = %1").arg(b->r[TblokTC::TK]));
                         break;
+                    case Tblok::btQ:
+                        term(QString("blok Q"));
+                        term(QString(" - N = %1").arg(b->r[TblokQ::N]));
+                        term(QString(" - znak = %1").arg(static_cast<TblokQ*>(b)->navestniZnak));
                     default:
                         term(QString("blok neumím vypsat"));
                         break;

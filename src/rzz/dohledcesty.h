@@ -30,6 +30,9 @@ public:
     // scDN - vše v pořídku, DN na návěstidle, čekáme na vlak
     // scPrujezdVlaku - vlak již jede, cesta se postupně rozpadá
     // scRC - nouzové rušení celé cesty, čekáme na časový soubor
+
+    QString stavCesty2QString(stavCesty sc);
+
     struct cestaPodDohledem {
         enum stavCesty stav; // akktuální stav cesty
         int num; // číslo cesty (id)
@@ -50,7 +53,7 @@ public:
     void zhasniTlacitka(int i); // číslo cesty, kde zhasínáme
 
     int urciNavest(int navZnak, TblokQ *nasledneNavestidlo = nullptr);
-    bool kontrolaCelistvostiCesty(Tcesta *c);
+    bool kontrolaCelistvostiCesty(Tcesta *c, bool cestaJizExistuje);
 };
 
 extern TdohledCesty dohledCesty;
