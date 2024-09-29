@@ -80,8 +80,10 @@ void TRZZ71::readCommand(QString cmd)
             term(QString("Postavené cesty = %1").arg(dohledCesty.cestyPostavene.count()));
             for (struct TdohledCesty::cestaPodDohledem *cpd : dohledCesty.cestyPostavene) {
                 term(QString(" - %1 -> stav %2-%3 (vlak v bloku č. %4 až %5)").arg(cpd->num).arg(cpd->stav).arg(dohledCesty.stavCesty2QString(cpd->stav)).arg(cpd->vlakCelo).arg((cpd->vlakKonec)));
+                for (QString upo1 : cpd->upo) {
+                    term(tr("   UPO - %1").arg(upo1));
+                }
             }
-
         }
         if (cmd == 'b') { // bloky
             if (cmdList.size() > 1) {
@@ -143,7 +145,8 @@ void TRZZ71::readCommand(QString cmd)
                     case Tblok::btQ:
                         term(QString("blok Q"));
                         term(QString(" - N = %1").arg(b->r[TblokQ::N]));
-                        term(QString(" - znak = %1").arg(static_cast<TblokQ*>(b)->navestniZnak));
+                        term(QString(" - kód návěsti = %1").arg(static_cast<TblokQ*>(b)->navestniZnak));
+                        break;
                     default:
                         term(QString("blok neumím vypsat"));
                         break;
@@ -153,10 +156,7 @@ void TRZZ71::readCommand(QString cmd)
                 }
             }
         }
-
     }
-
-
 }
 
 void TRZZ71::init()

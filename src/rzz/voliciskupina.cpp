@@ -24,6 +24,17 @@ bool Tvoliciskupina::vstupZmena(TblokTC *p, bool state)
         //log(QString("cesty: změna tlačítka %1").arg(p->name), logging::LogLevel::Info);
         if (tlacitkaAktivni.isEmpty()) {
             // první tlačítko cesty
+            // nejprve ověříme, zda už odsud cesta nevede, která má řešit tlačítko
+            for (TdohledCesty::cestaPodDohledem *cdoh : dohledCesty.cestyPostavene) {
+                if (cdoh->pCesta->tlacitka.first() == p) {
+                    // je postavená cesta od tohoto tlačítka
+                    if (cdoh->stav == TdohledCesty::scDN) {
+                        // neděláme nic
+                        return false;
+                    }
+                }
+            }
+            // zjístíme, jaké cesty u tohoto tlačítka začínají
             cestyMozne.clear();
             for (Tcesta *i : cesty->cesty) {
                 //log(QString("cesty: hledání %1 == %2").arg(p->name).arg(i->tlacitka.at(0)->name), logging::LogLevel::Info);

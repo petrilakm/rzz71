@@ -30,8 +30,6 @@ public:
     int navZnak;
     int num;
     bool posun;
-    //Tblok *navestidlo;
-    //QList<TblokU> useky;
 };
 
 class Tcesty

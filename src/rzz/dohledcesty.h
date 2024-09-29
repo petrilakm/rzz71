@@ -19,7 +19,7 @@ public:
     enum stavCesty {
         scStavime = 0,
         scZavery = 1,
-        //scKontrolaDN = 2,
+        scKontrolaDN = 2,
         scDN = 3,
         scPrujezdVlaku = 4,
         scRC = 5
@@ -33,13 +33,17 @@ public:
 
     QString stavCesty2QString(stavCesty sc);
 
-    struct cestaPodDohledem {
+    class cestaPodDohledem {
+    public:
         enum stavCesty stav; // akktuální stav cesty
         int num; // číslo cesty (id)
+        Tcesta *pCesta;
         int vlakCelo; // pořadové číslo bloku, kde je čelo vlaku
         int vlakKonec; // pořadové číslo bloku, kde je konec vlaku
         bool vlakEvidenceCelo;
         bool vlakEvidenceKonec;
+        QStringList upo;
+        bool kontrolaCelistvostiCesty(bool cestaJizExistuje);
     };
 
     QList<struct cestaPodDohledem *> cestyPostavene;
@@ -53,7 +57,6 @@ public:
     void zhasniTlacitka(int i); // číslo cesty, kde zhasínáme
 
     int urciNavest(int navZnak, TblokQ *nasledneNavestidlo = nullptr);
-    bool kontrolaCelistvostiCesty(Tcesta *c, bool cestaJizExistuje);
 };
 
 extern TdohledCesty dohledCesty;
