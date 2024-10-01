@@ -1,0 +1,15 @@
+{
+    "loglevel": 4,
+    "production_logging": {
+        "detectLevel": 2,
+        "directory": "prodLog",
+        "enabled": false,
+        "future": 20,
+        "history": 100,
+        "loglevel": 5
+    },
+    "server": {
+        "host": "127.0.0.1",
+        "port": 3841
+    }
+}
