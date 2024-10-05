@@ -1,0 +1,2279 @@
+{
+    "loglevel": 3,
+    "modules": {
+        "003": {
+            "config": {
+                "inputsDelay": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                ],
+                "outputsSafe": [
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    }
+                ],
+                "servoEnabledMask": 0,
+                "servoPosition": [
+                    255,
+                    0,
+                    255,
+                    0,
+                    255,
+                    10,
+                    0,
+                    0,
+                    0,
+                    16,
+                    16,
+                    32
+                ],
+                "servoSpeed": [
+                    0,
+                    0,
+                    129,
+                    0,
+                    0,
+                    0
+                ]
+            },
+            "name": "test",
+            "type": 80
+        },
+        "004": {
+            "config": {
+                "inputsDelay": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                ],
+                "outputsSafe": [
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    }
+                ],
+                "servoEnabledMask": 0,
+                "servoPosition": [
+                    80,
+                    40,
+                    80,
+                    40,
+                    80,
+                    40,
+                    80,
+                    40,
+                    80,
+                    40,
+                    80,
+                    40
+                ],
+                "servoSpeed": [
+                    0,
+                    0,
+                    129,
+                    0,
+                    0,
+                    0
+                ]
+            },
+            "name": "K31",
+            "type": 80
+        },
+        "005": {
+            "config": {
+                "inputsDelay": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                ],
+                "outputsSafe": [
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    }
+                ],
+                "servoEnabledMask": 0,
+                "servoPosition": [
+                    80,
+                    40,
+                    80,
+                    40,
+                    80,
+                    40,
+                    80,
+                    40,
+                    80,
+                    40,
+                    80,
+                    40
+                ],
+                "servoSpeed": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                ]
+            },
+            "name": "K2",
+            "type": 80
+        },
+        "006": {
+            "config": {
+                "inputsDelay": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                ],
+                "outputsSafe": [
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    }
+                ],
+                "servoEnabledMask": 0,
+                "servoPosition": [
+                    80,
+                    40,
+                    80,
+                    40,
+                    80,
+                    40,
+                    80,
+                    40,
+                    80,
+                    40,
+                    80,
+                    40
+                ],
+                "servoSpeed": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                ]
+            },
+            "name": "LKSK",
+            "type": 80
+        },
+        "007": {
+            "config": {
+                "inputsDelay": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                ],
+                "outputsSafe": [
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    }
+                ],
+                "servoEnabledMask": 0,
+                "servoPosition": [
+                    80,
+                    40,
+                    80,
+                    40,
+                    80,
+                    40,
+                    80,
+                    40,
+                    80,
+                    40,
+                    80,
+                    40
+                ],
+                "servoSpeed": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                ]
+            },
+            "name": "Vyh765",
+            "type": 80
+        },
+        "008": {
+            "config": {
+                "inputsDelay": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                ],
+                "outputsSafe": [
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    }
+                ],
+                "servoEnabledMask": 0,
+                "servoPosition": [
+                    80,
+                    40,
+                    80,
+                    40,
+                    80,
+                    40,
+                    80,
+                    40,
+                    80,
+                    40,
+                    80,
+                    40
+                ],
+                "servoSpeed": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                ]
+            },
+            "name": "Vyh432",
+            "type": 80
+        },
+        "009": {
+            "config": {
+                "inputsDelay": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                ],
+                "outputsSafe": [
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    }
+                ],
+                "servoEnabledMask": 0,
+                "servoPosition": [
+                    80,
+                    40,
+                    80,
+                    40,
+                    80,
+                    40,
+                    80,
+                    40,
+                    80,
+                    40,
+                    80,
+                    40
+                ],
+                "servoSpeed": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                ]
+            },
+            "name": "Vyh1Vk1T1",
+            "type": 80
+        },
+        "010": {
+            "config": {
+                "inputsDelay": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                ],
+                "outputsSafe": [
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    }
+                ],
+                "servoEnabledMask": 0,
+                "servoPosition": [
+                    80,
+                    40,
+                    80,
+                    40,
+                    80,
+                    40,
+                    80,
+                    40,
+                    80,
+                    40,
+                    80,
+                    40
+                ],
+                "servoSpeed": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                ]
+            },
+            "name": "Detektory",
+            "type": 80
+        },
+        "011": {
+            "config": {
+                "inputsDelay": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                ],
+                "outputsSafe": [
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    }
+                ],
+                "servoEnabledMask": 0,
+                "servoPosition": [
+                    80,
+                    40,
+                    80,
+                    40,
+                    80,
+                    40,
+                    80,
+                    40,
+                    80,
+                    40,
+                    80,
+                    40
+                ],
+                "servoSpeed": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                ]
+            },
+            "name": "Prusv1",
+            "type": 80
+        },
+        "012": {
+            "config": {
+                "inputsDelay": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                ],
+                "outputsSafe": [
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    }
+                ],
+                "servoEnabledMask": 0,
+                "servoPosition": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                ],
+                "servoSpeed": [
+                    0,
+                    255,
+                    0,
+                    0,
+                    0,
+                    0
+                ]
+            },
+            "name": "Prusv2",
+            "type": 80
+        },
+        "013": {
+            "config": {
+                "inputsDelay": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                ],
+                "outputsSafe": [
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    }
+                ],
+                "servoEnabledMask": 0,
+                "servoPosition": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                ],
+                "servoSpeed": [
+                    0,
+                    255,
+                    0,
+                    0,
+                    0,
+                    0
+                ]
+            },
+            "name": "Prusv3",
+            "type": 80
+        },
+        "015": {
+            "config": {
+                "inputsDelay": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                ],
+                "outputsSafe": [
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    }
+                ],
+                "servoEnabledMask": 0,
+                "servoPosition": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                ],
+                "servoSpeed": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                ]
+            },
+            "name": "VyhDvojce",
+            "type": 80
+        },
+        "016": {
+            "config": {
+                "inputsDelay": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                ],
+                "outputsSafe": [
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    }
+                ],
+                "servoEnabledMask": 0,
+                "servoPosition": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                ],
+                "servoSpeed": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                ]
+            },
+            "name": "NUZpom",
+            "type": 80
+        },
+        "017": {
+            "config": {
+                "inputsDelay": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                ],
+                "outputsSafe": [
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "s-com",
+                        "value": 0
+                    }
+                ],
+                "servoEnabledMask": 0,
+                "servoPosition": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                ],
+                "servoSpeed": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                ]
+            },
+            "name": "nav1",
+            "type": 80
+        }
+    },
+    "mtb-usb": {
+        "keepAlive": true,
+        "port": "auto"
+    },
+    "production_logging": {
+        "detectLevel": 2,
+        "directory": "prodLog",
+        "enabled": false,
+        "future": 20,
+        "history": 100,
+        "loglevel": 5
+    },
+    "server": {
+        "allowedClients": [
+            "127.0.0.1"
+        ],
+        "host": "127.0.0.1",
+        "keepAlive": true,
+        "port": 3841
+    }
+}
