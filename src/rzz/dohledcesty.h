@@ -24,7 +24,7 @@ public:
         scPrujezdVlaku = 4,
         scRC = 5
     };
-    // scStavime - výměnová autoamatická relé - aktivní VOP a VOM
+    // scStavime - výměnová automatická relé - aktivní VOP a VOM
     // scZavery - výměny přestaveny, kontrolujeme podmínky pro závěr
     // scKontrolaDN - čekáme na splnění podmínek pro DN
     // scDN - vše v pořídku, DN na návěstidle, čekáme na vlak
@@ -46,7 +46,7 @@ public:
         bool kontrolaCelistvostiCesty(bool cestaJizExistuje);
     };
 
-    QList<struct cestaPodDohledem *> cestyPostavene;
+    QList<cestaPodDohledem *> cestyPostavene;
 
     void postavCestu(int i); // předání cesty z volící skupiny
     void evaluate(); // pravidelná kontrola podmínek

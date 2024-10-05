@@ -13,7 +13,7 @@ public:
 
     // creator
     mtbpin(int addr, int pin) {
-        if ((addr < 0) || (pin < 0)) {
+        if ((addr < 0) || (pin < 0) || ((addr == 0) && (pin == 0))) {
             this->valid = false;
             this->addr = 0;
             this->pin = 0;

@@ -59,6 +59,9 @@ bool TdohledCesty::cestaPodDohledem::kontrolaCelistvostiCesty(bool cestaJizExist
 {
     // předpokládáme, že je vše ok, jakákoliv chyba to ale změní
     bool stavOK = true;
+    // pomocné proměné
+    bool bBlockLast = false; // označuje poslední úsek cesty
+    bool bBlockFirst = false; // označuje první úsek cesty
     // nulování UPO - sestaví se zmova kontrolou
     this->upo.clear();
     // najdeme si cestu
@@ -66,6 +69,8 @@ bool TdohledCesty::cestaPodDohledem::kontrolaCelistvostiCesty(bool cestaJizExist
 
     // kontrola bloků v cestě
     for(Tblok *blok : c->bloky) {
+        if (blok == c->bloky.last()) bBlockLast = true; else bBlockLast = false;
+        if (blok == c->bloky.first()) bBlockFirst = true; else bBlockFirst = false;
         if (blok->typ == Tblok::btS) {
             // blok S - kontrolujeme volnost a závěr
             if (blok->r[TblokS::J]) {
@@ -73,9 +78,11 @@ bool TdohledCesty::cestaPodDohledem::kontrolaCelistvostiCesty(bool cestaJizExist
                 this->upo.append(QString("obsaz. %1").arg(blok->name));
             }
             if (cestaJizExistuje) {
-                if (!blok->r[TblokS::Z]) {
-                    stavOK = false; // zavěr musí být, když cesta již je postavená
-                    this->upo.append(QString("ne záv. %1").arg(blok->name));
+                if (!bBlockLast) { // poslední blok závěr nemá
+                    if (!blok->r[TblokS::Z]) {
+                        stavOK = false; // zavěr musí být, když cesta již je postavená
+                        this->upo.append(QString("ne záv. %1").arg(blok->name));
+                    }
                 }
             } else {
                 if (blok->r[TblokS::Z]) {
@@ -182,8 +189,10 @@ QString TdohledCesty::stavCesty2QString(stavCesty sc)
     switch (sc) {
     case scStavime: return QString("scStavime"); break;
     case scZavery:  return QString("scZavery"); break;
+    case scKontrolaDN: return QString("scKontrolaPodminekProDN"); break;
     case scDN: return QString("scDN"); break;
     case scPrujezdVlaku: return QString("scPrujezdVlaku"); break;
+    case scRC: return QString("scRC"); break;
     default: return QString("badState");
     }
     return QString("stavCesty2QString->nocase");
@@ -356,8 +365,13 @@ void TdohledCesty::evaluate()
             stavOK = d->kontrolaCelistvostiCesty(true);
             if (stavOK) {
                 if (c->Navestidlo) {
-                    c->Navestidlo->navestniZnak = urciNavest(c->navZnak, c->nasledneNavestidlo);
-                    c->Navestidlo->r[TblokQ::N] = true;
+                    if (c->Navestidlo->r[TblokQ::N]) {
+                        // DN - urči návěst
+                        c->Navestidlo->navestniZnak = urciNavest(c->navZnak, c->nasledneNavestidlo);
+                    } else {
+                        // není DN
+                        d->stav = scPrujezdVlaku;
+                    }
                 }
             } else {
                 if (c->Navestidlo) {

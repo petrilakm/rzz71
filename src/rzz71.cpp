@@ -5,6 +5,7 @@
 #include "rzz/blokK.h"
 #include "rzz/blokS.h"
 #include "rzz/blokQ.h"
+#include "rzz/blokPN.h"
 #include "rzz/blokEMZ.h"
 //#include "rzz/blokQ.h"
 #include "rzz/voliciskupina.h"
@@ -147,6 +148,10 @@ void TRZZ71::readCommand(QString cmd)
                         term(QString(" - N = %1").arg(b->r[TblokQ::N]));
                         term(QString(" - kód návěsti = %1").arg(static_cast<TblokQ*>(b)->navestniZnak));
                         break;
+                    case Tblok::btPN:
+                        term(QString("blok PN"));
+                        term(QString(" - PN = %1").arg(b->r[TblokPN::PN]));
+                        break;
                     default:
                         term(QString("blok neumím vypsat"));
                         break;
@@ -169,6 +174,7 @@ void TRZZ71::init()
     TblokS *pBlokS;
     TblokK *pBlokK;
     TblokQ *pBlokQ;
+    TblokPN *pBlokPN;
     TblokEMZ *pBlokEMZ;
 
     // načtě bloky ze souboru
@@ -249,7 +255,6 @@ void TRZZ71::init()
             if (type == "Kmitac") {
                 pinOutKmitac = mtbLoadOutputs[0];
             }
-
 
             if (type == "cas") {
                 int casovacCas = lineparam[0].toInt() * 1000;
@@ -375,6 +380,29 @@ void TRZZ71::init()
                 bl.append(static_cast<Tblok*>(pBlokQ));
                 log(QString("rzz: načten blok Q_%1").arg(name), logging::LogLevel::Debug);
             }
+            if (type == "PN") {
+                pBlokPN = new TblokPN();
+                pBlokPN->name = name;
+                for (int i = 0; i < mtbLoadInputs.count(); i++) {
+                    pBlokPN->mtbIns[i] = mtbLoadInputs[i];
+                }
+                for (int i = 0; i < mtbLoadOutputs.count(); i++) {
+                    pBlokPN->mtbOut[i] = mtbLoadOutputs[i];
+                }
+                if (lineparam.count() > 0) {
+                    QString navestidloName = lineparam[0];
+                    pBlok = Tblok::findBlokByName(navestidloName);
+                    if (pBlok) {
+                        if (pBlok->typ == Tblok::btQ) {
+                            pBlokPN->navestidlo = static_cast<TblokQ*>(pBlok);
+                        }
+                    } else {
+                        log(QString("rzz: blok PN_%1 nemuže najít související návestidlo \"%2\"").arg(name).arg(navestidloName), logging::LogLevel::Error);
+                    };
+                }
+                bl.append(static_cast<Tblok*>(pBlokPN));
+                log(QString("rzz: načten blok PN_%1").arg(name), logging::LogLevel::Debug);
+            }
             if (type == "EMZ") {
                 // blokEMZ - elektromagnetický zámek - simulovaný
                 pBlokEMZ = new TblokEMZ();
@@ -485,6 +513,8 @@ void TRZZ71::oneval()
         t3V.start();
         rQTV = true;
     }
+
+    blik;
 
     // volici skupina udělá svoje akce
     voliciskupina.evaluate();

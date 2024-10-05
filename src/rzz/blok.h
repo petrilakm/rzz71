@@ -13,7 +13,7 @@ class Tblok : public QObject
 public:
     Tblok();
 
-    enum bloktyp {btNULL, btTC, btPr, btEMZ, btV, btS, btK, btQ, btSimV};
+    enum bloktyp {btNULL, btTC, btPr, btEMZ, btV, btS, btK, btQ, btSimV, btPN};
 
     virtual bool evaluate(); // if change return true
 
@@ -33,8 +33,12 @@ public:
  *
  * blokV  - výhybka
  * blokK  - staniční kolej
- * blokM  - vyhýbkový úsek
- * blokTC - tlačítko cestové
+ * blokS  - vyhýbkový úsek (S nebo M)
+ * blokPr - průsvitka
+ * blokQ  - návěstidlo
+ * blokPN - přivolávací návest - obslužné tlačítko
+ * blokEMZ- elektromagnetický zámek - simulace
+ * blokTC - tlačítko cestové (počátecní i koncové)
  * blokUV - úvazka (traťové souhlasy, místní i vzdálená)
  *
  */

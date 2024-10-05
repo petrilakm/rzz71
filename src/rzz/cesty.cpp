@@ -123,16 +123,17 @@ void Tcesty::load()
             pC->nasledneNavestidlo = nullptr;
             if (lineNav.count() > 0) {
                 pC->Navestidlo = static_cast<TblokQ*>(Tblok::findBlokByName(lineNav[0]));
+                if (pC->Navestidlo == nullptr) log(QString("cesty: cesta %1 nemůže najít návěstidlo \"%2\"").arg(pC->num).arg(lineNav[0]), logging::LogLevel::Error);
             }
             if (lineNav.count() > 1) {
-                pC->Navestidlo = static_cast<TblokQ*>(Tblok::findBlokByName(lineNav[1]));
+                pC->nasledneNavestidlo = static_cast<TblokQ*>(Tblok::findBlokByName(lineNav[1]));
+                if (pC->Navestidlo == nullptr) log(QString("cesty: cesta %1 nemůže najít následující návěstidlo \"%2\"").arg(pC->num).arg(lineNav[1]), logging::LogLevel::Error);
             }
 
             // 6 - návěstní znak povolující jízdu
             bool ok;
             pC->navZnak = lineNavest.toInt(&ok);
             if (!ok) pC->navZnak = 5;
-
 
             cesty.append(pC);
 
