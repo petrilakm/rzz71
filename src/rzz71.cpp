@@ -430,13 +430,24 @@ void TRZZ71::init()
         }
     }
 
+    // virtuální blok návestidla stále na volno
+    pBlokQ = new TblokQ();
+    pBlokQ->name = "T";
+    pBlokQ->navestniZnak = 1;
+    pBlokQ->r[TblokQ::rel::N] = true;
+    bl.append(static_cast<Tblok*>(pBlokQ));
+    log(QString("rzz: vytvořen virtuální blok Q_T"), logging::LogLevel::Debug);
+
+    // načte cesty (vlakové i posunové)
     cesty = new Tcesty();
 
+    // přihlásí se k odběru zpráv z MTB modulů
     foreach (int addr, mtbModulesUsed) {
         log(QString("rzz: použitý modul %1").arg(addr), logging::LogLevel::Debug);
         emit subscribeModule(addr);
     }
 
+    // start časovačů
     blik.start();
     tim_eval.start();
 }

@@ -127,7 +127,7 @@ void Tcesty::load()
             }
             if (lineNav.count() > 1) {
                 pC->nasledneNavestidlo = static_cast<TblokQ*>(Tblok::findBlokByName(lineNav[1]));
-                if (pC->Navestidlo == nullptr) log(QString("cesty: cesta %1 nemůže najít následující návěstidlo \"%2\"").arg(pC->num).arg(lineNav[1]), logging::LogLevel::Error);
+                if (pC->nasledneNavestidlo == nullptr) log(QString("cesty: cesta %1 nemůže najít následující návěstidlo \"%2\"").arg(pC->num).arg(lineNav[1]), logging::LogLevel::Error);
             }
 
             // 6 - návěstní znak povolující jízdu
