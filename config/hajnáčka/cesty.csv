@@ -1,9 +1,9 @@
 ﻿#typ cesty;tlačítka;výhybky;odvraty;bloky;návěstidla (místní a další v cestě);návěst
 #;;;;;;
 #; zhlavý S, odjezdy;;;;;
-V;L1Z,Se4B;6+,7+;;V6-7,1c,1d;L1;1
-V;L2Z,Se4B;6-,7+;;V6-7,1c,1d;L2;4
-V;L3Z,Se4B;7-,EM+;EM+,V6-7;V6-7,1c,1d;L3;4
+V;L1Z,Se4B;6+,7+;;V6-7,1c,1d;L1,T;1
+V;L2Z,Se4B;6-,7+;;V6-7,1c,1d;L2,T;4
+V;L3Z,Se4B;7-,EM+;EM+,V6-7;V6-7,1c,1d;L3,T;4
 P;L1B,Se4B;6+,7+;;V6-7,1c;L1;9
 P;L2B,Se4B;6-,7+;;V6-7,1c;L2;9
 P;L3B,Se4B;7-;;V6-7,1c;L3;9
