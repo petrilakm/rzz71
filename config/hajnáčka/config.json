@@ -8,8 +8,12 @@
         "history": 100,
         "loglevel": 5
     },
-    "server": {
+    "server1": {
         "host": "127.0.0.1",
         "port": 3841
+    },
+    "server2": {
+        "host": "127.0.0.1",
+        "port": 3842
     }
 }
