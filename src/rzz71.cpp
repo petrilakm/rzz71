@@ -46,6 +46,10 @@ TRZZ71::TRZZ71(QObject *parent)
     rZ3V = false;
     rQTV = false;
     rD3V = false;
+
+    simul_puls_timer.setInterval(50);
+    simul_puls_timer.setSingleShot(true);
+    connect(&simul_puls_timer, SIGNAL(timeout()), this, SLOT(onSimulPuls()));
 }
 
 
@@ -63,6 +67,27 @@ void TRZZ71::readCommand(QString cmd)
             term(QString("b <blok> - informace o bloku"));
             term(QString("v        - informace o volící skupině"));
             term(QString("d        - informace o dohledové skupině"));
+            term(QString("m <addr> <pin> <stav> - simulace změny vstupu"));
+            term(QString("M <addr> <pin> - simulace impulsu na vstupu"));
+        }
+        if (cmd == 'm') { // mtb simulace
+            if (cmdList.length() < 4) {
+                term(QString("m <addr> <pin> <stav>"));
+            } else {
+                mtbpin p(cmdList[1].toInt(), cmdList[2].toInt());
+                mtb.module[p.addr].inputs[p.pin] = cmdList[3].toInt();
+            }
+        }
+        if (cmd == 'M') { // mtb simulace - impuls
+            if (cmdList.length() < 3) {
+                term(QString("M <addr> <pin>"));
+            } else {
+                mtbpin p(cmdList[1].toInt(), cmdList[2].toInt());
+                simul_puls_pin = p;
+                log(QString("addr=%1, pin=%2").arg(p.addr).arg(p.pin), logging::LogLevel::Debug);
+                mtb.module[p.addr].inputs[p.pin] = 1;
+                simul_puls_timer.start();
+            }
         }
         if (cmd == 'v') { // voliciskupina
             term(QString("Aktivní tlačítka = %1").arg(voliciskupina.tlacitkaAktivni.count()));
@@ -79,7 +104,7 @@ void TRZZ71::readCommand(QString cmd)
         }
         if (cmd == 'd') { // dohledcesty
             term(QString("Postavené cesty = %1").arg(dohledCesty.cestyPostavene.count()));
-            for (struct TdohledCesty::cestaPodDohledem *cpd : dohledCesty.cestyPostavene) {
+            for (TdohledCesty::cestaPodDohledem *cpd : dohledCesty.cestyPostavene) {
                 term(QString(" - %1 -> stav %2-%3 (vlak v bloku č. %4 až %5)").arg(cpd->num).arg(cpd->stav).arg(dohledCesty.stavCesty2QString(cpd->stav)).arg(cpd->vlakCelo).arg((cpd->vlakKonec)));
                 for (QString upo1 : cpd->upo) {
                     term(tr("   UPO - %1").arg(upo1));
@@ -452,17 +477,23 @@ void TRZZ71::init()
     tim_eval.start();
 }
 
+void TRZZ71::onSimulPuls()
+{
+    mtb.module[simul_puls_pin.addr].inputs[simul_puls_pin.pin] = 0;
+}
+
 void TRZZ71::getInput(int addr, int pin, int state)
 {
     (void) addr;
     (void) pin;
     (void) state;
+
+    log(QString("rzz: in %1, pin %2, state %3")
+            .arg(addr)
+            .arg(pin)
+            .arg(state)
+        , logging::LogLevel::Info);
     // změna na vstupu
-/*
-    if ((addr == 4) && (pin == 0)) {
-        emit setOutput(4, 0, state);
-    }
-*/
 
 }
 
@@ -524,8 +555,6 @@ void TRZZ71::oneval()
         t3V.start();
         rQTV = true;
     }
-
-    blik;
 
     // volici skupina udělá svoje akce
     voliciskupina.evaluate();

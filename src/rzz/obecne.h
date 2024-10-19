@@ -38,29 +38,52 @@ public:
 
     bool value() {
         if (!valid) return false;
+        if (this->addr > 100) {
+            return mtb_stanice.module[addr-100].inputs[pin];
+        }
         return mtb.module[addr].inputs[pin];
     }
     uint8_t valueOut() {
         if (!valid) return false;
-        return mtb.module[addr].outputs[pin];
+        if (this->addr>100) {
+            return mtb_stanice.module[this->addr-100].outputs[pin];
+        }
+        return mtb.module[this->addr].outputs[pin];
     }
     bool valueOutBool() {
         if (!valid) return false;
-        return (mtb.module[addr].outputs[pin] > 0);
+        if (this->addr > 100) {
+            return (mtb_stanice.module[addr-100].outputs[pin] > 0);
+        }
+        return (mtb.module[this->addr].outputs[pin] > 0);
     }
     void setValue(uint8_t val) {
         if (!valid) return;
-        if (mtb.module[addr].outputs[pin] != val) {
-            mtb.module[addr].outputs[pin] = val;
-            mtb.setOutput(addr, pin, val);
+        if (this->addr > 100) {
+            if (mtb_stanice.module[this->addr-100].outputs[pin] != val) {
+                mtb_stanice.module[this->addr-100].outputs[pin] = val;
+                mtb_stanice.setOutput(this->addr-100, pin, val);
+            }
+        } else {
+            if (mtb.module[addr].outputs[pin] != val) {
+                mtb.module[addr].outputs[pin] = val;
+                mtb.setOutput(addr, pin, val);
+            }
         }
     }
     void setValueBool(bool valbool) {
         if (!valid) return;
         uint8_t val = (valbool) ? 1 : 0;
-        if (mtb.module[addr].outputs[pin] != val) {
-            mtb.module[addr].outputs[pin] = val;
-            mtb.setOutput(addr, pin, val);
+        if (this->addr > 100) {
+            if (mtb_stanice.module[addr-100].outputs[pin] != val) {
+                mtb_stanice.module[addr-100].outputs[pin] = val;
+                mtb_stanice.setOutput(addr-100, pin, val);
+            }
+        } else {
+            if (mtb.module[addr].outputs[pin] != val) {
+                mtb.module[addr].outputs[pin] = val;
+                mtb.setOutput(addr, pin, val);
+            }
         }
     }
 
@@ -68,12 +91,13 @@ public:
 
 //typedef struct Tmtbpin mtbpin;
 
-extern bool rKPV; // konrola poloy výměn
+extern bool rKPV; // kontrola polohy výměn
 extern bool rRV; // rušení volby
 extern bool rZ3V; // NUZ, je něco vybráno
 extern bool rQTV; // NUZ, probíhá měření času
 extern bool rD3V; // NUZ, odměřeno, zruší se závěry
 extern bool rBlik50; // výstup kmitače
+extern bool rNavNoc; // noční návestidla
 
 class Tblok;
 extern QList<Tblok *> bl;

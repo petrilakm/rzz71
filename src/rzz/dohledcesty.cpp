@@ -2,7 +2,7 @@
 #include "cesty.h"
 #include "rzz/blokK.h"
 #include "rzz/blokEMZ.h"
-#include "voliciskupina.h"
+//#include "voliciskupina.h"
 
 TdohledCesty::TdohledCesty(){
     cestyPostavene.clear();
@@ -24,7 +24,9 @@ void TdohledCesty::postavCestu(int i) {
     // nastaví polohy prvkům v cestě
     //sepne VOP/VOM a simuluje výměnová automatická relé
     for (struct Tcesta::Tvyh v : c->polohy) {
-        log(QString("dohled: aktivace %1 na výměne %2").arg((v.minus) ? "VOM" : "VOP").arg(v.pBlok->name), logging::LogLevel::Info);
+        log(QString("dohled: aktivace %1 na výměne %2")
+                .arg((v.minus) ? "VOM" : "VOP", v.pBlok->name),
+            logging::LogLevel::Info);
         if (v.pBlok->typ == Tblok::btV) {
             // blok V se přestavý do správné polohy
             v.pBlok->r[TblokV::VOP] = !v.minus;
@@ -61,8 +63,8 @@ bool TdohledCesty::cestaPodDohledem::kontrolaCelistvostiCesty(bool cestaJizExist
     bool stavOK = true;
     // pomocné proměné
     bool bBlockLast = false; // označuje poslední úsek cesty
-    bool bBlockFirst = false; // označuje první úsek cesty
-    // nulování UPO - sestaví se zmova kontrolou
+    //bool bBlockFirst = false; // označuje první úsek cesty
+    // nulování UPO - sestaví se znova kontrolou
     this->upo.clear();
     // najdeme si cestu
     Tcesta *c = cesty->cesty.at(this->num);
@@ -70,12 +72,16 @@ bool TdohledCesty::cestaPodDohledem::kontrolaCelistvostiCesty(bool cestaJizExist
     // kontrola bloků v cestě
     for(Tblok *blok : c->bloky) {
         if (blok == c->bloky.last()) bBlockLast = true; else bBlockLast = false;
-        if (blok == c->bloky.first()) bBlockFirst = true; else bBlockFirst = false;
+        //if (blok == c->bloky.first()) bBlockFirst = true; else bBlockFirst = false;
         if (blok->typ == Tblok::btS) {
-            // blok S - kontrolujeme volnost a závěr
+            // blok S - kontrolujeme volnost, závěr a NUZ
             if (blok->r[TblokS::J]) {
                 stavOK = false;
                 this->upo.append(QString("obsaz. %1").arg(blok->name));
+            }
+            if (blok->r[TblokS::V]) {
+                stavOK = false;
+                this->upo.append(QString("NUZ na %1").arg(blok->name));
             }
             if (cestaJizExistuje) {
                 if (!bBlockLast) { // poslední blok závěr nemá
@@ -201,14 +207,14 @@ QString TdohledCesty::stavCesty2QString(stavCesty sc)
 void TdohledCesty::evaluate()
 {
     Tcesta *c;
-    QList<struct cestaPodDohledem *> cestyNaSmazani;
+    QList<cestaPodDohledem *> cestyNaSmazani;
     cestyNaSmazani.clear();
     TblokK *pBlokK;
     //Tblok *pBlok;
     bool stavOK;
     bool obv1 = false;
     bool obv2 = false;
-    for (struct cestaPodDohledem *d : cestyPostavene) {
+    for (cestaPodDohledem *d : cestyPostavene) {
         c = cesty->cesty.at(d->num);
 
         // pro všechny stavy
@@ -414,7 +420,7 @@ void TdohledCesty::evaluate()
         }
     }
     // smaže cesty, co už nejsou cestami
-    foreach (struct cestaPodDohledem *d, cestyNaSmazani) {
+    foreach (cestaPodDohledem *d, cestyNaSmazani) {
         // zhasnout tlačítka
         Tcesta *c = cesty->cesty[d->num];
         for (TblokTC *tc : c->tlacitka) {

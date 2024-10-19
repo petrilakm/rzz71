@@ -14,7 +14,9 @@ class TmtbConnector : public QObject
     Q_OBJECT
 public:
     explicit TmtbConnector(QObject *parent = nullptr);
-    void loadConfig(const QJsonObject& config);
+    void loadConfig(const QJsonObject& config, int servernum);
+
+    int num = 0;
 
     struct smtbmodule {
         bool inputs[16];
@@ -55,7 +57,7 @@ private slots:
     // timer
     void tReconnectTick();
     // from daemon
-    void getModuleStateOut(QJsonObject json);
+    //void getModuleStateOut(QJsonObject json);
     void getModuleStateIn(QJsonObject json);
     void getConnected();
     void getDisconnected();
@@ -65,5 +67,6 @@ signals:
 };
 
 extern TmtbConnector mtb;
+extern TmtbConnector mtb_stanice;
 
 #endif // TMTBCONNECTOR_H

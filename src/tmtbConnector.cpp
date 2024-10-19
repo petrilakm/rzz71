@@ -12,6 +12,7 @@ ToDo:
 */
 
 TmtbConnector mtb;
+TmtbConnector mtb_stanice;
 
 TmtbConnector::TmtbConnector(QObject *parent)
     : QObject{parent}
@@ -26,11 +27,12 @@ TmtbConnector::TmtbConnector(QObject *parent)
     // wait for config to continue (loadConfig)
 }
 
-void TmtbConnector::loadConfig(const QJsonObject& config) {
-    const QJsonObject serverConfig = config["server"].toObject();
+void TmtbConnector::loadConfig(const QJsonObject& config, int servernum) {
+    const QJsonObject serverConfig = config["server"+QString::number(servernum)].toObject();
     this->serverHost = serverConfig["host"].toString();
     this->serverPort = serverConfig["port"].toInt();
-    log(QString("připojení k daemonu na %1:%2")
+    log(QString("%1: připojení k daemonu na %2:%3")
+            .arg(num)
             .arg(this->serverHost)
             .arg(this->serverPort),
         logging::LogLevel::Info);
@@ -40,18 +42,21 @@ void TmtbConnector::loadConfig(const QJsonObject& config) {
 
 void TmtbConnector::tReconnectTick() {
     if (!tcpSocket.isConnected) {
-        log("pokus o připojení k mtb-daemon", logging::LogLevel::Info);
+        log(QString("pokus o připojení k mtb-daemon na %1:%2")
+                .arg(this->serverHost)
+                .arg(this->serverPort),
+            logging::LogLevel::Info);
         tcpSocket.doConnect(serverHost, serverPort);
         t_reconnect.start(T_RECONNECT_PERIOD);
     }
 
 }
-
+/*
 void TmtbConnector::getModuleStateOut(QJsonObject json)
 {
     //
 }
-
+*/
 void TmtbConnector::getModuleStateIn(QJsonObject json)
 {
     int addr;
@@ -99,17 +104,23 @@ void TmtbConnector::getDisconnected()
 
 void TmtbConnector::subscribeModule(int addr)
 {
+    if (addr>100) addr -= 100;
     log("mtb: pokus o zapsání modulu mtb "+QString::number(addr), logging::LogLevel::Debug);
     if (!futureSubscribe.contains(addr)) futureSubscribe.append(addr);
     if (tcpSocket.isConnected) {
-        tcpSocket.subscribeModule(addr);
+            tcpSocket.subscribeModule(addr);
     }
 }
 
 void TmtbConnector::setOutput(int addr, int pin, int state)
 {
     if (tcpSocket.isConnected) {
-        log(QString("mtb: pokus o nastavení výstupu %1/%2 = %3").arg(addr).arg(pin).arg(state), logging::LogLevel::Debug);
+        log(QString("mtb%1: pokus o nastavení výstupu %2/%3 = %4")
+                .arg(num)
+                .arg(addr)
+                .arg(pin)
+                .arg(state),
+            logging::LogLevel::Debug);
         tcpSocket.setOutputs(addr, pin, state);
     } else {
         log(QString("mtb: není připojeno, výstup %1/%2 = %3").arg(addr).arg(pin).arg(state), logging::LogLevel::Warning);

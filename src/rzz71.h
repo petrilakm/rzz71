@@ -26,6 +26,9 @@ private:
     QTimer t3C; // 3 min
     QTimer t1C; // 1 min
     QTimer t5C; // 5 s
+
+    QTimer simul_puls_timer;
+    mtbpin simul_puls_pin;
     //QList<mtbpin> blikpin;
     //bool blikOut;
     //void blikpinAdd(mtbpin p);
@@ -52,6 +55,7 @@ private slots:
     void ont3C();
     void ont1C();
     void ont5C();
+    void onSimulPuls();
 };
 
 #endif // RZZ71_H

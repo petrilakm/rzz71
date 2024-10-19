@@ -89,8 +89,7 @@ DaemonCoreApplication::DaemonCoreApplication(int &argc, char **argv)
         this->loadConfig(this->configFileName);
         log("Config file "+configFileName+" načten.", logging::LogLevel::Info);
     } catch (const ConfigNotFound&) {
-        log("Nelze načíst konfigurační soubor "+configFileName+
-                ", používá se výchozí nastavení, které se ihned uloží...",
+        log("Nelze načíst konfigurační soubor "+configFileName+", používá se výchozí nastavení, které se ihned uloží...",
             logging::LogLevel::Info);
         this->config = DEFAULT_CONFIG;
         this->saveConfig(configFileName);
@@ -102,13 +101,19 @@ DaemonCoreApplication::DaemonCoreApplication(int &argc, char **argv)
 
     // config to other modules
     logger.loadConfig(this->config);
-    mtb.loadConfig(this->config);
+    mtb.num = 1;
+    mtb_stanice.num = 2;
+    mtb.loadConfig(this->config, 1);
+    mtb_stanice.loadConfig(this->config, 2);
     rzz = new TRZZ71(this);
 
 
     connect(&mtb, SIGNAL(ChangedInput(int,int,int)), rzz, SLOT(getInput(int,int,int)));
+    connect(&mtb_stanice, SIGNAL(ChangedInput(int,int,int)), rzz, SLOT(getInput(int,int,int)));
     connect(rzz, SIGNAL(setOutput(int,int,int)), &mtb, SLOT(setOutput(int,int,int)));
+    connect(rzz, SIGNAL(setOutput(int,int,int)), &mtb_stanice, SLOT(setOutput(int,int,int)));
     connect(rzz, SIGNAL(subscribeModule(int)), &mtb, SLOT(subscribeModule(int)));
+    connect(rzz, SIGNAL(subscribeModule(int)), &mtb_stanice, SLOT(subscribeModule(int)));
 
     connect(console, SIGNAL(newLine(QString)), rzz, SLOT(readCommand(QString)));
 

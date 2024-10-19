@@ -7,7 +7,7 @@
  kontrolu celistvosti cesty a postupný průjezd vlakem
 */
 
-#include <QList.h>
+#include <qlist.h>
 #include "rzz/obecne.h"
 #include "rzz/blokQ.h"
 #include "rzz/cesty.h"
