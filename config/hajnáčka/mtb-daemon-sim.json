@@ -1,25 +1,25 @@
 {
     "loglevel": 3,
     "modules": {
-        "011": {
+        "003": {
             "config": {
                 "inputsDelay": [
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
                 ],
                 "outputsSafe": [
                     {
@@ -137,6 +137,38 @@
                 ],
                 "servoEnabledMask": 0,
                 "servoPosition": [
+                    255,
+                    0,
+                    255,
+                    0,
+                    255,
+                    10,
+                    0,
+                    0,
+                    0,
+                    16,
+                    16,
+                    32
+                ],
+                "servoSpeed": [
+                    0,
+                    0,
+                    129,
+                    0,
+                    0,
+                    0
+                ]
+            },
+            "name": "test",
+            "type": 80
+        },
+        "004": {
+            "config": {
+                "inputsDelay": [
+                    0,
+                    0,
+                    0,
+                    0,
                     0,
                     0,
                     0,
@@ -150,37 +182,1293 @@
                     0,
                     0
                 ],
+                "outputsSafe": [
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    }
+                ],
+                "servoEnabledMask": 0,
+                "servoPosition": [
+                    80,
+                    40,
+                    80,
+                    40,
+                    80,
+                    40,
+                    80,
+                    40,
+                    80,
+                    40,
+                    80,
+                    40
+                ],
                 "servoSpeed": [
-                    1,
-                    1,
-                    1,
-                    1,
-                    1,
-                    1
+                    0,
+                    0,
+                    129,
+                    0,
+                    0,
+                    0
                 ]
             },
-            "name": "Module 11",
+            "name": "K31",
+            "type": 80
+        },
+        "005": {
+            "config": {
+                "inputsDelay": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                ],
+                "outputsSafe": [
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    }
+                ],
+                "servoEnabledMask": 0,
+                "servoPosition": [
+                    80,
+                    40,
+                    80,
+                    40,
+                    80,
+                    40,
+                    80,
+                    40,
+                    80,
+                    40,
+                    80,
+                    40
+                ],
+                "servoSpeed": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                ]
+            },
+            "name": "K2",
+            "type": 80
+        },
+        "006": {
+            "config": {
+                "inputsDelay": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                ],
+                "outputsSafe": [
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    }
+                ],
+                "servoEnabledMask": 0,
+                "servoPosition": [
+                    80,
+                    40,
+                    80,
+                    40,
+                    80,
+                    40,
+                    80,
+                    40,
+                    80,
+                    40,
+                    80,
+                    40
+                ],
+                "servoSpeed": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                ]
+            },
+            "name": "LKSK",
+            "type": 80
+        },
+        "007": {
+            "config": {
+                "inputsDelay": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                ],
+                "outputsSafe": [
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    }
+                ],
+                "servoEnabledMask": 0,
+                "servoPosition": [
+                    80,
+                    40,
+                    80,
+                    40,
+                    80,
+                    40,
+                    80,
+                    40,
+                    80,
+                    40,
+                    80,
+                    40
+                ],
+                "servoSpeed": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                ]
+            },
+            "name": "Vyh765",
+            "type": 80
+        },
+        "008": {
+            "config": {
+                "inputsDelay": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                ],
+                "outputsSafe": [
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    }
+                ],
+                "servoEnabledMask": 0,
+                "servoPosition": [
+                    80,
+                    40,
+                    80,
+                    40,
+                    80,
+                    40,
+                    80,
+                    40,
+                    80,
+                    40,
+                    80,
+                    40
+                ],
+                "servoSpeed": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                ]
+            },
+            "name": "Vyh432",
+            "type": 80
+        },
+        "009": {
+            "config": {
+                "inputsDelay": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                ],
+                "outputsSafe": [
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    }
+                ],
+                "servoEnabledMask": 0,
+                "servoPosition": [
+                    80,
+                    40,
+                    80,
+                    40,
+                    80,
+                    40,
+                    80,
+                    40,
+                    80,
+                    40,
+                    80,
+                    40
+                ],
+                "servoSpeed": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                ]
+            },
+            "name": "Vyh1Vk1T1",
+            "type": 80
+        },
+        "010": {
+            "config": {
+                "inputsDelay": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                ],
+                "outputsSafe": [
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    }
+                ],
+                "servoEnabledMask": 0,
+                "servoPosition": [
+                    80,
+                    40,
+                    80,
+                    40,
+                    80,
+                    40,
+                    80,
+                    40,
+                    80,
+                    40,
+                    80,
+                    40
+                ],
+                "servoSpeed": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                ]
+            },
+            "name": "Detektory",
+            "type": 80
+        },
+        "011": {
+            "config": {
+                "inputsDelay": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                ],
+                "outputsSafe": [
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    }
+                ],
+                "servoEnabledMask": 0,
+                "servoPosition": [
+                    80,
+                    40,
+                    80,
+                    40,
+                    80,
+                    40,
+                    80,
+                    40,
+                    80,
+                    40,
+                    80,
+                    40
+                ],
+                "servoSpeed": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                ]
+            },
+            "name": "Prusv1",
             "type": 80
         },
         "012": {
             "config": {
                 "inputsDelay": [
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
                 ],
                 "outputsSafe": [
                     {
@@ -312,36 +1600,36 @@
                     0
                 ],
                 "servoSpeed": [
-                    1,
-                    1,
-                    1,
-                    1,
-                    1,
-                    1
+                    0,
+                    255,
+                    0,
+                    0,
+                    0,
+                    0
                 ]
             },
-            "name": "Module 12",
+            "name": "Prusv2",
             "type": 80
         },
         "013": {
             "config": {
                 "inputsDelay": [
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
                 ],
                 "outputsSafe": [
                     {
@@ -473,197 +1761,36 @@
                     0
                 ],
                 "servoSpeed": [
-                    1,
-                    1,
-                    1,
-                    1,
-                    1,
-                    1
-                ]
-            },
-            "name": "Module 13",
-            "type": 80
-        },
-        "014": {
-            "config": {
-                "inputsDelay": [
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1
-                ],
-                "outputsSafe": [
-                    {
-                        "type": "plain",
-                        "value": 0
-                    },
-                    {
-                        "type": "plain",
-                        "value": 0
-                    },
-                    {
-                        "type": "plain",
-                        "value": 0
-                    },
-                    {
-                        "type": "plain",
-                        "value": 0
-                    },
-                    {
-                        "type": "plain",
-                        "value": 0
-                    },
-                    {
-                        "type": "plain",
-                        "value": 0
-                    },
-                    {
-                        "type": "plain",
-                        "value": 0
-                    },
-                    {
-                        "type": "plain",
-                        "value": 0
-                    },
-                    {
-                        "type": "plain",
-                        "value": 0
-                    },
-                    {
-                        "type": "plain",
-                        "value": 0
-                    },
-                    {
-                        "type": "plain",
-                        "value": 0
-                    },
-                    {
-                        "type": "plain",
-                        "value": 0
-                    },
-                    {
-                        "type": "plain",
-                        "value": 0
-                    },
-                    {
-                        "type": "plain",
-                        "value": 0
-                    },
-                    {
-                        "type": "plain",
-                        "value": 0
-                    },
-                    {
-                        "type": "plain",
-                        "value": 0
-                    },
-                    {
-                        "type": "plain",
-                        "value": 0
-                    },
-                    {
-                        "type": "plain",
-                        "value": 0
-                    },
-                    {
-                        "type": "plain",
-                        "value": 0
-                    },
-                    {
-                        "type": "plain",
-                        "value": 0
-                    },
-                    {
-                        "type": "plain",
-                        "value": 0
-                    },
-                    {
-                        "type": "plain",
-                        "value": 0
-                    },
-                    {
-                        "type": "plain",
-                        "value": 0
-                    },
-                    {
-                        "type": "plain",
-                        "value": 0
-                    },
-                    {
-                        "type": "plain",
-                        "value": 0
-                    },
-                    {
-                        "type": "plain",
-                        "value": 0
-                    },
-                    {
-                        "type": "plain",
-                        "value": 0
-                    },
-                    {
-                        "type": "plain",
-                        "value": 0
-                    }
-                ],
-                "servoEnabledMask": 0,
-                "servoPosition": [
                     0,
-                    0,
-                    0,
-                    0,
-                    0,
-                    0,
-                    0,
-                    0,
+                    255,
                     0,
                     0,
                     0,
                     0
-                ],
-                "servoSpeed": [
-                    1,
-                    1,
-                    1,
-                    1,
-                    1,
-                    1
                 ]
             },
-            "name": "Module 14",
+            "name": "Prusv3",
             "type": 80
         },
         "015": {
             "config": {
                 "inputsDelay": [
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
                 ],
                 "outputsSafe": [
                     {
@@ -795,36 +1922,36 @@
                     0
                 ],
                 "servoSpeed": [
-                    1,
-                    1,
-                    1,
-                    1,
-                    1,
-                    1
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
                 ]
             },
-            "name": "Module 15",
+            "name": "VyhDvojce",
             "type": 80
         },
         "016": {
             "config": {
                 "inputsDelay": [
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
                 ],
                 "outputsSafe": [
                     {
@@ -956,185 +2083,24 @@
                     0
                 ],
                 "servoSpeed": [
-                    1,
-                    1,
-                    1,
-                    1,
-                    1,
-                    1
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
                 ]
             },
-            "name": "Module 16",
+            "name": "NUZpom",
             "type": 80
         },
         "017": {
             "config": {
                 "inputsDelay": [
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1
-                ],
-                "outputsSafe": [
-                    {
-                        "type": "plain",
-                        "value": 0
-                    },
-                    {
-                        "type": "plain",
-                        "value": 0
-                    },
-                    {
-                        "type": "plain",
-                        "value": 0
-                    },
-                    {
-                        "type": "plain",
-                        "value": 0
-                    },
-                    {
-                        "type": "plain",
-                        "value": 0
-                    },
-                    {
-                        "type": "plain",
-                        "value": 0
-                    },
-                    {
-                        "type": "plain",
-                        "value": 0
-                    },
-                    {
-                        "type": "plain",
-                        "value": 0
-                    },
-                    {
-                        "type": "plain",
-                        "value": 0
-                    },
-                    {
-                        "type": "plain",
-                        "value": 0
-                    },
-                    {
-                        "type": "plain",
-                        "value": 0
-                    },
-                    {
-                        "type": "plain",
-                        "value": 0
-                    },
-                    {
-                        "type": "plain",
-                        "value": 0
-                    },
-                    {
-                        "type": "plain",
-                        "value": 0
-                    },
-                    {
-                        "type": "plain",
-                        "value": 0
-                    },
-                    {
-                        "type": "plain",
-                        "value": 0
-                    },
-                    {
-                        "type": "plain",
-                        "value": 0
-                    },
-                    {
-                        "type": "plain",
-                        "value": 0
-                    },
-                    {
-                        "type": "plain",
-                        "value": 0
-                    },
-                    {
-                        "type": "plain",
-                        "value": 0
-                    },
-                    {
-                        "type": "plain",
-                        "value": 0
-                    },
-                    {
-                        "type": "plain",
-                        "value": 0
-                    },
-                    {
-                        "type": "plain",
-                        "value": 0
-                    },
-                    {
-                        "type": "plain",
-                        "value": 0
-                    },
-                    {
-                        "type": "plain",
-                        "value": 0
-                    },
-                    {
-                        "type": "plain",
-                        "value": 0
-                    },
-                    {
-                        "type": "plain",
-                        "value": 0
-                    },
-                    {
-                        "type": "plain",
-                        "value": 0
-                    }
-                ],
-                "servoEnabledMask": 0,
-                "servoPosition": [
                     0,
                     0,
                     0,
                     0,
-                    0,
-                    0,
-                    0,
-                    0,
-                    0,
-                    0,
-                    0,
-                    0
-                ],
-                "servoSpeed": [
-                    1,
-                    1,
-                    1,
-                    1,
-                    1,
-                    1
-                ]
-            },
-            "name": "Module 17",
-            "type": 80
-        },
-        "018": {
-            "config": {
-                "inputsDelay": [
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
                     0,
                     0,
                     0,
@@ -1258,7 +2224,7 @@
                         "value": 0
                     },
                     {
-                        "type": "plain",
+                        "type": "s-com",
                         "value": 0
                     }
                 ],
@@ -1286,175 +2252,13 @@
                     0
                 ]
             },
-            "name": "Module 18",
-            "type": 80
-        },
-        "019": {
-            "config": {
-                "inputsDelay": [
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1
-                ],
-                "outputsSafe": [
-                    {
-                        "type": "plain",
-                        "value": 0
-                    },
-                    {
-                        "type": "plain",
-                        "value": 0
-                    },
-                    {
-                        "type": "plain",
-                        "value": 0
-                    },
-                    {
-                        "type": "plain",
-                        "value": 0
-                    },
-                    {
-                        "type": "plain",
-                        "value": 0
-                    },
-                    {
-                        "type": "plain",
-                        "value": 0
-                    },
-                    {
-                        "type": "plain",
-                        "value": 0
-                    },
-                    {
-                        "type": "plain",
-                        "value": 0
-                    },
-                    {
-                        "type": "plain",
-                        "value": 0
-                    },
-                    {
-                        "type": "plain",
-                        "value": 0
-                    },
-                    {
-                        "type": "plain",
-                        "value": 0
-                    },
-                    {
-                        "type": "plain",
-                        "value": 0
-                    },
-                    {
-                        "type": "plain",
-                        "value": 0
-                    },
-                    {
-                        "type": "plain",
-                        "value": 0
-                    },
-                    {
-                        "type": "plain",
-                        "value": 0
-                    },
-                    {
-                        "type": "plain",
-                        "value": 0
-                    },
-                    {
-                        "type": "plain",
-                        "value": 0
-                    },
-                    {
-                        "type": "plain",
-                        "value": 0
-                    },
-                    {
-                        "type": "plain",
-                        "value": 0
-                    },
-                    {
-                        "type": "plain",
-                        "value": 0
-                    },
-                    {
-                        "type": "plain",
-                        "value": 0
-                    },
-                    {
-                        "type": "plain",
-                        "value": 0
-                    },
-                    {
-                        "type": "plain",
-                        "value": 0
-                    },
-                    {
-                        "type": "plain",
-                        "value": 0
-                    },
-                    {
-                        "type": "plain",
-                        "value": 0
-                    },
-                    {
-                        "type": "plain",
-                        "value": 0
-                    },
-                    {
-                        "type": "plain",
-                        "value": 0
-                    },
-                    {
-                        "type": "plain",
-                        "value": 0
-                    }
-                ],
-                "servoEnabledMask": 0,
-                "servoPosition": [
-                    0,
-                    0,
-                    0,
-                    0,
-                    0,
-                    0,
-                    0,
-                    0,
-                    0,
-                    0,
-                    0,
-                    0
-                ],
-                "servoSpeed": [
-                    1,
-                    1,
-                    1,
-                    1,
-                    1,
-                    1
-                ]
-            },
-            "name": "Module 19",
+            "name": "nav1",
             "type": 80
         }
     },
     "mtb-usb": {
         "keepAlive": true,
-        "port": "auto",
-        "speed": 115200
+        "port": "auto"
     },
     "production_logging": {
         "detectLevel": 2,
@@ -1470,6 +2274,6 @@
         ],
         "host": "127.0.0.1",
         "keepAlive": true,
-        "port": 3841
+        "port": 3842
     }
 }
