@@ -23,6 +23,10 @@ public:
     // TK - tlačítko volba
     // PO - protiopakovací relé
     // TZ - trvalé svícení
+
+    // proti volbě počítku, když se volí konec
+    // každý stisk se do volíví skupiny pošle jen 1x
+    bool mtbVolbaOpak = false;
 };
 
 #endif // BLOKTC_H

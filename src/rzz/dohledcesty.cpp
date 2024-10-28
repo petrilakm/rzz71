@@ -103,10 +103,12 @@ bool TdohledCesty::cestaPodDohledem::kontrolaCelistvostiCesty(bool cestaJizExist
                 // cesta je postavená, výluka musí nějaká být
                 if (c->posun) {
                     // u posunu kontrolujeme výluky i K1, K2
+                    /*
                     if (!(blok->r[TblokK::X1]) || !(blok->r[TblokK::X2])) {
                         stavOK = false; // musí být aspoň 1 výluka
                         this->upo.append(QString("ne výluky %1").arg(blok->name));
                     }
+                    */
                 } else {
                     // vlaková cesta se dívá jen na výluky
                     //if (!(blok->r[TblokK::X1]) || !(blok->r[TblokK::X2])) stavOK = false; // musí být aspoň 1 výluka
