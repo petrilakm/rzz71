@@ -44,7 +44,6 @@ private:
     TRZZ71 *rzz;
     QJsonObject config;
     QString configFileName;
-
     StartupError startError = StartupError::Ok;
 
 #ifdef Q_OS_WIN

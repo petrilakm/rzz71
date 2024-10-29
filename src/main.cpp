@@ -107,7 +107,6 @@ DaemonCoreApplication::DaemonCoreApplication(int &argc, char **argv)
     mtb_stanice.loadConfig(this->config, 2);
     rzz = new TRZZ71(this);
 
-
     connect(&mtb, SIGNAL(ChangedInput(int,int,int)), rzz, SLOT(getInput(int,int,int)));
     connect(&mtb_stanice, SIGNAL(ChangedInput(int,int,int)), rzz, SLOT(getInput(int,int,int)));
     connect(rzz, SIGNAL(setOutput(int,int,int)), &mtb, SLOT(setOutput(int,int,int)));
@@ -116,8 +115,6 @@ DaemonCoreApplication::DaemonCoreApplication(int &argc, char **argv)
     connect(rzz, SIGNAL(subscribeModule(int)), &mtb_stanice, SLOT(subscribeModule(int)));
 
     connect(console, SIGNAL(newLine(QString)), rzz, SLOT(readCommand(QString)));
-
-    //connect(&mtb, SIGNAL(mtbConnected()), rzz, SLOT(init()));
     rzz->init();
 
 }

@@ -17,7 +17,7 @@ public:
         mtbOutMakZelena = 2,
         mtbOutMakCervena = 3,
         mtbOutMakBila = 4,
-        mtbOutMakDolniZluta = 5,
+        mtbOutMakDNVC = 5,
     };
 
     bool evaluate() override;

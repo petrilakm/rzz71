@@ -1,6 +1,7 @@
 #ifndef _LOGGING_H_
 #define _LOGGING_H_
 
+#include <QObject>
 #include <deque>
 #include <fstream>
 #include <memory>
@@ -36,7 +37,8 @@ struct LogRecord {
 
 std::ofstream& operator<<(std::ofstream&, const LogRecord&);
 
-class Logger {
+class Logger : public QObject {
+    Q_OBJECT
 public:
 	void loadConfig(const QJsonObject& config);
     void log(const QString&, logging::LogLevel);
@@ -62,6 +64,8 @@ private:
     void prodLog(const QString&, logging::LogLevel);
 	void prodInit();
     void termLog(const QString&, logging::LogLevel);
+signals:
+    void logEvent(QString msg, logging::LogLevel loglevel);
 };
 
 extern Logger logger;

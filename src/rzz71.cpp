@@ -15,11 +15,17 @@ bool rKPV;
 bool rZ3V; // NUZ, je něco vybráno
 bool rQTV; // NUZ, probíhá měření času
 bool rD3V; // NUZ, odměřeno, ruší se závěry
+bool rZ5C, rD5C, rQTC;
 bool rBlik50;
 
 TRZZ71::TRZZ71(QObject *parent)
     : QObject{parent}
 {
+    tcpcon = new Ttcpconsole;
+
+    connect(&logger, SIGNAL(logEvent(QString,logging::LogLevel)), tcpcon, SLOT(sendEvent(QString,logging::LogLevel)));
+    connect(tcpcon, SIGNAL(newLine(QString)), this, SLOT(readCommand(QString)));
+
     blik.setInterval(700);
     blik.setSingleShot(false);
     //blikOut = false;
@@ -64,15 +70,15 @@ void TRZZ71::readCommand(QString cmd)
     if (cmdList.size() > 0) {
         cmd = cmdList[0];
         if ((cmd == "help") || (cmd == "h")) {
-            term(QString("b <blok> - informace o bloku"));
-            term(QString("v        - informace o volící skupině"));
-            term(QString("d        - informace o dohledové skupině"));
-            term(QString("m <addr> <pin> <stav> - simulace změny vstupu"));
-            term(QString("M <addr> <pin> - simulace impulsu na vstupu"));
+            tcpcon->sendMsg(QString("b <blok> - informace o bloku"));
+            tcpcon->sendMsg(QString("v        - informace o volící skupině"));
+            tcpcon->sendMsg(QString("d        - informace o dohledové skupině"));
+            tcpcon->sendMsg(QString("m <addr> <pin> <stav> - simulace změny vstupu"));
+            tcpcon->sendMsg(QString("M <addr> <pin> - simulace impulsu na vstupu"));
         }
         if (cmd == 'm') { // mtb simulace
             if (cmdList.length() < 4) {
-                term(QString("m <addr> <pin> <stav>"));
+                tcpcon->sendMsg(QString("m <addr> <pin> <stav>"));
             } else {
                 mtbpin p(cmdList[1].toInt(), cmdList[2].toInt());
                 mtb.module[p.addr].inputs[p.pin] = cmdList[3].toInt();
@@ -80,7 +86,7 @@ void TRZZ71::readCommand(QString cmd)
         }
         if (cmd == 'M') { // mtb simulace - impuls
             if (cmdList.length() < 3) {
-                term(QString("M <addr> <pin>"));
+                tcpcon->sendMsg(QString("M <addr> <pin>"));
             } else {
                 mtbpin p(cmdList[1].toInt(), cmdList[2].toInt());
                 simul_puls_pin = p;
@@ -90,24 +96,24 @@ void TRZZ71::readCommand(QString cmd)
             }
         }
         if (cmd == 'v') { // voliciskupina
-            term(QString("Aktivní tlačítka = %1").arg(voliciskupina.tlacitkaAktivni.count()));
+            tcpcon->sendMsg(QString("Aktivní tlačítka = %1").arg(voliciskupina.tlacitkaAktivni.count()));
             for(TblokTC *tc : voliciskupina.tlacitkaAktivni) {
-                term(QString(" - %1 -> %2 %3").arg(tc->name).arg(tc->r[TblokTC::TZ]).arg(tc->r[TblokTC::TK]));
+                tcpcon->sendMsg(QString(" - %1 -> %2 %3").arg(tc->name).arg(tc->r[TblokTC::TZ]).arg(tc->r[TblokTC::TK]));
             }
-            term(QString("Postavené cesty = %1").arg(voliciskupina.cestyPostavene.count()));
+            tcpcon->sendMsg(QString("Postavené cesty = %1").arg(voliciskupina.cestyPostavene.count()));
             for(int ic : voliciskupina.cestyPostavene) {
                 Tcesta *c = cesty->cesty[ic];
                 if (c->tlacitka.count() > 1) {
-                    term(QString(" - %1 -> %2 %3").arg(ic).arg(c->tlacitka[0]->name).arg(c->tlacitka[0]->name));
+                    tcpcon->sendMsg(QString(" - %1 -> %2 %3").arg(ic).arg(c->tlacitka[0]->name).arg(c->tlacitka[0]->name));
                 }
             }
         }
         if (cmd == 'd') { // dohledcesty
-            term(QString("Postavené cesty = %1").arg(dohledCesty.cestyPostavene.count()));
+            tcpcon->sendMsg(QString("Postavené cesty = %1").arg(dohledCesty.cestyPostavene.count()));
             for (TdohledCesty::cestaPodDohledem *cpd : dohledCesty.cestyPostavene) {
-                term(QString(" - %1 -> stav %2-%3 (vlak v bloku č. %4 až %5)").arg(cpd->num).arg(cpd->stav).arg(dohledCesty.stavCesty2QString(cpd->stav)).arg(cpd->vlakCelo).arg((cpd->vlakKonec)));
+                tcpcon->sendMsg(QString(" - %1 -> stav %2-%3 (vlak v bloku č. %4 až %5)").arg(cpd->num).arg(cpd->stav).arg(dohledCesty.stavCesty2QString(cpd->stav)).arg(cpd->vlakCelo).arg((cpd->vlakKonec)));
                 for (QString upo1 : cpd->upo) {
-                    term(tr("   UPO - %1").arg(upo1));
+                    tcpcon->sendMsg(tr("   UPO - %1").arg(upo1));
                 }
             }
         }
@@ -117,72 +123,72 @@ void TRZZ71::readCommand(QString cmd)
                 if (b) {
                     switch (b->typ) {
                     case Tblok::btV:
-                        term(QString("blok V"));
+                        tcpcon->sendMsg(QString("blok V"));
                         pBlokV = static_cast<TblokV*>(b);
-                        term(QString(" - master = %1").arg(pBlokV->rezimMaster));
-                        term(QString(" - slave  = %1").arg(pBlokV->rezimSlave));
-                        if (pBlokV->dvojceBlok) term(QString(" -- dvojceBlok = %1").arg(pBlokV->dvojceBlok->name));
-                        if (pBlokV->predBlok) term(QString(" -- predBlok = %1").arg(pBlokV->predBlok->name));
+                        tcpcon->sendMsg(QString(" - master = %1").arg(pBlokV->rezimMaster));
+                        tcpcon->sendMsg(QString(" - slave  = %1").arg(pBlokV->rezimSlave));
+                        if (pBlokV->dvojceBlok) tcpcon->sendMsg(QString(" -- dvojceBlok = %1").arg(pBlokV->dvojceBlok->name));
+                        if (pBlokV->predBlok) tcpcon->sendMsg(QString(" -- predBlok = %1").arg(pBlokV->predBlok->name));
                         if (pBlokV->odvratneBloky.count() > 0) {
-                            term(QString(" - odvrané bloky:"));
+                            tcpcon->sendMsg(QString(" - odvrané bloky:"));
                             for (Tblok *odvBlok : pBlokV->odvratneBloky) {
-                                term(QString("   - %1").arg(odvBlok->name));
+                                tcpcon->sendMsg(QString("   - %1").arg(odvBlok->name));
                             }
                         }
-                        term(QString(" - J   = %1").arg(b->r[TblokV::J]));
-                        term(QString(" - Z   = %1").arg(b->r[TblokV::Z]));
-                        term(QString(" - BP  = %1").arg(b->r[TblokV::BP]));
-                        term(QString(" - DP  = %1").arg(b->r[TblokV::DP]));
-                        term(QString(" - DM  = %1").arg(b->r[TblokV::DM]));
-                        term(QString(" - VOP = %1").arg(b->r[TblokV::VOP]));
-                        term(QString(" - VOM = %1").arg(b->r[TblokV::VOM]));
-                        term(QString(" - SP  = %1").arg(b->r[TblokV::SP]));
-                        term(QString(" - SM  = %1").arg(b->r[TblokV::SM]));
-                        term(QString(" - INe = %1").arg(b->r[TblokV::INe]));
+                        tcpcon->sendMsg(QString(" - J   = %1").arg(b->r[TblokV::J]));
+                        tcpcon->sendMsg(QString(" - Z   = %1").arg(b->r[TblokV::Z]));
+                        tcpcon->sendMsg(QString(" - BP  = %1").arg(b->r[TblokV::BP]));
+                        tcpcon->sendMsg(QString(" - DP  = %1").arg(b->r[TblokV::DP]));
+                        tcpcon->sendMsg(QString(" - DM  = %1").arg(b->r[TblokV::DM]));
+                        tcpcon->sendMsg(QString(" - VOP = %1").arg(b->r[TblokV::VOP]));
+                        tcpcon->sendMsg(QString(" - VOM = %1").arg(b->r[TblokV::VOM]));
+                        tcpcon->sendMsg(QString(" - SP  = %1").arg(b->r[TblokV::SP]));
+                        tcpcon->sendMsg(QString(" - SM  = %1").arg(b->r[TblokV::SM]));
+                        tcpcon->sendMsg(QString(" - INe = %1").arg(b->r[TblokV::INe]));
                         break;
                     case Tblok::btEMZ:
-                        term(QString("blok EMZ"));
-                        term(QString(" - UK = %1").arg(b->r[TblokEMZ::UK]));
-                        term(QString(" - ZP = %1").arg(b->r[TblokEMZ::ZP]));
-                        term(QString(" - Z  = %1").arg(b->r[TblokEMZ::Z]));
+                        tcpcon->sendMsg(QString("blok EMZ"));
+                        tcpcon->sendMsg(QString(" - UK = %1").arg(b->r[TblokEMZ::UK]));
+                        tcpcon->sendMsg(QString(" - ZP = %1").arg(b->r[TblokEMZ::ZP]));
+                        tcpcon->sendMsg(QString(" - Z  = %1").arg(b->r[TblokEMZ::Z]));
                         break;
                     case Tblok::btS:
-                        term(QString("blok S"));
-                        term(QString(" - J = %1").arg(b->r[TblokS::J]));
-                        term(QString(" - Z = %1").arg(b->r[TblokS::Z]));
-                        //term(QString(" - B = %1").arg(b->r[TblokS::B]));
-                        term(QString(" - V = %1").arg(b->r[TblokS::V]));
+                        tcpcon->sendMsg(QString("blok S"));
+                        tcpcon->sendMsg(QString(" - J = %1").arg(b->r[TblokS::J]));
+                        tcpcon->sendMsg(QString(" - Z = %1").arg(b->r[TblokS::Z]));
+                        //tcpcon->sendMsg(QString(" - B = %1").arg(b->r[TblokS::B]));
+                        tcpcon->sendMsg(QString(" - V = %1").arg(b->r[TblokS::V]));
                         break;
                     case Tblok::btK:
-                        term(QString("blok K"));
+                        tcpcon->sendMsg(QString("blok K"));
                         // V, R, J, U, X1, X2, K1, K2
-                        term(QString(" - J = %1").arg(b->r[TblokK::J]));
-                        term(QString(" - X1 = %1").arg(b->r[TblokK::X1]));
-                        term(QString(" - X2 = %1").arg(b->r[TblokK::X2]));
-                        term(QString(" - K1 = %1").arg(b->r[TblokK::K1]));
-                        term(QString(" - K2 = %1").arg(b->r[TblokK::K2]));
+                        tcpcon->sendMsg(QString(" - J = %1").arg(b->r[TblokK::J]));
+                        tcpcon->sendMsg(QString(" - X1 = %1").arg(b->r[TblokK::X1]));
+                        tcpcon->sendMsg(QString(" - X2 = %1").arg(b->r[TblokK::X2]));
+                        tcpcon->sendMsg(QString(" - K1 = %1").arg(b->r[TblokK::K1]));
+                        tcpcon->sendMsg(QString(" - K2 = %1").arg(b->r[TblokK::K2]));
                         break;
                     case Tblok::btTC:
-                        term(QString("blok TC"));
-                        term(QString(" - TZ = %1").arg(b->r[TblokTC::TZ]));
-                        term(QString(" - PO = %1").arg(b->r[TblokTC::PO]));
-                        term(QString(" - TK = %1").arg(b->r[TblokTC::TK]));
+                        tcpcon->sendMsg(QString("blok TC"));
+                        tcpcon->sendMsg(QString(" - TZ = %1").arg(b->r[TblokTC::TZ]));
+                        tcpcon->sendMsg(QString(" - PO = %1").arg(b->r[TblokTC::PO]));
+                        tcpcon->sendMsg(QString(" - TK = %1").arg(b->r[TblokTC::TK]));
                         break;
                     case Tblok::btQ:
-                        term(QString("blok Q"));
-                        term(QString(" - N = %1").arg(b->r[TblokQ::N]));
-                        term(QString(" - kód návěsti = %1").arg(static_cast<TblokQ*>(b)->navestniZnak));
+                        tcpcon->sendMsg(QString("blok Q"));
+                        tcpcon->sendMsg(QString(" - N = %1").arg(b->r[TblokQ::N]));
+                        tcpcon->sendMsg(QString(" - kód návěsti = %1").arg(static_cast<TblokQ*>(b)->navestniZnak));
                         break;
                     case Tblok::btPN:
-                        term(QString("blok PN"));
-                        term(QString(" - PN = %1").arg(b->r[TblokPN::PN]));
+                        tcpcon->sendMsg(QString("blok PN"));
+                        tcpcon->sendMsg(QString(" - PN = %1").arg(b->r[TblokPN::PN]));
                         break;
                     default:
-                        term(QString("blok neumím vypsat"));
+                        tcpcon->sendMsg(QString("blok neumím vypsat"));
                         break;
                     }
                 } else {
-                    term(QString("blok \"%1\" nenalezen").arg(cmdList[1]));
+                    tcpcon->sendMsg(QString("blok \"%1\" nenalezen").arg(cmdList[1]));
                 }
             }
         }
@@ -514,7 +520,7 @@ void TRZZ71::ont1C()
 
 void TRZZ71::ont5C()
 {
-
+    rD5C |= (rQTC && rZ5C);
 }
 
 void TRZZ71::onblik()

@@ -30,6 +30,7 @@ SOURCES += \
   src/rzz/dohledcesty.cpp \
   src/rzz/voliciskupina.cpp \
   src/rzz71.cpp \
+  src/tcpconsole.cpp \
   src/tcpsocket.cpp \
   src/tmtbConnector.cpp
 
@@ -53,6 +54,7 @@ HEADERS += \
   src/rzz/obecne.h \
   src/rzz/voliciskupina.h \
   src/rzz71.h \
+  src/tcpconsole.h \
   src/tcpsocket.h \
   src/termcolor.h \
   src/tmtbConnector.h

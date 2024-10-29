@@ -38,6 +38,7 @@ void Logger::log(const QString& message, logging::LogLevel loglevel) {
 	this->termLog(message, loglevel);
 	if (this->prod.enabled)
 		this->prodLog(message, loglevel);
+    emit logEvent(message, loglevel);
 }
 
 void Logger::termLog(const QString& message, logging::LogLevel loglevel) {

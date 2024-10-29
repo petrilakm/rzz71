@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QTimer>
 #include <QElapsedTimer>
+#include "tcpconsole.h"
 #include "logging.h"
 #include "rzz/obecne.h"
 #include "rzz/blokV.h"
@@ -17,6 +18,7 @@ public:
 
 
 private:
+    Ttcpconsole *tcpcon;
     QTimer blik;
     QTimer tim_eval;
     QElapsedTimer timer;

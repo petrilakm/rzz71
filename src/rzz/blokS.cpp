@@ -14,7 +14,7 @@ bool TblokS::evaluate()
     // logika
 
     r[J] = mtbIns[mtbInObsaz].value();
-    r[V] |= (mtbIns[mtbInNuz].value() && (r[Z]));
+    r[V] |= (mtbIns[mtbInNuz].value() && (r[Z]) && (!rQTV));
     r[V] &= (r[Z]);
     //r[Z] = r[A] || r[B];
     if (r[V]) {
