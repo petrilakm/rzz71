@@ -61,10 +61,11 @@ void Ttcpconsole::readyRead()
         log(tr("console: neznámý klient poslal data \"%1\" ( sender %2:%3) - len %4").arg(line).arg(s->peerAddress().toString()).arg(s->peerPort()).arg(ar.length()), logging::LogLevel::Info);
         return;
     }
-    if (ar.endsWith(13)) ar.removeLast();
-    if (ar.endsWith(10)) ar.removeLast();
-    if (ar.endsWith(13)) ar.removeLast();
-    if (ar.endsWith(10)) ar.removeLast();
+
+    if (ar.endsWith(13)) ar.remove(ar.length()-1, 1);
+    if (ar.endsWith(10)) ar.remove(ar.length()-1, 1);
+    if (ar.endsWith(13)) ar.remove(ar.length()-1, 1);
+    if (ar.endsWith(10)) ar.remove(ar.length()-1, 1);
     line = QString::fromUtf8(ar);
     //log(tr("console: data \"%1\" ( sender %2:%3) - len %4").arg(line).arg(s->peerAddress().toString()).arg(s->peerPort()).arg(ar.length()), logging::LogLevel::Info);
     // zpracuje příkazy konzole
