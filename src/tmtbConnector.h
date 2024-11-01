@@ -67,6 +67,6 @@ signals:
 };
 
 extern TmtbConnector mtb;
-extern TmtbConnector mtb_stanice;
+//extern TmtbConnector mtb_stanice;
 
 #endif // TMTBCONNECTOR_H

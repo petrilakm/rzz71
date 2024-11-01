@@ -12,7 +12,7 @@ ToDo:
 */
 
 TmtbConnector mtb;
-TmtbConnector mtb_stanice;
+//TmtbConnector mtb_stanice;
 
 TmtbConnector::TmtbConnector(QObject *parent)
     : QObject{parent}

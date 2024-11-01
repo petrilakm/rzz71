@@ -169,6 +169,10 @@ bool TdohledCesty::cestaPodDohledem::kontrolaCelistvostiCesty(bool cestaJizExist
             }
         }
     }
+
+    for(struct Tcesta::Tvyh_odv odv : c->odvraty) {
+        //
+    }
     return stavOK;
 }
 
@@ -212,6 +216,8 @@ void TdohledCesty::evaluate()
     QList<cestaPodDohledem *> cestyNaSmazani;
     cestyNaSmazani.clear();
     TblokK *pBlokK;
+    TblokV *pBlokV;
+    TblokEMZ *pBlokEMZ;
     //Tblok *pBlok;
     bool stavOK;
     bool obv1 = false;
@@ -338,16 +344,21 @@ void TdohledCesty::evaluate()
                         }
                     }
                 };
+
+
                 log(QString("dohled: nastavení závěru odvratným výměnám"), logging::LogLevel::Debug);
                 // nastaví závěrné useky odvratným výhybkám
-                //for (int i =0; i < c->odvraty.count(); i++) {
                 for (struct Tcesta::Tvyh_odv odv : c->odvraty) {
-                    log(QString("dohled:  - výmena %1").arg(odv.pBlokVymena->name), logging::LogLevel::Info);
-                    if (odv.pBlokVymena->typ == Tblok::btV) {
-                        static_cast<TblokV*>(odv.pBlokVymena)->odvratneBloky.append(odv.pBlokUsek);
-                    }
+                    log(QString("dohled:  - odvrat výmena %1").arg(odv.pBlokVymena->name), logging::LogLevel::Info);
+                    // zámky
                     if (odv.pBlokVymena->typ == Tblok::btEMZ) {
-                        static_cast<TblokEMZ*>(odv.pBlokVymena)->odvratneBloky.append(odv.pBlokUsek);
+                        pBlokEMZ = static_cast<TblokEMZ*>(odv.pBlokVymena);
+                        pBlokEMZ->odvratneBloky.append(odv.pBlokUsek);
+                    }
+                    // výhybky
+                    if (odv.pBlokVymena->typ == Tblok::btV) {
+                        pBlokV = static_cast<TblokV*>(odv.pBlokVymena);
+                        pBlokV->odvratneBloky.append(odv.pBlokUsek);
                     }
                 }
                 log(QString("dohled: zhasne tlačítka cesty"), logging::LogLevel::Debug);

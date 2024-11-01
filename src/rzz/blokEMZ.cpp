@@ -38,6 +38,15 @@ bool TblokEMZ::evaluate()
         vym[i]->r[TblokV::rel::BP] = !r[UK];
     }
 
+    // reší závěr přes závěrné úseky
+    r[Z] = false;
+    for (Tblok *b : odvratneBloky) {
+        if (b->typ == btS) {
+            r[Z] |= b->r[TblokS::rel::Z];
+            if (!b->r[TblokS::rel::Z]) odvratneBloky.removeOne(b);
+        }
+    }
+
     mtbOut[mtbOutIndikace].setValueBool(r[UK] && (rBlik50 || (!r[ZP])));
 
     if (r != rLast) return true; else return false;
