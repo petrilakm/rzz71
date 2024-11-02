@@ -57,7 +57,7 @@ void TdohledCesty::t3C()
 /****************************************************************************/
 // *c - cesta co chceme zkontrolovat
 // cestaJizExistuje - rozlišuje zda chceme cestu postavit, nebo kontrolujeme podmínky DN
-bool TdohledCesty::cestaPodDohledem::kontrolaCelistvostiCesty(bool cestaJizExistuje)
+bool TdohledCesty::cestaPodDohledem::kontrolaCelistvostiCesty(bool cestaJizExistuje, bool jenVymeny)
 {
     // předpokládáme, že je vše ok, jakákoliv chyba to ale změní
     bool stavOK = true;
@@ -152,6 +152,10 @@ bool TdohledCesty::cestaPodDohledem::kontrolaCelistvostiCesty(bool cestaJizExist
 
     if (upoPolohy.length() > 1) {
         this->upo.append(upoPolohy);
+    }
+
+    if (jenVymeny) {
+        return stavOK;
     }
 
     // kontrola bloků v cestě
@@ -345,7 +349,7 @@ void TdohledCesty::evaluate()
             // počáteční tlačítko je stisknuté
             if (d->stav == scPrujezdVlaku) {
                 // jsme v režimu kontroly podmének pro DN
-                if (d->kontrolaCelistvostiCesty(true)) {
+                if (d->kontrolaCelistvostiCesty(true, false)) {
                     // obnovíme cestu
                     d->stav = scKontrolaDN;
                 }
@@ -355,8 +359,7 @@ void TdohledCesty::evaluate()
         // chování podle stavu cesty
         switch (d->stav) {
         case scStavime: // kontrola výměn
-            stavOK = d->kontrolaCelistvostiCesty(false);
-            stavOK = true;
+            stavOK = d->kontrolaCelistvostiCesty(false, true);
             // kontrola všech výhybek stavěných, zda už mají polohu
 
             if (stavOK) {
@@ -375,7 +378,7 @@ void TdohledCesty::evaluate()
             break;
         case scZavery: // kontrola volnosti a padání závěrů úseků
             // kontrola volnosti JC
-            stavOK = d->kontrolaCelistvostiCesty(false);
+            stavOK = d->kontrolaCelistvostiCesty(false, false);
             if (stavOK) {
                 // úseky jsou volné a nemají závěr z jiné cesty
                 log(QString("dohled: provedeme závěr celé cesty číslo %1").arg(d->num), logging::LogLevel::Info);
@@ -428,7 +431,7 @@ void TdohledCesty::evaluate()
             }
             break;
         case scKontrolaDN:
-            stavOK = d->kontrolaCelistvostiCesty(true);
+            stavOK = d->kontrolaCelistvostiCesty(true, false);
             if (stavOK) {
                 if (c->Navestidlo) {
                     c->Navestidlo->navestniZnak = urciNavest(c->navZnak, c->nasledneNavestidlo);
@@ -442,7 +445,7 @@ void TdohledCesty::evaluate()
             }
             break;
         case scDN:
-            stavOK = d->kontrolaCelistvostiCesty(true);
+            stavOK = d->kontrolaCelistvostiCesty(true, false);
             if (stavOK) {
                 if (c->Navestidlo) {
                     if (c->Navestidlo->r[TblokQ::N]) {

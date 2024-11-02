@@ -43,7 +43,7 @@ public:
         bool vlakEvidenceCelo;
         bool vlakEvidenceKonec;
         QStringList upo;
-        bool kontrolaCelistvostiCesty(bool cestaJizExistuje);
+        bool kontrolaCelistvostiCesty(bool cestaJizExistuje, bool jenVymeny);
     };
 
     QList<cestaPodDohledem *> cestyPostavene;
