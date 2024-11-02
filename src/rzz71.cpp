@@ -12,6 +12,7 @@
 #include "rzz/dohledcesty.h"
 
 bool rKPV;
+bool rZkrat;
 bool rZ3V; // NUZ, je něco vybráno
 bool rQTV; // NUZ, probíhá měření času
 bool rD3V; // NUZ, odměřeno, ruší se závěry
@@ -56,6 +57,7 @@ TRZZ71::TRZZ71(QObject *parent)
     simul_puls_timer.setInterval(50);
     simul_puls_timer.setSingleShot(true);
     connect(&simul_puls_timer, SIGNAL(timeout()), this, SLOT(onSimulPuls()));
+
 }
 
 
@@ -432,7 +434,7 @@ void TRZZ71::init()
                     };
                 }
                 bl.append(static_cast<Tblok*>(pBlokPN));
-                log(QString("rzz: načten blok PN_%1").arg(name), logging::LogLevel::Debug);
+                log(QString("rzz: načten blok PN_%1").arg(name), logging::LogLevel::Info);
             }
             if (type == "EMZ") {
                 // blokEMZ - elektromagnetický zámek - simulovaný

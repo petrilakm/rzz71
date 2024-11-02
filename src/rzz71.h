@@ -15,7 +15,11 @@ class TRZZ71 : public QObject
     Q_OBJECT
 public:
     explicit TRZZ71(QObject *parent = nullptr);
-
+    // pro LCD modul, aby mohl kontrolovat casové soubory
+    QTimer t3V; // 3 min
+    QTimer t3C; // 3 min
+    QTimer t1C; // 1 min
+    QTimer t5C; // 5 s
 
 private:
     Ttcpconsole *tcpcon;
@@ -24,10 +28,7 @@ private:
     QElapsedTimer timer;
     bool bFirstRun = false;
 
-    QTimer t3V; // 3 min
-    QTimer t3C; // 3 min
-    QTimer t1C; // 1 min
-    QTimer t5C; // 5 s
+
 
     QTimer simul_puls_timer;
     mtbpin simul_puls_pin;
@@ -39,6 +40,7 @@ private:
     mtbpin pinInNUZ;
     mtbpin pinOutNUZ;
     mtbpin pinOutKmitac;
+    mtbpin pinInZkrat;
     Tblok* findBlokByName(QString name);
 
 signals:

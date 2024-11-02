@@ -105,6 +105,7 @@ extern bool rQTV; // NUZ, probíhá měření času
 extern bool rD3V; // NUZ, odměřeno, zruší se závěry
 extern bool rBlik50; // výstup kmitače
 extern bool rNavNoc; // noční návestidla
+extern bool rZkrat; // zkrat zesilovače
 
 class Tblok;
 extern QList<Tblok *> bl;

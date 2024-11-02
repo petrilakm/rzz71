@@ -14,6 +14,7 @@ CXXFLAGS -= -fno-keep-inline-dllexport
 
 SOURCES += \
   src/MtbModules.cpp \
+  src/lcd.cpp \
   src/logging.cpp \
   src/main.cpp \
   src/qconsolelistener.cpp \
@@ -37,6 +38,7 @@ SOURCES += \
 HEADERS += \
   src/MtbModules.h \
   src/QConsoleListener \
+  src/lcd.h \
   src/logging.h \
   src/main.h \
   src/qconsolelistener.h \

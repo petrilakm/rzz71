@@ -8,6 +8,7 @@
 #include "qconsolelistener.h"
 #include "tmtbConnector.h"
 #include "rzz71.h"
+#include "lcd.h"
 
 
 const QString DEFAULT_CONFIG_FILENAME = "config.json";
@@ -42,6 +43,7 @@ public:
     StartupError startupError() const { return startError; }
 private:
     TRZZ71 *rzz;
+    Tlcd *lcd;
     QJsonObject config;
     QString configFileName;
     StartupError startError = StartupError::Ok;

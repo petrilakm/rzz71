@@ -117,6 +117,9 @@ DaemonCoreApplication::DaemonCoreApplication(int &argc, char **argv)
     connect(console, SIGNAL(newLine(QString)), rzz, SLOT(readCommand(QString)));
     rzz->init();
 
+    lcd = new Tlcd;
+    lcd->rzz = rzz;
+
 }
 
 void DaemonCoreApplication::loadConfig(const QString& filename) {

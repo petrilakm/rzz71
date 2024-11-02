@@ -402,6 +402,8 @@ void TdohledCesty::evaluate()
             }
             break;
         case scPrujezdVlaku:
+            // nulování UPO - cesta je postavená
+            d->upo.clear();
             // ToDo: dodělat logiku čela a koncevlaku
             // teď je to uplně blbě, čelo se pohybuje spíš jako konec
             if (d->vlakCelo >= 0) {
