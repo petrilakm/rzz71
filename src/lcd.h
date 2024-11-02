@@ -23,8 +23,9 @@ private:
     QFile fil;
     QTimer *tim;
     const QString lcdname = "/dev/lcd";
-    const QByteArray lcdEscapeChar = "\027";
-    const QByteArray lcdEscapeSeq = lcdEscapeChar + "[L";
+    const QByteArray lcdEscapeChar = QByteArray("\x1b",1);
+    const QByteArray lcdEscapeSeq = QByteArray("\x1b[L",3);
+    const QByteArray lcdEscapeSeqBase = QByteArray("\x1b[",2);
 private slots:
     void on_tim();
 };

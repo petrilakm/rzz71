@@ -50,6 +50,7 @@ TRZZ71::TRZZ71(QObject *parent)
     connect(&t5C, SIGNAL(timeout()), this, SLOT(ont5C()));
 
     rKPV = false;
+    rZkrat = false;
     rZ3V = false;
     rQTV = false;
     rD3V = false;
@@ -276,7 +277,9 @@ void TRZZ71::init()
             } else {
                 lineparam.clear();
             }
-
+            if (type == "zkrat") {
+                pinInZkrat = mtbLoadInputs[0];
+            }
             if (type == "KPV") {
                 pinInKPV = mtbLoadInputs[0];
             }
@@ -544,6 +547,8 @@ void TRZZ71::oneval()
     }
     //log(QString("rzz: eval"), logging::LogLevel::Info);
     timer.start();
+    // zkrat zesilovače - výpadek DCC
+    rZkrat = pinInZkrat.value();
     // KPV
     rKPV = pinInKPV.value();
     // NUZ

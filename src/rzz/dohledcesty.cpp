@@ -69,6 +69,91 @@ bool TdohledCesty::cestaPodDohledem::kontrolaCelistvostiCesty(bool cestaJizExist
     // najdeme si cestu
     Tcesta *c = cesty->cesty.at(this->num);
 
+    // kontrola poloh výměn
+    QString upoPolohy = "";
+    foreach (struct Tcesta::Tvyh vymena, c->polohy) {
+        // EMZ
+        if (vymena.pBlok->typ == Tblok::btEMZ) {
+            if (vymena.pBlok->r[TblokEMZ::UK]) {
+                stavOK = false;
+                upoPolohy += QString("EMZ ");
+            }
+        }
+        // Přestavník
+        if (vymena.pBlok->typ == Tblok::btV) {
+            TblokV *vyh = static_cast<TblokV*>(vymena.pBlok);
+            TblokV *dvojiceBlok = vyh->dvojceBlok;
+            // vždy kontroluje uvedenou výhybku
+            if (!(vymena.minus) && (!(vyh->r[TblokV::rel::DP]))) {
+                stavOK = false;
+                upoPolohy += QString("%1+ ").arg(vymena.pBlok->name);
+            }
+            if ( (vymena.minus) && (!(vyh->r[TblokV::rel::DM]))) {
+                stavOK = false;
+                upoPolohy += QString("%1- ").arg(vymena.pBlok->name);
+            }
+            if (dvojiceBlok != nullptr) {
+                // pokud je dvojice, tak kontroluje i druhou půlku
+                if (!(vymena.minus) && (!(dvojiceBlok->r[TblokV::rel::DP]))) {
+                    stavOK = false;
+                    upoPolohy += QString("%1+ ").arg(dvojiceBlok->name);
+                }
+                if ( (vymena.minus) && (!(dvojiceBlok->r[TblokV::rel::DM]))) {
+                    stavOK = false;
+                    upoPolohy += QString("%1- ").arg(dvojiceBlok->name);
+                }
+            }
+            if (cestaJizExistuje) {
+                // pro kontrolu návstidla musí být závěr
+                if (!(vyh->r[TblokV::rel::Z])) {
+                    stavOK = false;
+                    this->upo.append(QString("ne záv. %1").arg(vymena.pBlok->name));
+                }
+            }
+        }
+    };
+
+
+    // kontrola poloh odvratů
+    foreach (struct Tcesta::Tvyh_odv odv, c->odvraty) {
+        Tblok *vymena = (odv.pBlokVymena);
+        // EMZ
+        if (vymena->typ == Tblok::btEMZ) {
+            if (vymena->r[TblokEMZ::rel::UK]) {
+                stavOK = false;
+                upoPolohy += QString("EMZ ");
+            }
+        }
+        // Přestavník
+        if (vymena->typ == Tblok::btV) {
+            TblokV *vyh = static_cast<TblokV*>(vymena);
+            TblokV *dvojiceBlok = static_cast<TblokV*>(vymena)->dvojceBlok;
+            if (!(odv.minus) && (!(vyh->r[TblokV::rel::DP]))) {
+                stavOK = false;
+                upoPolohy += QString("od%1+ ").arg(vyh->name);
+            }
+            if ( (odv.minus) && (!(vyh->r[TblokV::rel::DM]))) {
+                stavOK = false;
+                upoPolohy += QString("od%1- ").arg(vyh->name);
+            }
+            if (dvojiceBlok != nullptr) {
+                // pokud je dvojice, tak kontroluje i druhou půlku
+                if (!(odv.minus) && (!(dvojiceBlok->r[TblokV::rel::DP]))) {
+                    stavOK = false;
+                    upoPolohy += QString("od%1+ ").arg(dvojiceBlok->name);
+                }
+                if ( (odv.minus) && (!(dvojiceBlok->r[TblokV::rel::DM]))) {
+                    stavOK = false;
+                    upoPolohy += QString("od%1- ").arg(dvojiceBlok->name);
+                }
+            }
+        }
+    };
+
+    if (upoPolohy.length() > 1) {
+        this->upo.append(upoPolohy);
+    }
+
     // kontrola bloků v cestě
     for(Tblok *blok : c->bloky) {
         if (blok == c->bloky.last()) bBlockLast = true; else bBlockLast = false;
@@ -141,6 +226,7 @@ bool TdohledCesty::cestaPodDohledem::kontrolaCelistvostiCesty(bool cestaJizExist
             }
         }
     };
+    /*
     // kontrola poloh výměn
     for(struct Tcesta::Tvyh vyh: c->polohy) {
         // blokV - musí být dohled polohy
@@ -169,10 +255,7 @@ bool TdohledCesty::cestaPodDohledem::kontrolaCelistvostiCesty(bool cestaJizExist
             }
         }
     }
-
-    for(struct Tcesta::Tvyh_odv odv : c->odvraty) {
-        //
-    }
+    */
     return stavOK;
 }
 
@@ -199,12 +282,12 @@ int TdohledCesty::urciNavest(int navZnak, TblokQ *nasledneNavestidlo)
 QString TdohledCesty::stavCesty2QString(stavCesty sc)
 {
     switch (sc) {
-    case scStavime: return QString("scStavime"); break;
-    case scZavery:  return QString("scZavery"); break;
+    case scStavime: return QString("Stavime"); break;
+    case scZavery:  return QString("Zavery"); break;
     case scKontrolaDN: return QString("scKontrolaPodminekProDN"); break;
-    case scDN: return QString("scDN"); break;
-    case scPrujezdVlaku: return QString("scPrujezdVlaku"); break;
-    case scRC: return QString("scRC"); break;
+    case scDN: return QString("DN"); break;
+    case scPrujezdVlaku: return QString("PrujezdVlaku"); break;
+    case scRC: return QString("RC"); break;
     default: return QString("badState");
     }
     return QString("stavCesty2QString->nocase");
@@ -272,32 +355,10 @@ void TdohledCesty::evaluate()
         // chování podle stavu cesty
         switch (d->stav) {
         case scStavime: // kontrola výměn
+            stavOK = d->kontrolaCelistvostiCesty(false);
             stavOK = true;
             // kontrola všech výhybek stavěných, zda už mají polohu
-            foreach (struct Tcesta::Tvyh vymena, c->polohy) {
-                // EMZ
-                if (vymena.pBlok->typ == Tblok::btEMZ) {
-                    if (vymena.pBlok->r[TblokEMZ::UK]) stavOK = false;
-                    continue;
-                }
-                // Přestavník
-                if (vymena.pBlok->typ == Tblok::btV) {
-                    TblokV *dvojiceBlok = static_cast<TblokV*>(vymena.pBlok)->dvojceBlok;
-                    if (! static_cast<TblokV*>(vymena.pBlok)->dvojceBlok) {
-                        // pokud není dvojce kontroluje uvedenou výhybku
-                        if ((!vymena.minus && !vymena.pBlok->r[TblokV::DP]) ||
-                            ( vymena.minus && !vymena.pBlok->r[TblokV::DM])) {
-                            stavOK = false;
-                        }
-                    } else {
-                        // pokud je dvojice, tak kontroluje druhou půlku
-                        if ((!vymena.minus && !dvojiceBlok->r[TblokV::DP]) ||
-                            ( vymena.minus && !dvojiceBlok->r[TblokV::DM])) {
-                            stavOK = false;
-                        }
-                    }
-                }
-            };
+
             if (stavOK) {
                 log(QString("dohled: konec stavění výměn"), logging::LogLevel::Debug);
                 // máme postaveno, můžeme zrušit výměnová automatická relé a VOP, VOM
@@ -431,6 +492,7 @@ void TdohledCesty::evaluate()
             break;
         case scRC: // bad states
             d->stav = scRC;
+            d->upo.clear();
             break;
         }
     }

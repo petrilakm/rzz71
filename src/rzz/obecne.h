@@ -99,13 +99,13 @@ public:
 //typedef struct Tmtbpin mtbpin;
 
 extern bool rKPV; // kontrola polohy výměn
+extern bool rZkrat; // zkrat na zesilovači (vypadek DCC)
 extern bool rRV; // rušení volby
 extern bool rZ3V; // NUZ, je něco vybráno
 extern bool rQTV; // NUZ, probíhá měření času
 extern bool rD3V; // NUZ, odměřeno, zruší se závěry
 extern bool rBlik50; // výstup kmitače
 extern bool rNavNoc; // noční návestidla
-extern bool rZkrat; // zkrat zesilovače
 
 class Tblok;
 extern QList<Tblok *> bl;

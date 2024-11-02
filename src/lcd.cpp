@@ -13,7 +13,7 @@ Tlcd::Tlcd(QObject *parent)
     message_info = "info";
 
     tim = new QTimer(this);
-    tim->setInterval(300);
+    tim->setInterval(200);
     tim->setSingleShot(false);
     connect(tim, SIGNAL(timeout()), this, SLOT(on_tim()));
     tim->start();
@@ -22,7 +22,7 @@ Tlcd::Tlcd(QObject *parent)
     if (QFile::exists(lcdname)) {
         log("lcd: found usable lcd, try it", logging::LogLevel::Info);
         fil.setFileName(lcdname);
-        use_lcd = fil.open(QIODeviceBase::WriteOnly || QIODeviceBase::Truncate || QIODeviceBase::ExistingOnly || QIODeviceBase::Unbuffered);
+        use_lcd = fil.open(QIODeviceBase::WriteOnly | QIODeviceBase::Truncate | QIODeviceBase::ExistingOnly | QIODeviceBase::Unbuffered);
         if (use_lcd) {
             log("lcd: lcd opened", logging::LogLevel::Info);
             QByteArray tmp;
@@ -35,14 +35,18 @@ Tlcd::Tlcd(QObject *parent)
             tmp.append("\f"); // clear all
             fil.write(tmp); // send settings
             fil.write("init");
-        }
-    }
-    for(int i=0; i<(20); i++) {
-        for(int j=0; j<(4); j++) {
-            lcd_buffer[j].append(' ');
+        } else {
+            log(tr("lcd: can\'t open lcd device, %1").arg(fil.errorString()), logging::LogLevel::Error);
         }
     }
 #endif
+    // fill buffer with spaces (empty display)
+    for(int i=0; i<(20); i++) {
+        for(int j=0; j<(4); j++) {
+            lcd_buffer[j].append('x');
+        }
+    }
+
 }
 
 Tlcd::~Tlcd()
@@ -59,22 +63,42 @@ void Tlcd::on_tim()
     int linecur = 1;
     QString line;
     for (TdohledCesty::cestaPodDohledem *cpd : dohledCesty.cestyPostavene) {
-        line = QString(" - %1 -> stav %2-%3").arg(cpd->num).arg(cpd->stav).arg(dohledCesty.stavCesty2QString(cpd->stav));
+        QString cestaName = QString("%1_%2").arg(cpd->pCesta->tlacitka[0]->name).arg(cpd->pCesta->tlacitka[1]->name);
+        line = QString("%1 > %2-%3").arg(cestaName).arg(cpd->stav).arg(dohledCesty.stavCesty2QString(cpd->stav));
         lcd_buffer[linecur] = line.left(20).toLatin1();
         linecur++;
         for (QString upo1 : cpd->upo) {
-            line = tr("UPO-%1").arg(upo1);
+            line = tr("UPO %1").arg(upo1);
             lcd_buffer[linecur] = line.left(20).toLatin1();
             linecur++;
         }
     }
+    // clear remaining lines, if any
+    for (int i = linecur; i<4; i++) {
+        lcd_buffer[i] = " ";
+    }
     if (rzz != nullptr) {
+        // zobrazení časových souborů
+        lcd_buffer[0] = "";
         int rem = rzz->t3V.remainingTime();
-        if (rem == -1) {
-            lcd_buffer[0] = " ";
-        } else {
-            lcd_buffer[0] = QString("T3V = ").toLatin1() + QString::number(rem / 1000).toLatin1();
+        if (rem != -1) {
+            lcd_buffer[0] = QString("T3V = ").toLatin1() + QString::number(rem / 1000).toLatin1() + QString(" ").toLatin1();
         }
+        rem = rzz->t3C.remainingTime();
+        if (rem != -1) {
+            lcd_buffer[0] = QString("T3C = ").toLatin1() + QString::number(rem / 1000).toLatin1() + QString(" ").toLatin1();
+        }
+        rem = rzz->t1C.remainingTime();
+        if (rem != -1) {
+            lcd_buffer[0] = QString("T1C = ").toLatin1() + QString::number(rem / 1000).toLatin1() + QString(" ").toLatin1();
+        }
+        rem = rzz->t5C.remainingTime();
+        if (rem != -1) {
+            lcd_buffer[0] = QString("T5C = ").toLatin1() + QString::number(rem / 1000).toLatin1() + QString(" ").toLatin1();
+        }
+
+        // zkrat (má přednost, proto na konec
+        if (rZkrat) lcd_buffer[0] = tr("!! ZKRAT !! ZKRAT !!").left(20).toLatin1();
     } else {
         lcd_buffer[0] = " --- ";
     }
@@ -91,12 +115,18 @@ void Tlcd::on_tim()
 
 void Tlcd::redraw()
 {
-
+    log("lcd: redraw", logging::LogLevel::Info);
+    for(int i=0; i<4; i++) {
+        QString line = QString("lcd: *%1").arg(lcd_buffer[i]);
+        line.append(QString(" ").repeated(26-line.length()));
+        line.append(QString("*"));
+        log(line, logging::LogLevel::Info);
+    }
 #ifndef Q_OS_WIN
     if (use_lcd) {
         QByteArray tmp;
-        tmp.append(lcdEscapeSeq);
-        tmp.append("x0y0;"); // clear all
+        tmp.append(lcdEscapeSeqBase);
+        tmp.append('H'); // go to home
         fil.write(tmp); // send pos 0,0
         tmp.clear();
         tmp.append(lcdEscapeSeq);

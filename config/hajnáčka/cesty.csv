@@ -3,7 +3,7 @@
 #; zhlavý S, odjezdy;;;;;
 V;L1Z,Se4B;6+,7+;;V6-7,1c,1d;L1,T;1
 V;L2Z,Se4B;6-,7+;;V6-7,1c,1d;L2,T;4
-V;L3Z,Se4B;7-,EM+;EM+,V6-7;V6-7,1c,1d;L3,T;4
+V;L3Z,Se4B;7-;EM+,V6-7;V6-7,1c,1d;L3,T;4
 P;L1B,Se4B;6+,7+;;V6-7,1c;L1;9
 P;L2B,Se4B;6-,7+;;V6-7,1c;L2;9
 P;L3B,Se4B;7-;;V6-7,1c;L3;9
@@ -11,7 +11,7 @@ P;L3B,Se4B;7-;;V6-7,1c;L3;9
 #;zhlavý S, vjezdy;;;;;
 V;SZ,L1B;6+,7+;;1c,V6-7,1k;S,S1;1
 V;SZ,L2B;6-,7+;;1c,V6-7,2k;S,S2;4
-V;SZ,L3B;7-,EM+;EM+,V6-7;1c,V6-7,3k;S,S3;4
+V;SZ,L3B;7-;EM+,V6-7;1c,V6-7,3k;S,S3;4
 P;Se4B,L1B;6+,7+;;V6-7,1k;Se4;9
 P;Se4B,L2B;6-,7+;;V6-7,2k;Se4;9
 P;Se4B,L3B;7-;;V6-7,3k;Se4;9
@@ -19,7 +19,7 @@ P;Se4B,L3B;7-;;V6-7,3k;Se4;9
 #;zhlavý L, odjezdy;;;;;
 V;S1Z,Se2B;1+,2+;;V1-2,1b,1a,UZ;S1;1
 V;S2Z,Se2B;1-,2+;;V1-2,1b,1a;S2;4
-V;S3Z,Se2B;1+,2-,3a+,EM+;EM+,V1-2;V3a-3b,V1-2,1b,1a;S3;4
+V;S3Z,Se2B;1+,2-,3a+;EM+,V1-2;V3a-3b,V1-2,1b,1a;S3;4
 P;S1B,Se2B;1+,2+;;V1-2,1b;S1;9
 P;S2B,Se2B;1-,2+;;V1-2,1b;S2;9
 P;S3B,Se2B;3a+,2-,1+,Vk1+;;V3a-3b,V1-2,1b;S3;9
@@ -30,7 +30,7 @@ P;Se3B,Se1B;3a-,2+,Vk1-;;V3a-3b,Vl;Se3;9
 #;zhlavý L, vjezdy;;;;;
 V;LZ,S1B;1+,2+;;1b,V1-2,1k;L,L1;1
 V;LZ,S2B;1-,2+;;1b,V1-2,2k;L,L2;4
-V;LZ,S3B;1+,2-,3a+,Vk1+,EM+;EM+,V3a-3b;1b,V1-2,V3a-3b,3k;L,L3;4
+V;LZ,S3B;1+,2-,3a+,Vk1+;EM+,V3a-3b;1b,V1-2,V3a-3b,3k;L,L3;4
 P;Se2B,S1B;1+,2+;;V1-2,1k;Se2;9
 P;Se2B,S2B;1-,2+;;V1-2,2k;Se2;9
 P;Se2B,S3B;1+,2-,3a+,Vk1+;;V1-2,V3a-3b,3k;Se2;9
