@@ -1,6 +1,167 @@
 {
     "loglevel": 3,
     "modules": {
+        "010": {
+            "config": {
+                "inputsDelay": [
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1
+                ],
+                "outputsSafe": [
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    }
+                ],
+                "servoEnabledMask": 63,
+                "servoPosition": [
+                    30,
+                    200,
+                    30,
+                    200,
+                    30,
+                    200,
+                    30,
+                    200,
+                    30,
+                    200,
+                    30,
+                    200
+                ],
+                "servoSpeed": [
+                    50,
+                    50,
+                    50,
+                    50,
+                    50,
+                    50
+                ]
+            },
+            "name": "Module 10",
+            "type": 80
+        },
         "011": {
             "config": {
                 "inputsDelay": [
@@ -1423,10 +1584,10 @@
                         "value": 0
                     }
                 ],
-                "servoEnabledMask": 0,
+                "servoEnabledMask": 1,
                 "servoPosition": [
                     0,
-                    0,
+                    255,
                     0,
                     0,
                     0,
@@ -1439,7 +1600,7 @@
                     0
                 ],
                 "servoSpeed": [
-                    1,
+                    100,
                     1,
                     1,
                     1,
@@ -1466,9 +1627,10 @@
     },
     "server": {
         "allowedClients": [
-            "127.0.0.1"
+            "127.0.0.1",
+            "192.168.21.11"
         ],
-        "host": "127.0.0.1",
+        "host": "0.0.0.0",
         "keepAlive": true,
         "port": 3841
     }

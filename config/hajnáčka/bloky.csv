@@ -1,5 +1,8 @@
 ﻿#typ;název;mtb vstupy;mtb výstupy;parametry
+
+# vstup vypadek DCC
 zkrat;;10/0;;;
+# vstup tlačitko KPV
 KPV;;16/10;;;
 volsk;;16/12;16/8;;
 NUZ;;16/11;16/14;;
