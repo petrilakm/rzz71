@@ -63,6 +63,7 @@ public:
     bool rezimMaster;
     bool rezimSlave;
     TblokV *dvojceBlok;
+    int prestavnyProud;
 
     bool simulace; // true - simulace výhybky
     int simulacePoloha; // 0 = neznamo, 1 = plus, 2 = minus

@@ -466,6 +466,14 @@ void TRZZ71::init()
         }
     }
 
+    // ampérmetr - hardcoded, ToDo: do souboru !
+    pinAmp01 = mtbpin(19,16);
+    pinAmp02 = mtbpin(19,17);
+    pinAmp04 = mtbpin(19,18);
+    pinAmp08 = mtbpin(19,19);
+    pinAmp10 = mtbpin(19,20);
+    pinAmp20 = mtbpin(19,21);
+
     // virtuální blok návestidla stále na volno
     pBlokQ = new TblokQ();
     pBlokQ->name = "T";
@@ -539,6 +547,7 @@ void TRZZ71::oneval()
     bool changed;
     QString debug_changer = "";
     bool ret;
+    int prestavnyProud;
     // maximální počet opakování
     int i;
     if (bFirstRun) {
@@ -589,6 +598,22 @@ void TRZZ71::oneval()
         ret |= b->bBlikUsed;
     }
     pinOutKmitac.setValueBool(ret);
+
+    //spočítíme přestavný proud
+    prestavnyProud = 0;
+    for (Tblok *b : bl) {
+        if (b->typ == Tblok::btV) {
+            prestavnyProud += static_cast<TblokV*>(b)->prestavnyProud;
+        }
+    }
+    if (prestavnyProud > 63) prestavnyProud = 63; // limitace maxima
+    // a dáme jej na výstup
+    pinAmp01.setValueBool(((prestavnyProud >> 0) & 1));
+    pinAmp02.setValueBool(((prestavnyProud >> 1) & 1));
+    pinAmp04.setValueBool(((prestavnyProud >> 2) & 1));
+    pinAmp08.setValueBool(((prestavnyProud >> 3) & 1));
+    pinAmp10.setValueBool(((prestavnyProud >> 4) & 1));
+    pinAmp20.setValueBool(((prestavnyProud >> 5) & 1));
 
     double oneEvalTime = static_cast<double>(timer.nsecsElapsed()) * 1E-6;
     if (i>0) {

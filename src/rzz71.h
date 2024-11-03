@@ -28,7 +28,12 @@ private:
     QElapsedTimer timer;
     bool bFirstRun = false;
 
-
+    mtbpin pinAmp01;
+    mtbpin pinAmp02;
+    mtbpin pinAmp04;
+    mtbpin pinAmp08;
+    mtbpin pinAmp10;
+    mtbpin pinAmp20;
 
     QTimer simul_puls_timer;
     mtbpin simul_puls_pin;

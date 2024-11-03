@@ -14,6 +14,7 @@ TblokV::TblokV() {
     }
     simulace = false;
     simulacePoloha = 0;
+    prestavnyProud = 0;
     tim = new QTimer();
     tim->setInterval(3000);
     tim->setSingleShot(true);
@@ -163,6 +164,13 @@ bool TblokV::evaluate()
             simulacePoloha = 0;
             if (!tim->isActive()) tim->start();
         }
+    }
+
+    // simulace odběru přestavníku
+    if (r[INe]) {
+        prestavnyProud = 12;
+    } else {
+        prestavnyProud = 0;
     }
 
     // výstupy do MTB
