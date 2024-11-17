@@ -2,7 +2,7 @@
 #include "cesty.h"
 #include "rzz/blokK.h"
 #include "rzz/blokEMZ.h"
-//#include "voliciskupina.h"
+#include "voliciskupina.h"
 
 TdohledCesty::TdohledCesty(){
     cestyPostavene.clear();
@@ -288,7 +288,7 @@ QString TdohledCesty::stavCesty2QString(stavCesty sc)
     switch (sc) {
     case scStavime: return QString("Stavime"); break;
     case scZavery:  return QString("Zavery"); break;
-    case scKontrolaDN: return QString("scKontrolaPodminekProDN"); break;
+    case scKontrolaDN: return QString("KontrolaPodminekProDN"); break;
     case scDN: return QString("DN"); break;
     case scPrujezdVlaku: return QString("PrujezdVlaku"); break;
     case scRC: return QString("RC"); break;
@@ -319,24 +319,31 @@ void TdohledCesty::evaluate()
             for (Tblok *blok : c->bloky) {
                 if (blok->typ == Tblok::btS) {
                     if (blok->r[TblokS::V]) {
-                        cestyNaSmazani.append(d);
+                        d->stav = scZbytek;
                     }
                 }
             }
         }
 
-        // vytáhnutí tlačítka ruší cestu, ale jen v počátečních fázích
+        // rušení cesty, kterou má stále volící skupina
+        // tedy jen ve stavu scStavime
+        // ihned bez časového souboru
+        if (voliciskupina.mtbInRuseniVolby.value()) {
+            if (d->stav == scStavime) {
+                cestyNaSmazani.append(d);
+            }
+        }
+
+        // vytáhnutí tlačítka ruší cestu, ale jen ve správných fázích
         if (c->tlacitka[0]->mtbIns[TblokTC::mtbeIns::mtbInRuseni].value()) {
             // počáteční tlačítko je vytažené
-            if ((d->stav == scStavime) || (d->stav == scZavery) || (d->stav == scDN)) {
+            if ((d->stav == scZavery) || (d->stav == scDN)) {
                 // zruší závěry - debug
                 // doplnit aktivaci časového souboru
-                if (d->stav != scStavime) { // ruší závěry jen postavené cesty, ne čekající
-                    for (Tblok *b : c->bloky) {
-                        if (b->typ == Tblok::btS) {
-                            b->r[TblokS::Z] = false;
-                            //b->r[TblokS::B] = false;
-                        }
+                for (Tblok *b : c->bloky) {
+                    if (b->typ == Tblok::btS) {
+                        b->r[TblokS::Z] = false;
+                        //b->r[TblokS::B] = false;
                     }
                 }
                 // cestu lze zrušit
@@ -372,6 +379,15 @@ void TdohledCesty::evaluate()
                         vymena.pBlok->r[TblokV::VOM] = false;
                     };
                 };
+                // změníme indikaci tlačítky
+                Tcesta *c = cesty->cesty[d->num];
+                for(int i = 0; i < c->tlacitka.count(); i++) {
+                    TblokTC *tc = c->tlacitka[i];
+                    //tc->r[TblokTC::TZ] = false;
+                    if (i != 0) tc->r[TblokTC::PO] = false;
+                    tc->r[TblokTC::TK] = false;
+                }
+
                 // cesta se posune do dalšího stavu
                 d->stav = scZavery;
             }
@@ -440,6 +456,8 @@ void TdohledCesty::evaluate()
                     d->vlakKonec = -1;
                     d->vlakEvidenceCelo = false;
                     d->vlakEvidenceKonec = false;
+                    Tcesta *c = cesty->cesty[d->num];
+                    c->tlacitka[0]->r[TblokTC::PO] = false;
                     d->stav = scDN;
                 }
             }
@@ -497,6 +515,9 @@ void TdohledCesty::evaluate()
             d->stav = scRC;
             d->upo.clear();
             break;
+        case scZbytek: // bad state
+            d->upo.clear();
+            break;
         }
     }
     // smaže cesty, co už nejsou cestami
@@ -504,6 +525,7 @@ void TdohledCesty::evaluate()
         // zhasnout tlačítka
         Tcesta *c = cesty->cesty[d->num];
         for (TblokTC *tc : c->tlacitka) {
+            if (d->stav == scStavime) tc->r[TblokTC::TZ] = false;
             tc->r[TblokTC::PO] = false;
             tc->r[TblokTC::TK] = false;
         }

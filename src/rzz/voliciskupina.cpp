@@ -58,9 +58,6 @@ bool Tvoliciskupina::vstupZmena(TblokTC *p, bool state)
                     //log(QString("cesty: možná cesta %1").arg(i), logging::LogLevel::Info);
                     mozneCestyNove.append(i);
                     ret = true;
-                } else {
-                    //log(QString("cesty: odstraněná cesta %1").arg(i), logging::LogLevel::Info);
-                    //cestyMozne.remove(i);
                 }
             }
             if (mozneCestyNove.count() > 0) {
@@ -93,16 +90,20 @@ void Tvoliciskupina::postavCestu(int i)
     Tcesta *c = cesty->cesty[i];
 
     for(int i = 0; i < c->tlacitka.count(); i++) {
-        if (i==0) c->tlacitka[i]->r[TblokTC::TK] = true; // první tlačítko svítí trvale
-        c->tlacitka[i]->r[TblokTC::PO] = true; // zapne protiopakovací relé
+        if (i != 0) c->tlacitka[i]->r[TblokTC::TK] = true; // další tlačítka v cestě svítí trvale
+        if (i == 0) {
+            c->tlacitka[i]->r[TblokTC::PO] = true; // zapne protiopakovací relé na počátku
+            c->tlacitka[i]->r[TblokTC::TZ] = false;
+        }
     }
 
     // volící skupina se uvede do základního stavu
-    ruseniVolbyCesty();
+    //ruseniVolbyCesty();
+    mtbOutProbihaVolba.setValueBool(false);
+    cestyMozne.clear();
     tlacitkaAktivni.clear();
     // cestu předáme do "dohledu"
     dohledCesty.postavCestu(i);
-
 }
 
 bool Tvoliciskupina::evaluate()
