@@ -167,7 +167,7 @@ bool TblokV::evaluate()
     }
 
     // simulace odběru přestavníku
-    if (r[INe]) {
+    if (r[SP] || r[SM]) {
         prestavnyProud = 12;
     } else {
         prestavnyProud = 0;
