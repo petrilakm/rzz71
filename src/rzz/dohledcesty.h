@@ -17,13 +17,14 @@ class TdohledCesty
 public:
     TdohledCesty();
     enum stavCesty {
-        scStavime = 0, // cesta stále ve volící skupině
-        scZavery = 1, // padání závěrů
-        scKontrolaDN = 2, // cesta je již postavená
-        scDN = 3,
-        scPrujezdVlaku = 4, // už se nedá zrušit vytažením počátku
-        scRC = 5,
-        scZbytek = 6 // zbytek po cestě, lze pouze zrušit NUZem
+        scZvoleno = 0, // víme jakou cestu stavíme
+        scStavime = 1, // cesta stále ve volící skupině, výměny
+        scZavery = 2, // padání závěrů
+        scKontrolaDN = 3, // cesta je již postavená
+        scDN = 4,
+        scPrujezdVlaku = 5, // už se nedá zrušit vytažením počátku
+        scRC = 6,
+        scZbytek = 7 // zbytek po cestě, lze pouze zrušit NUZem
     };
     // scStavime - výměnová automatická relé - aktivní VOP a VOM
     // scZavery - výměny přestaveny, kontrolujeme podmínky pro závěr

@@ -14,22 +14,47 @@ bool TblokTC::evaluate()
     
     bool mtbVolba = mtbIns[mtbInVolba].value();
     bool mtbZrus  = mtbIns[mtbInRuseni].value();
-    if (mtbVolba && !r[TZ] && !r[PO] && !r[TK] && !mtbVolbaOpak) {
+    bool platnaVolba = false;
+    if (mtbVolba && !r[TZ] && !r[VA] && !mtbVolbaOpak && !r[NM]) {
         mtbVolbaOpak = true;
         log("blokTC: stisk tlačítka", logging::LogLevel::Debug);
-        bool platnaVolba = voliciskupina.vstupZmena(this, true);
+        platnaVolba = voliciskupina.vstupZmena(this, true);
         r[TZ] = platnaVolba;
     }
     if (!mtbVolba) {
         mtbVolbaOpak = false;
     }
-    if (mtbZrus && r[TZ] && !r[PO] && !r[TK]) {
+    if (mtbZrus && !r[NM]) {
         //r[TZ] = false;
         log("blokTC: vytažení tlačítka", logging::LogLevel::Debug);
-        voliciskupina.vstupZmena(this, false);
+        platnaVolba = voliciskupina.vstupZmena(this, false);
+        if (platnaVolba) {
+            r[TZ] = false;
+            r[PO] = false;
+        }
     }
-    bool out = (r[TZ] || r[PO]) ? rBlik50 : false;
-    out |= r[TK];
+
+    if (r[VA]) {
+        r[TZ] = false;
+    }
+    // návěstní relé zruší TZ i PO
+    /*
+    if (r[NM]) {
+        r[TZ] = false;
+        r[PO] = false;
+    }
+    */
+
+    // indikace na pultu (kniha s. 33)
+    bool out = false;
+    if (r[TZ] ^ r[PO]) {
+        out = rBlik50;
+    } else {
+        if (!(r[TZ] || r[PO])) {
+            out = r[VA];
+        }
+    }
+
     if (out != mtbOut[mtbOutIndikace].valueOutBool()) {
         mtbOut[mtbOutIndikace].setValue(out);
     }

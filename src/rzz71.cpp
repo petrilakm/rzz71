@@ -101,7 +101,7 @@ void TRZZ71::readCommand(QString cmd)
         if (cmd == 'v') { // voliciskupina
             tcpcon->sendMsg(QString("Aktivní tlačítka = %1").arg(voliciskupina.tlacitkaAktivni.count()));
             for(TblokTC *tc : voliciskupina.tlacitkaAktivni) {
-                tcpcon->sendMsg(QString(" - %1 -> %2 %3").arg(tc->name).arg(tc->r[TblokTC::TZ]).arg(tc->r[TblokTC::TK]));
+                tcpcon->sendMsg(QString(" - %1 -> TZ=%2 VA=%3").arg(tc->name).arg(tc->r[TblokTC::TZ]).arg(tc->r[TblokTC::VA]));
             }
             tcpcon->sendMsg(QString("Postavené cesty = %1").arg(voliciskupina.cestyPostavene.count()));
             for(int ic : voliciskupina.cestyPostavene) {
@@ -175,7 +175,7 @@ void TRZZ71::readCommand(QString cmd)
                         tcpcon->sendMsg(QString("blok TC"));
                         tcpcon->sendMsg(QString(" - TZ = %1").arg(b->r[TblokTC::TZ]));
                         tcpcon->sendMsg(QString(" - PO = %1").arg(b->r[TblokTC::PO]));
-                        tcpcon->sendMsg(QString(" - TK = %1").arg(b->r[TblokTC::TK]));
+                        tcpcon->sendMsg(QString(" - VA = %1").arg(b->r[TblokTC::VA]));
                         break;
                     case Tblok::btQ:
                         tcpcon->sendMsg(QString("blok Q"));

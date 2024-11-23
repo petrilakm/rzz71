@@ -11,7 +11,7 @@ void Tvoliciskupina::ruseniVolbyCesty()
     cestyMozne.clear();
     foreach (TblokTC * tl, tlacitkaAktivni) {
         tl->r[TblokTC::TZ] = false;
-        //tl->r[TblokTC::TK] = false;
+        tl->r[TblokTC::PO] = false;
     }
     tlacitkaAktivni.clear();
     mtbOutProbihaVolba.setValueBool(false);
@@ -68,7 +68,7 @@ bool Tvoliciskupina::vstupZmena(TblokTC *p, bool state)
                 if (cestyMozne.count() == 1) {
                     //log(QString("cesty: jediná cesta %1 !!! - můžeme stavět").arg(cestyMozne.at(0)), logging::LogLevel::Info);
                     postavCestu(cestyMozne.at(0));
-                    ret = false; // nezapinat TZ u posledniho tlačítka
+                    ret = true; // zapnout TZ u posledniho tlačítka
                 }
             }
         }
@@ -79,6 +79,7 @@ bool Tvoliciskupina::vstupZmena(TblokTC *p, bool state)
                 p->r[TblokTC::TZ] = false;
                 // zatím zrušíme celou cestu - neumíme VB
                 ruseniVolbyCesty();
+                return true;
             }
         }
         return false;
@@ -87,16 +88,6 @@ bool Tvoliciskupina::vstupZmena(TblokTC *p, bool state)
 
 void Tvoliciskupina::postavCestu(int i)
 {
-    Tcesta *c = cesty->cesty[i];
-
-    for(int i = 0; i < c->tlacitka.count(); i++) {
-        if (i != 0) c->tlacitka[i]->r[TblokTC::TK] = true; // další tlačítka v cestě svítí trvale
-        if (i == 0) {
-            c->tlacitka[i]->r[TblokTC::PO] = true; // zapne protiopakovací relé na počátku
-            c->tlacitka[i]->r[TblokTC::TZ] = false;
-        }
-    }
-
     // volící skupina se uvede do základního stavu
     //ruseniVolbyCesty();
     mtbOutProbihaVolba.setValueBool(false);

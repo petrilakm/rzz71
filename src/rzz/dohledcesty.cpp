@@ -14,25 +14,12 @@ void TdohledCesty::postavCestu(int i) {
     // najdeme správnou cestu
     c = cesty->cesty.at(i);
     nc->num = i;
-    nc->stav = scStavime;
+    nc->stav = scZvoleno;
     nc->pCesta = c;
     nc->vlakCelo = -1;
     nc->vlakKonec = -1;
     // přidáme na seznam platných cest
     cestyPostavene.append(nc);
-
-    // nastaví polohy prvkům v cestě
-    //sepne VOP/VOM a simuluje výměnová automatická relé
-    for (struct Tcesta::Tvyh v : c->polohy) {
-        log(QString("dohled: aktivace %1 na výměne %2")
-                .arg((v.minus) ? "VOM" : "VOP", v.pBlok->name),
-            logging::LogLevel::Info);
-        if (v.pBlok->typ == Tblok::btV) {
-            // blok V se přestavý do správné polohy
-            v.pBlok->r[TblokV::VOP] = !v.minus;
-            v.pBlok->r[TblokV::VOM] =  v.minus;
-        }
-    }
 }
 
 // zhasne všechna tlačítka v cestě
@@ -42,9 +29,9 @@ void TdohledCesty::zhasniTlacitka(int i)
     cesta = cesty->cesty.at(i);
     if (cesta) {
         for (TblokTC *tlacitko : cesta->tlacitka) {
-            //tlacitko->r[TblokTC::TZ] = false;
+            tlacitko->r[TblokTC::TZ] = false;
             tlacitko->r[TblokTC::PO] = false;
-            tlacitko->r[TblokTC::TK] = false;
+            tlacitko->r[TblokTC::VA] = false;
         }
     }
 }
@@ -329,7 +316,7 @@ void TdohledCesty::evaluate()
         // tedy jen ve stavu scStavime
         // ihned bez časového souboru
         if (voliciskupina.mtbInRuseniVolby.value()) {
-            if (d->stav == scStavime) {
+            if ((d->stav == scZvoleno) || (d->stav == scStavime)) {
                 cestyNaSmazani.append(d);
             }
         }
@@ -365,29 +352,68 @@ void TdohledCesty::evaluate()
 
         // chování podle stavu cesty
         switch (d->stav) {
+        case scZvoleno:
+            stavOK = true;
+            // kontrola, zda je možné cestu postavit - zapojení výměnových ovládacích relé
+            // (kniha s.48?)
+            // pokud je výhýbka v cestě a má VOP/VOM na opačnou stranu, tak nestavíme
+            for(struct Tcesta::Tvyh vc : c->polohy) {
+                if (vc.pBlok->typ == Tblok::btV) {
+                    TblokV *v = static_cast<TblokV *>(vc.pBlok);
+                    if (vc.minus) {
+                        if (v->r[TblokV::rel::VOP]) stavOK = false;
+                    } else {
+                        if (v->r[TblokV::rel::VOM]) stavOK = false;
+                    }
+                }
+            }
+            // to samé pro odvraty
+            for(struct Tcesta::Tvyh_odv vc : c->odvraty) {
+                if (vc.pBlokVymena->typ == Tblok::btV) {
+                    TblokV *v = static_cast<TblokV *>(vc.pBlokVymena);
+                    if (vc.minus) {
+                        if (v->r[TblokV::rel::VOP]) stavOK = false;
+                    } else {
+                        if (v->r[TblokV::rel::VOM]) stavOK = false;
+                    }
+                }
+            }
+            // kontrola závěrů
+            for(Tblok *b : c->bloky) {
+                if (b->typ == Tblok::btS) {
+                    TblokS *bs = static_cast<TblokS *>(b);
+                    if (bs->r[TblokS::rel::Z]) {
+                        stavOK = false;
+                    }
+                }
+                // výluka na koleji nevadí
+            }
+            if (stavOK) {
+                // sepne VOP/VOM
+                for (struct Tcesta::Tvyh v : c->polohy) {
+                    log(QString("dohled: aktivace %1 na výměne %2")
+                            .arg((v.minus) ? "VOM" : "VOP", v.pBlok->name),
+                        logging::LogLevel::Info);
+                    if (v.pBlok->typ == Tblok::btV) {
+                        // blok V se přestavý do správné polohy
+                        v.pBlok->r[TblokV::VOP] = !v.minus;
+                        v.pBlok->r[TblokV::VOM] =  v.minus;
+                    }
+                }
+                // sepne výměnová automatická relé
+                for(int i = 0; i < c->tlacitka.count(); i++) {
+                    TblokTC *t = c->tlacitka[i];
+                    if (i != 0) t->r[TblokTC::PO] = true; // první tlačítko stále bliká
+                    t->r[TblokTC::VA] = true; // další tlačítka v cestě svítí trvale - výměnová automatika v činnosti
+                }
+                d->stav = scStavime;
+            }
+            break;
         case scStavime: // kontrola výměn
             stavOK = d->kontrolaCelistvostiCesty(false, true);
             // kontrola všech výhybek stavěných, zda už mají polohu
 
             if (stavOK) {
-                log(QString("dohled: konec stavění výměn"), logging::LogLevel::Debug);
-                // máme postaveno, můžeme zrušit výměnová automatická relé a VOP, VOM
-                foreach (struct Tcesta::Tvyh vymena, c->polohy) {
-                    if (vymena.pBlok->typ == Tblok::btV) {
-                        log(QString("dohled: deaktivace VOP/VOM na výměně %1").arg(vymena.pBlok->name), logging::LogLevel::Debug);
-                        vymena.pBlok->r[TblokV::VOP] = false;
-                        vymena.pBlok->r[TblokV::VOM] = false;
-                    };
-                };
-                // změníme indikaci tlačítky
-                Tcesta *c = cesty->cesty[d->num];
-                for(int i = 0; i < c->tlacitka.count(); i++) {
-                    TblokTC *tc = c->tlacitka[i];
-                    //tc->r[TblokTC::TZ] = false;
-                    if (i != 0) tc->r[TblokTC::PO] = false;
-                    tc->r[TblokTC::TK] = false;
-                }
-
                 // cesta se posune do dalšího stavu
                 d->stav = scZavery;
             }
@@ -441,6 +467,23 @@ void TdohledCesty::evaluate()
                         pBlokV->odvratneBloky.append(odv.pBlokUsek);
                     }
                 }
+
+                // zrušíme výměnová automatická relé
+                for(int i = 0; i < c->tlacitka.count(); i++) {
+                    TblokTC *t = c->tlacitka[i];
+                    t->r[TblokTC::VA] = false; // zrušeno udělením závěrů useků
+                }
+
+                log(QString("dohled: konec stavění výměn"), logging::LogLevel::Debug);
+                // máme postaveno, můžeme zrušit výměnová automatická relé a VOP, VOM
+                foreach (struct Tcesta::Tvyh vymena, c->polohy) {
+                    if (vymena.pBlok->typ == Tblok::btV) {
+                        log(QString("dohled: deaktivace VOP/VOM na výměně %1").arg(vymena.pBlok->name), logging::LogLevel::Debug);
+                        vymena.pBlok->r[TblokV::VOP] = false;
+                        vymena.pBlok->r[TblokV::VOM] = false;
+                    };
+                };
+
                 log(QString("dohled: zhasne tlačítka cesty"), logging::LogLevel::Debug);
                 zhasniTlacitka(c->num);
                 d->stav = scKontrolaDN;
@@ -457,7 +500,11 @@ void TdohledCesty::evaluate()
                     d->vlakEvidenceCelo = false;
                     d->vlakEvidenceKonec = false;
                     Tcesta *c = cesty->cesty[d->num];
-                    c->tlacitka[0]->r[TblokTC::PO] = false;
+                    for(int i = 0; i < c->tlacitka.count(); i++) {
+                        TblokTC *tc = c->tlacitka[i];
+                        if (i == 0) tc->r[TblokTC::PO] = false;
+                        if (i == 0) tc->r[TblokTC::NM] = true;
+                    }
                     d->stav = scDN;
                 }
             }
@@ -522,12 +569,25 @@ void TdohledCesty::evaluate()
     }
     // smaže cesty, co už nejsou cestami
     foreach (cestaPodDohledem *d, cestyNaSmazani) {
-        // zhasnout tlačítka
+
         Tcesta *c = cesty->cesty[d->num];
-        for (TblokTC *tc : c->tlacitka) {
-            if (d->stav == scStavime) tc->r[TblokTC::TZ] = false;
-            tc->r[TblokTC::PO] = false;
-            tc->r[TblokTC::TK] = false;
+        if ((d->stav == scZvoleno) || (d->stav == scStavime)) {
+            for (TblokTC *tc : c->tlacitka) {
+                // zhasnout tlačítka
+                tc->r[TblokTC::TZ] = false;
+                tc->r[TblokTC::PO] = false;
+                tc->r[TblokTC::VA] = false;
+            }
+        }
+        if (d->stav == scStavime) {
+            for (struct Tcesta::Tvyh v : c->polohy) {
+                if (v.pBlok->typ == Tblok::btV) {
+                    // odpojit VOP/VOM
+                    TblokV *bv = static_cast<TblokV *>(v.pBlok);
+                    bv->r[TblokV::rel::VOP] = false;
+                    bv->r[TblokV::rel::VOP] = true;
+                }
+            }
         }
         // a smazat cestu
         cestyPostavene.removeOne(d);
