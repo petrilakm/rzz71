@@ -56,15 +56,15 @@ Tlcd::~Tlcd()
 
 void Tlcd::on_tim()
 {
-    QByteArray old_buf[20];
-    for(int i=0; i<20; i++) {
+    QByteArray old_buf[40];
+    for(int i=0; i<40; i++) {
         old_buf[i] = lcd_buffer[i];
     }
     int linecur = 1;
     QString line;
     for (TdohledCesty::cestaPodDohledem *cpd : dohledCesty.cestyPostavene) {
         QString cestaName = QString("%1_%2").arg(cpd->pCesta->tlacitka[0]->name).arg(cpd->pCesta->tlacitka[1]->name);
-        line = QString("%1 > %2-%3").arg(cestaName).arg(cpd->stav).arg(dohledCesty.stavCesty2QString(cpd->stav));
+        line = QString("%1 > %2").arg(cestaName).arg(dohledCesty.stavCesty2QString(cpd->stav));
         lcd_buffer[linecur] = line.left(20).toLatin1();
         linecur++;
         for (QString upo1 : cpd->upo) {

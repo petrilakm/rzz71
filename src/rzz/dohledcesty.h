@@ -46,9 +46,9 @@ public:
         bool vlakEvidenceCelo;
         bool vlakEvidenceKonec;
         QStringList upo;
-        QStringList upoZavery;
-        QStringList upoVolnosti;
-        QStringList upoPolohy;
+        QString upoZavery;
+        QString upoVolnosti;
+        QString upoPolohy;
         QStringList upoVOPVOM;
         bool kontrolaCelistvostiCesty();
         bool kontrolaZavery(bool cestaKompletni);
