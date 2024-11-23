@@ -3,6 +3,8 @@
 
 #include "rzz/blokTC.h"
 #include "rzz/blokV.h"
+#include "rzz/blokK.h"
+#include "rzz/blokS.h"
 #include "rzz/blokQ.h"
 
 class Tcesta
@@ -30,6 +32,9 @@ public:
     int navZnak;
     int num;
     bool posun;
+
+    bool zjistiObsazeni(int usek);
+    void uvolniZaver(int usek);
 };
 
 class Tcesty

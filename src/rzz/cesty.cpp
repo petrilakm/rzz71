@@ -1,5 +1,33 @@
 #include "cesty.h"
 
+bool Tcesta::zjistiObsazeni(int usek)
+{
+    bool obsaz = true;
+    // useky mimo cestu josu obsazení trvale
+    if (usek < 0) return true;
+    if (usek >= this->bloky.count()) return true;
+
+    Tblok *blok = this->bloky[usek];
+    if (blok->typ == Tblok::btS) {
+        obsaz = static_cast<TblokS *>(blok)->r[TblokS::rel::J];
+    }
+    if (blok->typ == Tblok::btK) {
+        obsaz = static_cast<TblokK *>(blok)->r[TblokK::rel::J];
+    }
+    return obsaz;
+}
+
+void Tcesta::uvolniZaver(int usek)
+{
+    if (usek < 0) return;
+    if (usek >= this->bloky.count()) return;
+
+    Tblok *blok = this->bloky[usek];
+    if (blok->typ == Tblok::btS) {
+        static_cast<TblokS *>(blok)->r[TblokS::rel::Z] = false;
+    }
+}
+
 Tcesty::Tcesty(){
     load();
 }

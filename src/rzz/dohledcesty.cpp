@@ -20,6 +20,7 @@ void TdohledCesty::postavCestu(int i) {
     nc->vlakKonec = -1;
     // přidáme na seznam platných cest
     cestyPostavene.append(nc);
+    log(QString("dohled: přidání cesty číslo %1").arg(nc->num), logging::LogLevel::Commands);
 }
 
 // zhasne všechna tlačítka v cestě
@@ -41,24 +42,151 @@ void TdohledCesty::t3C()
 
 }
 
+
 /****************************************************************************/
-// *c - cesta co chceme zkontrolovat
-// cestaJizExistuje - rozlišuje zda chceme cestu postavit, nebo kontrolujeme podmínky DN
-bool TdohledCesty::cestaPodDohledem::kontrolaCelistvostiCesty(bool cestaJizExistuje, bool jenVymeny)
+// cestaKompletni = true -> závěry musí být všede, false -> závěr nesmí být nikde
+bool TdohledCesty::cestaPodDohledem::kontrolaZavery(bool cestaKompletni)
 {
-    // předpokládáme, že je vše ok, jakákoliv chyba to ale změní
     bool stavOK = true;
+    upoZavery.clear();
     // pomocné proměné
     bool bBlockLast = false; // označuje poslední úsek cesty
-    //bool bBlockFirst = false; // označuje první úsek cesty
-    // nulování UPO - sestaví se znova kontrolou
-    this->upo.clear();
-    // najdeme si cestu
-    Tcesta *c = cesty->cesty.at(this->num);
 
-    // kontrola poloh výměn
-    QString upoPolohy = "";
-    foreach (struct Tcesta::Tvyh vymena, c->polohy) {
+    // závěry úseků a NUZ
+    for(Tblok *blok : pCesta->bloky) {
+        if (blok == pCesta->bloky.last()) bBlockLast = true; else bBlockLast = false;
+        //if (blok == c->bloky.first()) bBlockFirst = true; else bBlockFirst = false;
+        if (blok->typ == Tblok::btS) {
+            // blok S - kontrolujeme závěr a NUZ
+            if (blok->r[TblokS::rel::V]) {
+                stavOK = false;
+                this->upoZavery.append(QString("NUZ na %1").arg(blok->name));
+            }
+            if (cestaKompletni) {
+                if (!bBlockLast) { // poslední blok závěr nemá
+                    if (!blok->r[TblokS::rel::Z]) {
+                        stavOK = false; // zavěr musí být, když cesta již je postavená
+                        this->upoZavery.append(QString("ne zav %1").arg(blok->name));
+                    }
+                }
+            } else {
+                if (blok->r[TblokS::rel::Z]) {
+                    stavOK = false; // závěr nesmí být, když cestu stavíme
+                    this->upoZavery.append(QString("zav %1").arg(blok->name));
+                }
+            }
+        }
+        if (blok->typ == Tblok::btK) {
+            // blok K - kontrolujeme výluková relé a volnost
+            if (cestaKompletni) {
+                // cesta je postavená, výluka musí nějaká být
+                if (pCesta->posun) {
+                    // u posunu kontrolujeme výluky i K1, K2
+                    /*
+                    if (!(blok->r[TblokK::X1]) || !(blok->r[TblokK::X2])) {
+                        stavOK = false; // musí být aspoň 1 výluka
+                        this->upoZavery.append(QString("ne výluky %1").arg(blok->name));
+                    }
+                    */
+                } else {
+                    // vlaková cesta se dívá jen na výluky
+                    //if (!(blok->r[TblokK::X1]) || !(blok->r[TblokK::X2])) stavOK = false; // musí být aspoň 1 výluka
+                }
+            } else {
+                // stavíme cestu, vyluky nesmí být
+                if (pCesta->posun) {
+                    // u posunu kontrolujeme výluky i K1, K2
+                    if ((blok->r[TblokK::X1] && !(blok->r[TblokK::K1])) || (blok->r[TblokK::X2] && !(blok->r[TblokK::K2]))) {
+                        stavOK = false;
+                        this->upoZavery.append(QString("proti ces. %1").arg(blok->name));
+                    }
+                } else {
+                    // vlaková cesta se dívá jen na výluky
+                    if (blok->r[TblokK::X1] || blok->r[TblokK::X2]) {
+                        stavOK = false;
+                        this->upoZavery.append(QString("proti ces. %1").arg(blok->name));
+                    }
+                }
+            }
+        }
+    };
+
+    // závěry výhybek
+    foreach (struct Tcesta::Tvyh vymena, pCesta->polohy) {
+        // blokV
+        if (vymena.pBlok->typ == Tblok::btV) {
+            TblokV *vyh = static_cast<TblokV*>(vymena.pBlok);
+            if (cestaKompletni) {
+                // pro kontrolu návstidla musí být závěr
+                if (!(vyh->r[TblokV::rel::Z])) {
+                    stavOK = false;
+                    this->upoZavery.append(QString("ne zav %1").arg(vymena.pBlok->name));
+                }
+            } else {
+                // pro kontrolu stavění cestu závěr nesmí být
+                if ((vyh->r[TblokV::rel::Z])) {
+                    stavOK = false;
+                    this->upoZavery.append(QString("zav %1").arg(vymena.pBlok->name));
+                }
+            }
+        }
+        // EMZ
+        if (vymena.pBlok->typ == Tblok::btEMZ) {
+            TblokEMZ *vyh = static_cast<TblokEMZ*>(vymena.pBlok);
+            if (cestaKompletni) {
+                // pro kontrolu návstidla musí být závěr
+                if (!(vyh->r[TblokEMZ::rel::Z])) {
+                    stavOK = false;
+                    this->upoZavery.append(QString("ne zav %1").arg(vymena.pBlok->name));
+                }
+            } else {
+                // pro kontrolu stavění cestu závěr nesmí být
+                if ((vyh->r[TblokV::rel::Z])) {
+                    stavOK = false;
+                    this->upoZavery.append(QString("zav %1").arg(vymena.pBlok->name));
+                }
+            }
+        }
+    }
+
+    return stavOK;
+}
+
+bool TdohledCesty::cestaPodDohledem::kontrolaVolnosti()
+{
+    bool stavOK = true;
+    upoVolnosti.clear();
+
+    // kontrola kolejových relé J
+    for(Tblok *blok : pCesta->bloky) {
+        if (blok->typ == Tblok::btS) {
+            // blok S - kontrolujeme volnost
+            if (blok->r[TblokS::J]) {
+                stavOK = false;
+                this->upoVolnosti.append(QString("obsaz. %1").arg(blok->name));
+            }
+        }
+        if (blok->typ == Tblok::btK) {
+            // blok K - kontrolujeme volnost
+            if (!(pCesta->posun)) {
+                // kontrolujeme volnost (jen u VC)
+                if (blok->r[TblokK::J]) {
+                    stavOK = false;
+                    this->upoVolnosti.append(QString("obsaz %1").arg(blok->name));
+                }
+            }
+        }
+    };
+
+    return stavOK;
+}
+
+bool TdohledCesty::cestaPodDohledem::kontrolaPolohVymen()
+{
+    bool stavOK = true;
+    upoPolohy.clear();
+    // kontrola pojížděných výhybek
+    foreach (struct Tcesta::Tvyh vymena, pCesta->polohy) {
         // EMZ
         if (vymena.pBlok->typ == Tblok::btEMZ) {
             if (vymena.pBlok->r[TblokEMZ::UK]) {
@@ -90,19 +218,11 @@ bool TdohledCesty::cestaPodDohledem::kontrolaCelistvostiCesty(bool cestaJizExist
                     upoPolohy += QString("%1- ").arg(dvojiceBlok->name);
                 }
             }
-            if (cestaJizExistuje) {
-                // pro kontrolu návstidla musí být závěr
-                if (!(vyh->r[TblokV::rel::Z])) {
-                    stavOK = false;
-                    this->upo.append(QString("ne záv. %1").arg(vymena.pBlok->name));
-                }
-            }
         }
     };
 
-
     // kontrola poloh odvratů
-    foreach (struct Tcesta::Tvyh_odv odv, c->odvraty) {
+    foreach (struct Tcesta::Tvyh_odv odv, pCesta->odvraty) {
         Tblok *vymena = (odv.pBlokVymena);
         // EMZ
         if (vymena->typ == Tblok::btEMZ) {
@@ -137,116 +257,134 @@ bool TdohledCesty::cestaPodDohledem::kontrolaCelistvostiCesty(bool cestaJizExist
         }
     };
 
-    if (upoPolohy.length() > 1) {
+    return stavOK;
+}
+
+bool TdohledCesty::cestaPodDohledem::kontrolaNUZ()
+{
+    bool stavOK = true;
+
+    if ((this->stav != scStavime) && (this->stav != scZvoleno)) {
+        for (Tblok *blok : this->pCesta->bloky) {
+            if (blok->typ == Tblok::btS) {
+                if (blok->r[TblokS::rel::V]) {
+                    stavOK = false;
+                }
+            }
+        }
+    }
+
+    return stavOK;
+}
+
+// kontrola, zda je možné cestu postavit - zapojení výměnových ovládacích relé
+// (kniha s.48?)
+// pokud je výhýbka v cestě a má VOP/VOM na opačnou stranu, tak nestavíme
+bool TdohledCesty::cestaPodDohledem::kontrolaVOPVOM()
+{
+    bool stavOK = true;
+    upoVOPVOM.clear();
+
+    for(struct Tcesta::Tvyh vc : pCesta->polohy) {
+        if (vc.pBlok->typ == Tblok::btV) {
+            TblokV *v = static_cast<TblokV *>(vc.pBlok);
+            if (vc.minus) {
+                if (v->r[TblokV::rel::VOP]) stavOK = false;
+            } else {
+                if (v->r[TblokV::rel::VOM]) stavOK = false;
+            }
+        }
+    }
+    // to samé pro odvraty
+    for(struct Tcesta::Tvyh_odv vc : pCesta->odvraty) {
+        if (vc.pBlokVymena->typ == Tblok::btV) {
+            TblokV *v = static_cast<TblokV *>(vc.pBlokVymena);
+            if (vc.minus) {
+                if (v->r[TblokV::rel::VOP]) stavOK = false;
+            } else {
+                if (v->r[TblokV::rel::VOM]) stavOK = false;
+            }
+        }
+    }
+
+    return stavOK;
+}
+
+void TdohledCesty::cestaPodDohledem::povelVAzapnout()
+{
+    // sepne VOP/VOM
+    for (struct Tcesta::Tvyh v : pCesta->polohy) {
+        log(QString("dohled: aktivace %1 na výměne %2")
+                .arg((v.minus) ? "VOM" : "VOP", v.pBlok->name),
+            logging::LogLevel::Commands);
+        if (v.pBlok->typ == Tblok::btV) {
+            // blok V se přestavý do správné polohy
+            v.pBlok->r[TblokV::VOP] = !v.minus;
+            v.pBlok->r[TblokV::VOM] =  v.minus;
+        }
+    }
+    // sepne výměnová automatická relé
+    for(int i = 0; i < pCesta->tlacitka.count(); i++) {
+        TblokTC *t = pCesta->tlacitka[i];
+        if (i == 0) t->r[TblokTC::PO] = true; // první tlačítko stále bliká
+        t->r[TblokTC::VA] = true; // další tlačítka v cestě svítí trvale - výměnová automatika v činnosti
+    }
+}
+
+void TdohledCesty::cestaPodDohledem::povelVAvypnout()
+{
+    // vypne VOP/VOM
+    for (struct Tcesta::Tvyh v : pCesta->polohy) {
+        log(QString("dohled: deaktivace VOP/VOM na výměne %1")
+                .arg(v.pBlok->name),
+            logging::LogLevel::Commands);
+        if (v.pBlok->typ == Tblok::btV) {
+            v.pBlok->r[TblokV::rel::VOP] = false;
+            v.pBlok->r[TblokV::rel::VOM] = false;
+        }
+    }
+    // vypne výměnová automatická relé
+    for(int i = 0; i < pCesta->tlacitka.count(); i++) {
+        TblokTC *t = pCesta->tlacitka[i];
+        t->r[TblokTC::rel::VA] =  false; // výměnová automatika vypnout
+    }
+}
+
+void TdohledCesty::cestaPodDohledem::povelPOvypnout()
+{
+    // vypne protiopakovací relé a tlačítková relé
+    for(int i = 0; i < pCesta->tlacitka.count(); i++) {
+        TblokTC *t = pCesta->tlacitka[i];
+        t->r[TblokTC::rel::TZ] =  false;
+        t->r[TblokTC::rel::PO] =  false;
+    }
+}
+
+/****************************************************************************/
+// *c - cesta co chceme zkontrolovat
+// cestaJizExistuje - rozlišuje zda chceme cestu postavit, nebo kontrolujeme podmínky DN
+bool TdohledCesty::cestaPodDohledem::kontrolaCelistvostiCesty()
+{
+    // předpokládáme, že je vše ok, jakákoliv chyba to ale změní
+    bool stavOK = true;
+    // nulování UPO - sestaví se znova kontrolou
+    this->upo.clear();
+
+    stavOK &= kontrolaPolohVymen();
+    stavOK &= kontrolaZavery(true);
+    stavOK &= kontrolaVolnosti();
+
+    // spojí všechna UPO
+    if (upoPolohy.length() > 0) {
         this->upo.append(upoPolohy);
     }
-
-    if (jenVymeny) {
-        return stavOK;
+    if (upoZavery.length() > 0) {
+        this->upo.append(upoZavery);
+    }
+    if (upoVolnosti.length() > 0) {
+        this->upo.append(upoVolnosti);
     }
 
-    // kontrola bloků v cestě
-    for(Tblok *blok : c->bloky) {
-        if (blok == c->bloky.last()) bBlockLast = true; else bBlockLast = false;
-        //if (blok == c->bloky.first()) bBlockFirst = true; else bBlockFirst = false;
-        if (blok->typ == Tblok::btS) {
-            // blok S - kontrolujeme volnost, závěr a NUZ
-            if (blok->r[TblokS::J]) {
-                stavOK = false;
-                this->upo.append(QString("obsaz. %1").arg(blok->name));
-            }
-            if (blok->r[TblokS::V]) {
-                stavOK = false;
-                this->upo.append(QString("NUZ na %1").arg(blok->name));
-            }
-            if (cestaJizExistuje) {
-                if (!bBlockLast) { // poslední blok závěr nemá
-                    if (!blok->r[TblokS::Z]) {
-                        stavOK = false; // zavěr musí být, když cesta již je postavená
-                        this->upo.append(QString("ne záv. %1").arg(blok->name));
-                    }
-                }
-            } else {
-                if (blok->r[TblokS::Z]) {
-                    stavOK = false; // závěr nesmí být, když cestu stavíme
-                    this->upo.append(QString("záv. %1").arg(blok->name));
-                }
-            }
-        }
-        if (blok->typ == Tblok::btK) {
-            // blok K - kontrolujeme výluková relé a volnost
-            if (cestaJizExistuje) {
-                // cesta je postavená, výluka musí nějaká být
-                if (c->posun) {
-                    // u posunu kontrolujeme výluky i K1, K2
-                    /*
-                    if (!(blok->r[TblokK::X1]) || !(blok->r[TblokK::X2])) {
-                        stavOK = false; // musí být aspoň 1 výluka
-                        this->upo.append(QString("ne výluky %1").arg(blok->name));
-                    }
-                    */
-                } else {
-                    // vlaková cesta se dívá jen na výluky
-                    //if (!(blok->r[TblokK::X1]) || !(blok->r[TblokK::X2])) stavOK = false; // musí být aspoň 1 výluka
-                    // kontrolujeme volnost (u VC)
-                    if (blok->r[TblokK::J]) {
-                        stavOK = false;
-                        this->upo.append(QString("obsaz. %1").arg(blok->name));
-                    }
-                }
-            } else {
-                // stavíme cestu, vyluky nesmí být
-                if (c->posun) {
-                    // u posunu kontrolujeme výluky i K1, K2
-                    if ((blok->r[TblokK::X1] && !(blok->r[TblokK::K1])) || (blok->r[TblokK::X2] && !(blok->r[TblokK::K2]))) {
-                        stavOK = false;
-                        this->upo.append(QString("proti ces. %1").arg(blok->name));
-                    }
-                } else {
-                    // vlaková cesta se dívá jen na výluky
-                    if (blok->r[TblokK::X1] || blok->r[TblokK::X2]) {
-                        stavOK = false;
-                        this->upo.append(QString("proti ces. %1").arg(blok->name));
-                    }
-                    // kontrolujeme volnost (u VC)
-                    if (blok->r[TblokK::J]) {
-                        stavOK = false;
-                        this->upo.append(QString("obsaz %1").arg(blok->name));
-                    }
-                }
-            }
-        }
-    };
-    /*
-    // kontrola poloh výměn
-    for(struct Tcesta::Tvyh vyh: c->polohy) {
-        // blokV - musí být dohled polohy
-        if (vyh.pBlok->typ == Tblok::btV) {
-            if (!(vyh.minus) && (!(static_cast<TblokV*>(vyh.pBlok)->DP))) {
-                stavOK = false;
-                this->upo.append(QString("ne dohl+ %1").arg(vyh.pBlok->name));
-            }
-            if ( (vyh.minus) && (!(static_cast<TblokV*>(vyh.pBlok)->DM))) {
-                stavOK = false;
-                this->upo.append(QString("ne dohl- %1").arg(vyh.pBlok->name));
-            }
-            if (cestaJizExistuje) {
-                // pro kontrolu návstidla musí být závěr
-                if (!(static_cast<TblokV*>(vyh.pBlok)->r[TblokV::rel::Z])) {
-                    stavOK = false;
-                    this->upo.append(QString("ne záv. %1").arg(vyh.pBlok->name));
-                }
-            }
-        }
-        // blokEMZ - nesmí být uvolněn klíč
-        if (vyh.pBlok->typ == Tblok::btEMZ) {
-            if ((static_cast<TblokEMZ*>(vyh.pBlok)->r[TblokEMZ::rel::UK])) {
-                stavOK = false;
-                this->upo.append(QString("zámek %1").arg(vyh.pBlok->name));
-            }
-        }
-    }
-    */
     return stavOK;
 }
 
@@ -276,9 +414,10 @@ QString TdohledCesty::stavCesty2QString(stavCesty sc)
     case scZvoleno: return QString("Zvoleno"); break;
     case scStavime: return QString("Stavime"); break;
     case scZavery:  return QString("Zavery"); break;
-    case scKontrolaDN: return QString("KontrolaPodminekProDN"); break;
+    case scKontrolaDN: return QString("KontrolaDN"); break;
     case scDN: return QString("DN"); break;
-    case scPrujezdVlaku: return QString("PrujezdVlaku"); break;
+    case scPrujezdVlaku: return QString("Prujezd"); break;
+    case scProjeto: return QString("Projeto"); break;
     case scRC: return QString("RC"); break;
     case scZbytek: return QString("Zbytek"); break;
     default: return QString("badState");
@@ -294,40 +433,26 @@ void TdohledCesty::evaluate()
     TblokK *pBlokK;
     TblokV *pBlokV;
     TblokEMZ *pBlokEMZ;
-    //Tblok *pBlok;
+    Tblok *pBlok;
     bool stavOK;
-    bool obv1 = false;
-    bool obv2 = false;
+    bool obs1 = false;
+    bool obs2 = false;
     for (cestaPodDohledem *d : cestyPostavene) {
-        c = cesty->cesty.at(d->num);
-
+        c = d->pCesta;
+        d->upo.clear();
         // pro všechny stavy
 
-        // když je nějaký úsek v cestě označen pro NUZ, cestu už nekontrolujeme.
-        if ((d->stav != scStavime) && (d->stav != scZvoleno)) {
-            for (Tblok *blok : c->bloky) {
-                if (blok->typ == Tblok::btS) {
-                    if (blok->r[TblokS::rel::V]) {
-                        d->stav = scZbytek;
-                    }
-                }
-            }
-        }
-
-        // rušení cesty, kterou má stále volící skupina
-        // tedy jen ve stavu scStavime
-        // ihned bez časového souboru
-        if (voliciskupina.mtbInRuseniVolby.value()) {
-            if ((d->stav == scZvoleno) || (d->stav == scStavime)) {
-                cestyNaSmazani.append(d);
-            }
+        // když je nějaký úsek v cestě označen pro NUZ, cestu označíme jako nefunkční.
+        if (!(d->kontrolaNUZ())) {
+            d->stav = scZbytek;
         }
 
         // vytáhnutí tlačítka ruší cestu, ale jen ve správných fázích
         if (c->tlacitka[0]->mtbIns[TblokTC::mtbeIns::mtbInRuseni].value()) {
             // počáteční tlačítko je vytažené
-            if ((d->stav == scZavery) || (d->stav == scDN)) {
+            if ((d->stav == scZavery) || (d->stav == scKontrolaDN) || (d->stav == scDN)) {
                 // zruší závěry - debug
+                log(QString("dohled: rušení počátkem cesty číslo %1").arg(d->num), logging::LogLevel::Commands);
                 // doplnit aktivaci časového souboru
                 for (Tblok *b : c->bloky) {
                     if (b->typ == Tblok::btS) {
@@ -345,9 +470,10 @@ void TdohledCesty::evaluate()
             // počáteční tlačítko je stisknuté
             if (d->stav == scPrujezdVlaku) {
                 // jsme v režimu kontroly podmének pro DN
-                if (d->kontrolaCelistvostiCesty(true, false)) {
+                if (d->kontrolaCelistvostiCesty()) {
                     // obnovíme cestu
                     d->stav = scKontrolaDN;
+                    log(QString("dohled: obnova DN cesty číslo %1").arg(d->num), logging::LogLevel::Commands);
                 }
             }
         }
@@ -356,76 +482,59 @@ void TdohledCesty::evaluate()
         switch (d->stav) {
         case scZvoleno:
             stavOK = true;
-            // kontrola, zda je možné cestu postavit - zapojení výměnových ovládacích relé
-            // (kniha s.48?)
-            // pokud je výhýbka v cestě a má VOP/VOM na opačnou stranu, tak nestavíme
-            for(struct Tcesta::Tvyh vc : c->polohy) {
-                if (vc.pBlok->typ == Tblok::btV) {
-                    TblokV *v = static_cast<TblokV *>(vc.pBlok);
-                    if (vc.minus) {
-                        if (v->r[TblokV::rel::VOP]) stavOK = false;
-                    } else {
-                        if (v->r[TblokV::rel::VOM]) stavOK = false;
-                    }
-                }
-            }
-            // to samé pro odvraty
-            for(struct Tcesta::Tvyh_odv vc : c->odvraty) {
-                if (vc.pBlokVymena->typ == Tblok::btV) {
-                    TblokV *v = static_cast<TblokV *>(vc.pBlokVymena);
-                    if (vc.minus) {
-                        if (v->r[TblokV::rel::VOP]) stavOK = false;
-                    } else {
-                        if (v->r[TblokV::rel::VOM]) stavOK = false;
-                    }
-                }
-            }
+            // pokud má některá s výhýbek VOP/VOM na opačnou stranu, tak nestavíme
+            stavOK &= d->kontrolaVOPVOM();
             // kontrola závěrů
-            for(Tblok *b : c->bloky) {
-                if (b->typ == Tblok::btS) {
-                    TblokS *bs = static_cast<TblokS *>(b);
-                    if (bs->r[TblokS::rel::Z]) {
-                        stavOK = false;
-                    }
-                }
-                // výluka na koleji nevadí
+            stavOK &= d->kontrolaZavery(false);
+            // sestaví UPO
+            d->upo.append(d->upoZavery);
+            d->upo.append(d->upoVOPVOM);
+            // povel pro zrušení od volící skupiny
+            if (voliciskupina.mtbInRuseniVolby.value()) {
+                cestyNaSmazani.append(d);
+                stavOK = false;
             }
+            // povel pro stavění
             if (stavOK) {
-                // sepne VOP/VOM
-                for (struct Tcesta::Tvyh v : c->polohy) {
-                    log(QString("dohled: aktivace %1 na výměne %2")
-                            .arg((v.minus) ? "VOM" : "VOP", v.pBlok->name),
-                        logging::LogLevel::Info);
-                    if (v.pBlok->typ == Tblok::btV) {
-                        // blok V se přestavý do správné polohy
-                        v.pBlok->r[TblokV::VOP] = !v.minus;
-                        v.pBlok->r[TblokV::VOM] =  v.minus;
-                    }
-                }
-                // sepne výměnová automatická relé
-                for(int i = 0; i < c->tlacitka.count(); i++) {
-                    TblokTC *t = c->tlacitka[i];
-                    if (i == 0) t->r[TblokTC::PO] = true; // první tlačítko stále bliká
-                    t->r[TblokTC::VA] = true; // další tlačítka v cestě svítí trvale - výměnová automatika v činnosti
-                }
+                // sepne VOP/VOM a výměnová automatická relé
+                d->povelVAzapnout();
+                // posun do dalšího stavu
+                log(QString("dohled: cesta č. %1 změna stavu %2-%3").arg(d->num).arg(stavCesty2QString(d->stav)).arg(stavCesty2QString(scStavime)), logging::LogLevel::Commands);
                 d->stav = scStavime;
+
             }
+
             break;
         case scStavime: // kontrola výměn
-            stavOK = d->kontrolaCelistvostiCesty(false, true);
-            // kontrola všech výhybek stavěných, zda už mají polohu
+            // kontrola všech výhybek v cestě i odvratů, zda už mají polohu
+            stavOK = d->kontrolaPolohVymen();
+            stavOK &= d->kontrolaZavery(false);
+            d->upo.append(d->upoZavery);
+            d->upo.append(d->upoPolohy);
+
+            // povel pro zrušení od volící skupiny
+            if (voliciskupina.mtbInRuseniVolby.value()) {
+                cestyNaSmazani.append(d);
+                d->povelVAvypnout(); // nezapomenou vypnout VA !
+                stavOK = false;
+            }
 
             if (stavOK) {
                 // cesta se posune do dalšího stavu
+                log(QString("dohled: cesta č. %1 změna stavu %2-%3").arg(d->num).arg(stavCesty2QString(d->stav)).arg(stavCesty2QString(scZavery)), logging::LogLevel::Commands);
                 d->stav = scZavery;
             }
+
             break;
-        case scZavery: // kontrola volnosti a padání závěrů úseků
-            // kontrola volnosti JC
-            stavOK = d->kontrolaCelistvostiCesty(false, false);
+        case scZavery: // kontrola volnosti a padání závěrů úseků (kontrola souhlasů)
+            stavOK = true;
+            stavOK &= d->kontrolaPolohVymen();
+            stavOK &= d->kontrolaZavery(false);
+            d->upo.append(d->upoZavery);
+            d->upo.append(d->upoPolohy);
             if (stavOK) {
                 // úseky jsou volné a nemají závěr z jiné cesty
-                log(QString("dohled: provedeme závěr celé cesty číslo %1").arg(d->num), logging::LogLevel::Info);
+                log(QString("dohled: provedeme závěr celé cesty číslo %1").arg(d->num), logging::LogLevel::Commands);
                 // vše v pořádku, provedeme závěr cesty
                 for (int i = 0; i < c->bloky.count(); i++) {
                     Tblok *blok = c->bloky[i];
@@ -454,10 +563,10 @@ void TdohledCesty::evaluate()
                 };
 
 
-                log(QString("dohled: nastavení závěru odvratným výměnám"), logging::LogLevel::Debug);
+                log(QString("dohled: nastavení závěru odvratným výměnám"), logging::LogLevel::Commands);
                 // nastaví závěrné useky odvratným výhybkám
                 for (struct Tcesta::Tvyh_odv odv : c->odvraty) {
-                    log(QString("dohled:  - odvrat výmena %1").arg(odv.pBlokVymena->name), logging::LogLevel::Info);
+                    log(QString("dohled:  - odvrat výmena %1").arg(odv.pBlokVymena->name), logging::LogLevel::Commands);
                     // zámky
                     if (odv.pBlokVymena->typ == Tblok::btEMZ) {
                         pBlokEMZ = static_cast<TblokEMZ*>(odv.pBlokVymena);
@@ -470,6 +579,8 @@ void TdohledCesty::evaluate()
                     }
                 }
 
+                d->povelVAvypnout();
+                /*
                 // zrušíme výměnová automatická relé
                 for(int i = 0; i < c->tlacitka.count(); i++) {
                     TblokTC *t = c->tlacitka[i];
@@ -480,19 +591,20 @@ void TdohledCesty::evaluate()
                 // máme postaveno, můžeme zrušit výměnová automatická relé a VOP, VOM
                 foreach (struct Tcesta::Tvyh vymena, c->polohy) {
                     if (vymena.pBlok->typ == Tblok::btV) {
-                        log(QString("dohled: deaktivace VOP/VOM na výměně %1").arg(vymena.pBlok->name), logging::LogLevel::Debug);
+                        log(QString("dohled: deaktivace VOP/VOM na výměně %1").arg(vymena.pBlok->name), logging::LogLevel::Commands);
                         vymena.pBlok->r[TblokV::VOP] = false;
                         vymena.pBlok->r[TblokV::VOM] = false;
                     };
                 };
-
-                log(QString("dohled: zhasne tlačítka cesty"), logging::LogLevel::Debug);
-                zhasniTlacitka(c->num);
+    */
+                log(QString("dohled: zhasne tlačítka cesty"), logging::LogLevel::Commands);
+                //zhasniTlacitka(c->num);
+                log(QString("dohled: cesta č. %1 změna stavu %2-%3").arg(d->num).arg(stavCesty2QString(d->stav)).arg(stavCesty2QString(scKontrolaDN)), logging::LogLevel::Commands);
                 d->stav = scKontrolaDN;
             }
             break;
         case scKontrolaDN:
-            stavOK = d->kontrolaCelistvostiCesty(true, false);
+            stavOK = d->kontrolaCelistvostiCesty();
             if (stavOK) {
                 if (c->Navestidlo) {
                     c->Navestidlo->navestniZnak = urciNavest(c->navZnak, c->nasledneNavestidlo);
@@ -501,18 +613,14 @@ void TdohledCesty::evaluate()
                     d->vlakKonec = -1;
                     d->vlakEvidenceCelo = false;
                     d->vlakEvidenceKonec = false;
-                    Tcesta *c = cesty->cesty[d->num];
-                    for(int i = 0; i < c->tlacitka.count(); i++) {
-                        TblokTC *tc = c->tlacitka[i];
-                        if (i == 0) tc->r[TblokTC::PO] = false;
-                        if (i == 0) tc->r[TblokTC::NM] = true;
-                    }
+                    d->povelPOvypnout();
+                    log(QString("dohled: cesta č. %1 změna stavu %2-%3").arg(d->num).arg(stavCesty2QString(d->stav)).arg(stavCesty2QString(scDN)), logging::LogLevel::Commands);
                     d->stav = scDN;
                 }
             }
             break;
         case scDN:
-            stavOK = d->kontrolaCelistvostiCesty(true, false);
+            stavOK = d->kontrolaCelistvostiCesty();
             if (stavOK) {
                 if (c->Navestidlo) {
                     if (c->Navestidlo->r[TblokQ::N]) {
@@ -520,6 +628,7 @@ void TdohledCesty::evaluate()
                         c->Navestidlo->navestniZnak = urciNavest(c->navZnak, c->nasledneNavestidlo);
                     } else {
                         // není DN
+                        log(QString("dohled: cesta č. %1 změna stavu %2-%3").arg(d->num).arg(stavCesty2QString(d->stav)).arg(stavCesty2QString(scPrujezdVlaku)), logging::LogLevel::Commands);
                         d->stav = scPrujezdVlaku;
                     }
                 }
@@ -528,44 +637,64 @@ void TdohledCesty::evaluate()
                     c->Navestidlo->navestniZnak = 0;
                     c->Navestidlo->r[TblokQ::N] = false;
                 }
+                log(QString("dohled: cesta č. %1 změna stavu %2-%3").arg(d->num).arg(stavCesty2QString(d->stav)).arg(stavCesty2QString(scPrujezdVlaku)), logging::LogLevel::Commands);
                 d->stav = scPrujezdVlaku;
-                d->vlakCelo=0;
             }
             break;
         case scPrujezdVlaku:
-            // nulování UPO - cesta je postavená
-            d->upo.clear();
             // ToDo: dodělat logiku čela a koncevlaku
-            // teď je to uplně blbě, čelo se pohybuje spíš jako konec
-            if (d->vlakCelo >= 0) {
-                if ((d->vlakCelo+1) < c->bloky.count()) {
-                    // zjístí obsazení u čela vlaku
-                    if (c->bloky[d->vlakCelo]->typ == Tblok::btS) {
-                        obv1 = static_cast<TblokS*>(c->bloky[d->vlakCelo])->r[TblokS::J];
+            // pokud nejsme na konci, hýbene s čelem vlaku
+            if (d->vlakCelo < c->bloky.count()) {
+                obs1 = c->zjistiObsazeni(d->vlakCelo);
+                obs2 = c->zjistiObsazeni(d->vlakCelo+1);
+                if (obs1 && obs2) {
+                    if (d->vlakCelo == -1) {
+                        d->vlakEvidenceCelo = true;
                     }
-                    if (c->bloky[d->vlakCelo+1]->typ == Tblok::btS) {
-                        obv2 = static_cast<TblokS*>(c->bloky[d->vlakCelo+1])->r[TblokS::J];
-                    }
-                    if (c->bloky[d->vlakCelo+1]->typ == Tblok::btK) {
-                        obv2 = static_cast<TblokK*>(c->bloky[d->vlakCelo+1])->r[TblokK::J];
-                    }
-                    // vyhodnotí posun čela vlaku
-                    if (obv1 && obv2) d->vlakEvidenceCelo = true;
-
-                    if (!obv1 && obv2 && d->vlakEvidenceCelo) {
-                        d->vlakEvidenceCelo = false;
-                        d->vlakCelo++;
-                    }
-                    if (!obv1) d->vlakEvidenceCelo = false;
+                    d->vlakCelo++;
                 }
             }
+
+            // inicializace konce při průjezdu
+            if (d->vlakCelo == 0) {
+                d->vlakKonec = 0;
+            }
+
+            // pokud nejsme na konci, hýbene s koncem vlaku
+            if (d->vlakKonec < c->bloky.count()) {
+                obs1 = c->zjistiObsazeni(d->vlakKonec);
+                obs2 = c->zjistiObsazeni(d->vlakKonec+1);
+                if (!obs1 && obs2) {
+                    if (cfgVybav) {
+                        // postupné rušení závěrů
+                        c->uvolniZaver(d->vlakKonec);
+                    }
+                    d->vlakKonec++;
+                }
+            }
+
+            if ((d->vlakCelo == c->bloky.count()) && ((d->vlakKonec+1) == c->bloky.count())) {
+                log(QString("dohled: cesta č. %1 změna stavu %2-%3").arg(d->num).arg(stavCesty2QString(d->stav)).arg(stavCesty2QString(scProjeto)), logging::LogLevel::Commands);
+                d->stav = scProjeto;
+            }
             break;
-        case scRC: // bad states
+        case scProjeto:
+            if (cfgVybav) {
+                log(QString("dohled: cesta č. %1 kompletně vybavena").arg(d->num), logging::LogLevel::Commands);
+                cestyNaSmazani.append(d);
+            } else {
+                // ToDo: aktivovat tlačítko na ruční RC (na daném zhlavý)
+            }
+            break;
+        case scRC: // RC
             d->stav = scRC;
-            d->upo.clear();
             break;
         case scZbytek: // bad state
-            d->upo.clear();
+            d->upo.append("nekompletni");
+            if (d->kontrolaZavery(false)) {
+                log(QString("dohled: cesta č. %1 zrušena po kouskách").arg(d->num), logging::LogLevel::Commands);
+                cestyNaSmazani.append(d);
+            }
             break;
         }
     }
@@ -582,14 +711,7 @@ void TdohledCesty::evaluate()
             }
         }
         if (d->stav == scStavime) {
-            for (struct Tcesta::Tvyh v : c->polohy) {
-                if (v.pBlok->typ == Tblok::btV) {
-                    // odpojit VOP/VOM
-                    TblokV *bv = static_cast<TblokV *>(v.pBlok);
-                    bv->r[TblokV::rel::VOP] = false;
-                    bv->r[TblokV::rel::VOP] = true;
-                }
-            }
+            d->povelVAvypnout();
         }
         // a smazat cestu
         cestyPostavene.removeOne(d);

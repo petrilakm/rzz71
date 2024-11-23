@@ -23,8 +23,9 @@ public:
         scKontrolaDN = 3, // cesta je již postavená
         scDN = 4,
         scPrujezdVlaku = 5, // už se nedá zrušit vytažením počátku
-        scRC = 6,
-        scZbytek = 7 // zbytek po cestě, lze pouze zrušit NUZem
+        scProjeto = 6, // již projetá cesta
+        scRC = 7,
+        scZbytek = 8 // zbytek po cestě, lze pouze zrušit NUZem
     };
     // scStavime - výměnová automatická relé - aktivní VOP a VOM
     // scZavery - výměny přestaveny, kontrolujeme podmínky pro závěr
@@ -45,7 +46,19 @@ public:
         bool vlakEvidenceCelo;
         bool vlakEvidenceKonec;
         QStringList upo;
-        bool kontrolaCelistvostiCesty(bool cestaJizExistuje, bool jenVymeny);
+        QStringList upoZavery;
+        QStringList upoVolnosti;
+        QStringList upoPolohy;
+        QStringList upoVOPVOM;
+        bool kontrolaCelistvostiCesty();
+        bool kontrolaZavery(bool cestaKompletni);
+        bool kontrolaVolnosti();
+        bool kontrolaPolohVymen();
+        bool kontrolaNUZ();
+        bool kontrolaVOPVOM();
+        void povelVAzapnout();
+        void povelVAvypnout();
+        void povelPOvypnout();
     };
 
     QList<cestaPodDohledem *> cestyPostavene;

@@ -107,6 +107,9 @@ extern bool rD3V; // NUZ, odměřeno, zruší se závěry
 extern bool rBlik50; // výstup kmitače
 extern bool rNavNoc; // noční návestidla
 
+// konfigurace
+extern bool cfgVybav; // vybavování závěrů průjezdem vlaku
+
 class Tblok;
 extern QList<Tblok *> bl;
 

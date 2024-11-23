@@ -19,6 +19,8 @@ bool rD3V; // NUZ, odměřeno, ruší se závěry
 bool rZ5C, rD5C, rQTC;
 bool rBlik50;
 
+bool cfgVybav;
+
 TRZZ71::TRZZ71(QObject *parent)
     : QObject{parent}
 {
@@ -54,6 +56,8 @@ TRZZ71::TRZZ71(QObject *parent)
     rZ3V = false;
     rQTV = false;
     rD3V = false;
+
+    cfgVybav = true;
 
     simul_puls_timer.setInterval(50);
     simul_puls_timer.setSingleShot(true);
