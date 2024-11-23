@@ -15,7 +15,7 @@ bool TblokTC::evaluate()
     bool mtbVolba = mtbIns[mtbInVolba].value();
     bool mtbZrus  = mtbIns[mtbInRuseni].value();
     bool platnaVolba = false;
-    if (mtbVolba && !r[TZ] && !r[VA] && !mtbVolbaOpak && !r[NM]) {
+    if (mtbVolba && !r[TZ] && !r[VA] && !mtbVolbaOpak && !r[PO]) {
         mtbVolbaOpak = true;
         log("blokTC: stisk tlačítka", logging::LogLevel::Debug);
         platnaVolba = voliciskupina.vstupZmena(this, true);
@@ -28,10 +28,10 @@ bool TblokTC::evaluate()
         //r[TZ] = false;
         log("blokTC: vytažení tlačítka", logging::LogLevel::Debug);
         platnaVolba = voliciskupina.vstupZmena(this, false);
-        if (platnaVolba) {
+        // if (platnaVolba) {
             r[TZ] = false;
             r[PO] = false;
-        }
+        //}
     }
 
     if (r[VA]) {

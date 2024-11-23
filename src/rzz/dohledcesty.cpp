@@ -273,12 +273,14 @@ int TdohledCesty::urciNavest(int navZnak, TblokQ *nasledneNavestidlo)
 QString TdohledCesty::stavCesty2QString(stavCesty sc)
 {
     switch (sc) {
+    case scZvoleno: return QString("Zvoleno"); break;
     case scStavime: return QString("Stavime"); break;
     case scZavery:  return QString("Zavery"); break;
     case scKontrolaDN: return QString("KontrolaPodminekProDN"); break;
     case scDN: return QString("DN"); break;
     case scPrujezdVlaku: return QString("PrujezdVlaku"); break;
     case scRC: return QString("RC"); break;
+    case scZbytek: return QString("Zbytek"); break;
     default: return QString("badState");
     }
     return QString("stavCesty2QString->nocase");
@@ -302,10 +304,10 @@ void TdohledCesty::evaluate()
         // pro všechny stavy
 
         // když je nějaký úsek v cestě označen pro NUZ, cestu už nekontrolujeme.
-        if (d->stav != scStavime) {
+        if ((d->stav != scStavime) && (d->stav != scZvoleno)) {
             for (Tblok *blok : c->bloky) {
                 if (blok->typ == Tblok::btS) {
-                    if (blok->r[TblokS::V]) {
+                    if (blok->r[TblokS::rel::V]) {
                         d->stav = scZbytek;
                     }
                 }
@@ -403,7 +405,7 @@ void TdohledCesty::evaluate()
                 // sepne výměnová automatická relé
                 for(int i = 0; i < c->tlacitka.count(); i++) {
                     TblokTC *t = c->tlacitka[i];
-                    if (i != 0) t->r[TblokTC::PO] = true; // první tlačítko stále bliká
+                    if (i == 0) t->r[TblokTC::PO] = true; // první tlačítko stále bliká
                     t->r[TblokTC::VA] = true; // další tlačítka v cestě svítí trvale - výměnová automatika v činnosti
                 }
                 d->stav = scStavime;
