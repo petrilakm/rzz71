@@ -361,7 +361,7 @@ void TRZZ71::init()
                 if (lineparam.count() > 0) {
                     QString lastBlokName = lineparam[0];
                     pBlok = Tblok::findBlokByName(lastBlokName);
-                    //if (!pBlok) log(QString("rzz: blok %1 nemuže najít související blok \"%2\"").arg(name).arg(lastBlokName), logging::LogLevel::Error);
+                    if (!pBlok) log(QString("rzz: blok %1 nemuže najít související blok \"%2\"").arg(name).arg(lastBlokName), logging::LogLevel::Error);
                     if (pBlok) {
                         pBlokV->predBlok = pBlok;
                         if ((pBlok->typ == Tblok::btV) && (lineparam.count() > 1)) {
@@ -515,7 +515,7 @@ void TRZZ71::getInput(int addr, int pin, int state)
             .arg(addr)
             .arg(pin)
             .arg(state)
-        , logging::LogLevel::Info);
+        , logging::LogLevel::Debug);
     // změna na vstupu
 
 }

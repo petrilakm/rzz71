@@ -49,7 +49,7 @@ public:
         QString upoZavery;
         QString upoVolnosti;
         QString upoPolohy;
-        QStringList upoVOPVOM;
+        QString upoVOPVOM;
         bool kontrolaCelistvostiCesty();
         bool kontrolaZavery(bool cestaKompletni);
         bool kontrolaVolnosti();

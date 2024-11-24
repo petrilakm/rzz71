@@ -3,7 +3,7 @@
 
 Tvoliciskupina::Tvoliciskupina()
 {
-//    bProbihaVolba = false;
+    probihaVolba = false;
 }
 
 void Tvoliciskupina::ruseniVolbyCesty()
@@ -12,9 +12,10 @@ void Tvoliciskupina::ruseniVolbyCesty()
     foreach (TblokTC * tl, tlacitkaAktivni) {
         tl->r[TblokTC::TZ] = false;
         tl->r[TblokTC::PO] = false;
+        tl->r[TblokTC::VA] = false;
     }
     tlacitkaAktivni.clear();
-    mtbOutProbihaVolba.setValueBool(false);
+    probihaVolba = false;
 }
 
 bool Tvoliciskupina::vstupZmena(TblokTC *p, bool state)
@@ -22,7 +23,7 @@ bool Tvoliciskupina::vstupZmena(TblokTC *p, bool state)
     bool ret = false;
     if (state) {
         //log(QString("cesty: změna tlačítka %1").arg(p->name), logging::LogLevel::Info);
-        if (tlacitkaAktivni.isEmpty()) {
+        if (tlacitkaAktivni.isEmpty() && (!probihaVolba)) {
             // první tlačítko cesty
             // nejprve ověříme, zda už odsud cesta nevede, která má řešit tlačítko
             for (TdohledCesty::cestaPodDohledem *cdoh : dohledCesty.cestyPostavene) {
@@ -44,7 +45,7 @@ bool Tvoliciskupina::vstupZmena(TblokTC *p, bool state)
                 }
             }
             if (cestyMozne.count() > 0) {
-                mtbOutProbihaVolba.setValueBool(true);
+                probihaVolba = true;
                 tlacitkaAktivni.append(p);
                 ret = true;
             }
@@ -90,7 +91,7 @@ void Tvoliciskupina::postavCestu(int i)
 {
     // volící skupina se uvede do základního stavu
     //ruseniVolbyCesty();
-    mtbOutProbihaVolba.setValueBool(false);
+    //mtbOutProbihaVolba.setValueBool(false);
     cestyMozne.clear();
     tlacitkaAktivni.clear();
     // cestu předáme do "dohledu"
@@ -99,6 +100,8 @@ void Tvoliciskupina::postavCestu(int i)
 
 bool Tvoliciskupina::evaluate()
 {
+    mtbOutProbihaVolba.setValueBool(probihaVolba);
+
     if (mtbInRuseniVolby.value() && !tlacitkaAktivni.isEmpty()) {
         // stisknuté tlačítko RV - rušení volby cesty
         log(QString("cesty: rušení volby"), logging::LogLevel::Info);

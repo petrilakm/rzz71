@@ -22,6 +22,7 @@ public:
 
     mtbpin mtbInRuseniVolby;
     mtbpin mtbOutProbihaVolba;
+    bool probihaVolba;
 
     void ruseniVolbyCesty();
     //bool kontrolaTZ(TblokTC *pTC);

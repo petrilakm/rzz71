@@ -30,10 +30,10 @@ P;Se3B,Se1B;3a-,2+,Vk1-;2+,V3a-3b,Vk1-,V3a-3b;V3a-3b,Vl;Se3;9
 #;zhlavý L, vjezdy;;;;;
 V;LZ,S1B;1+,2+;;1b,V1-2,1k;L,L1;1
 V;LZ,S2B;1-,2+;;1b,V1-2,2k;L,L2;4
-V;LZ,S3B;1+,2-,3a+,Vk1+;EM+,V3a-3b,Vk1+;1b,V1-2,V3a-3b,3k;L,L3;4
+V;LZ,S3B;1+,2-,3a+;EM+,V3a-3b,Vk1+,V3a-3b;1b,V1-2,V3a-3b,3k;L,L3;4
 P;Se2B,S1B;1+,2+;;V1-2,1k;Se2;9
 P;Se2B,S2B;1-,2+;;V1-2,2k;Se2;9
-P;Se2B,S3B;1+,2-,3a+,Vk1+;Vk1+,V3a-3b;V1-2,V3a-3b,3k;Se2;9
-P;Se2B,Se3B;1+,2-,3a-,Vk1+;Vk1+,V3a-3b;V1-2,V3a-3b,5ak;Se2;9
-P;Se1B,S3B;3a+,2+,Vk1-;2+,V3a-3b,Vk1-,V3a-3b;V3a-3b,3k;Se1;9
-P;Se1B,Se3B;3a-,2+,Vk1-,Vk1-;2+,V3a-3b,Vk1-,V3a-3b;V3a-3b,5ak;Se1;9
+P;Se2B,S3B;1+,2-,3a+;Vk1+,V3a-3b;V1-2,V3a-3b,3k;Se2;9
+P;Se2B,Se3B;1+,2-,3a-;Vk1+,V3a-3b;V1-2,V3a-3b,5ak;Se2;9
+P;Se1B,S3B;3a+,2+;Vk1-,V3a-3b;V3a-3b,3k;Se1;9
+P;Se1B,Se3B;3a-,2+;Vk1-,V3a-3b;V3a-3b,5ak;Se1;9

@@ -41,12 +41,12 @@ Tlcd::Tlcd(QObject *parent)
     }
 #endif
     // fill buffer with spaces (empty display)
-    for(int i=0; i<(20); i++) {
+    for(int i=0; i<(40); i++) {
         for(int j=0; j<(4); j++) {
             lcd_buffer[j].append('x');
         }
     }
-
+    log(QString("lcd: init"), logging::LogLevel::Info);
 }
 
 Tlcd::~Tlcd()

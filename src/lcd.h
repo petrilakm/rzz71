@@ -18,7 +18,7 @@ public:
     QString message_warning;
     QString message_info;
     void redraw();
-    QByteArray lcd_buffer[20];
+    QByteArray lcd_buffer[40];
 private:
     QFile fil;
     QTimer *tim;
