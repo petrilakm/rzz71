@@ -13,9 +13,9 @@ bool TblokTC::evaluate()
     QList<bool> rLast = r;
     
     bool mtbVolba = mtbIns[mtbInVolba].value();
-    bool mtbZrus  = mtbIns[mtbInRuseni].value();
+    bool mtbZrus  = mtbIns[mtbInRuseni].value() && !r[rel::BR];
     bool platnaVolba = false;
-    if (mtbVolba && !r[TZ] && !r[VA] && !mtbVolbaOpak && !r[PO]) {
+    if (mtbVolba && !r[TZ] && !r[VA] && !mtbVolbaOpak && !r[PO] && !r[NM]) {
         mtbVolbaOpak = true;
         log("blokTC: stisk tlačítka", logging::LogLevel::Debug);
         platnaVolba = voliciskupina.vstupZmena(this, true);
@@ -37,13 +37,12 @@ bool TblokTC::evaluate()
     if (r[VA]) {
         r[TZ] = false;
     }
+
     // návěstní relé zruší TZ i PO
-    /*
     if (r[NM]) {
         r[TZ] = false;
         r[PO] = false;
     }
-    */
 
     // indikace na pultu (kniha s. 33)
     bool out = false;

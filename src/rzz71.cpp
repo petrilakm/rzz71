@@ -7,6 +7,8 @@
 #include "rzz/blokQ.h"
 #include "rzz/blokPN.h"
 #include "rzz/blokEMZ.h"
+#include "rzz/blokRC.h"
+#include "rzz/blokTS.h"
 //#include "rzz/blokQ.h"
 #include "rzz/voliciskupina.h"
 #include "rzz/dohledcesty.h"
@@ -214,6 +216,8 @@ void TRZZ71::init()
     TblokQ *pBlokQ;
     TblokPN *pBlokPN;
     TblokEMZ *pBlokEMZ;
+    TblokRC *pBlokRC;
+    TblokTS *pBlokTS;
 
     // načtě bloky ze souboru
     QStringList linelist;
@@ -435,9 +439,24 @@ void TRZZ71::init()
                     if (pBlok) {
                         if (pBlok->typ == Tblok::btQ) {
                             pBlokPN->navestidlo = static_cast<TblokQ*>(pBlok);
+                        } else {
+                            log(QString("rzz: blok PN_%1 nemuže najít související návestidlo, \"%2\" není návěstidlo").arg(name).arg(navestidloName), logging::LogLevel::Error);
                         }
                     } else {
                         log(QString("rzz: blok PN_%1 nemuže najít související návestidlo \"%2\"").arg(name).arg(navestidloName), logging::LogLevel::Error);
+                    };
+                }
+                if (lineparam.count() > 1) {
+                    QString tlacitkoName = lineparam[1];
+                    pBlok = Tblok::findBlokByName(tlacitkoName);
+                    if (pBlok) {
+                        if (pBlok->typ == Tblok::btTC) {
+                            pBlokPN->navestidlo = static_cast<TblokQ*>(pBlok);
+                        } else {
+                            log(QString("rzz: blok PN_%1 nemuže najít související tlačítko, \"%2\" není tlačítko").arg(name).arg(tlacitkoName), logging::LogLevel::Error);
+                        }
+                    } else {
+                        log(QString("rzz: blok PN_%1 nemuže najít související tlačítko \"%2\"").arg(name).arg(tlacitkoName), logging::LogLevel::Error);
                     };
                 }
                 bl.append(static_cast<Tblok*>(pBlokPN));
@@ -467,6 +486,48 @@ void TRZZ71::init()
                 bl.append(static_cast<Tblok*>(pBlokEMZ));
                 log(QString("rzz: načten blok EMZ_%1").arg(name), logging::LogLevel::Debug);
             };
+            if (type == "RC") {
+                // blokRC - tlačítko na rušení cesty pro projetí vlakem (TEST)
+                pBlokRC = new TblokRC();
+                pBlokRC->name = name;
+                for (int i = 0; i < mtbLoadInputs.count(); i++) {
+                    pBlokRC->mtbIns[i] = mtbLoadInputs[i];
+                }
+                for (int i = 0; i < mtbLoadOutputs.count(); i++) {
+                    pBlokRC->mtbOut[i] = mtbLoadOutputs[i];
+                }
+                for(QString &s : lineparam){
+                    if (s.contains('-')) {
+                        QStringList cestyRozsah = s.split('-', Qt::KeepEmptyParts);
+                        if (cestyRozsah.count() == 2) {
+                            int RCmin = cestyRozsah[0].toInt();
+                            int RCmax = cestyRozsah[1].toInt();
+                            for (int i = RCmin; i <= RCmax; i++) {
+                                pBlokRC->cestyRC.append(i);
+                            }
+                        } else {
+                            log(QString("rzz: blok RC_%1 má neplatný rozsah cest \"%2\"").arg(name).arg(s), logging::LogLevel::Error);
+                        }
+                    } else {
+                        pBlokRC->cestyRC.append(s.toInt());
+                    }
+                }
+                log(QString("rzz: načten blok RC_%1").arg(name), logging::LogLevel::Debug);
+                bl.append(static_cast<Tblok*>(pBlokRC));
+            }
+            if (type == "TS") {
+                // blokTS - traťový souhlas
+                pBlokTS = new TblokTS();
+                pBlokTS->name = name;
+                for (int i = 0; i < mtbLoadInputs.count(); i++) {
+                    pBlokTS->mtbIns[i] = mtbLoadInputs[i];
+                }
+                for (int i = 0; i < mtbLoadOutputs.count(); i++) {
+                    pBlokTS->mtbOut[i] = mtbLoadOutputs[i];
+                }
+                log(QString("rzz: načten blok TS_%1").arg(name), logging::LogLevel::Debug);
+                bl.append(static_cast<Tblok*>(pBlokTS));
+            }
         }
     }
 

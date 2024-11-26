@@ -48,7 +48,7 @@ void TdohledCesty::t3C()
 bool TdohledCesty::cestaPodDohledem::kontrolaZavery(bool cestaKompletni)
 {
     bool stavOK = true;
-    upoZavery.clear();
+    QStringList upoL; // upo - lokální
     // pomocné proměné
     bool bBlockLast = false; // označuje poslední úsek cesty
 
@@ -60,19 +60,19 @@ bool TdohledCesty::cestaPodDohledem::kontrolaZavery(bool cestaKompletni)
             // blok S - kontrolujeme závěr a NUZ
             if (blok->r[TblokS::rel::V]) {
                 stavOK = false;
-                this->upoZavery += QString("NUZ %1,").arg(blok->name);
+                upoL.append(QString("NUZ %1,").arg(blok->name));
             }
             if (cestaKompletni) {
                 if (!bBlockLast) { // poslední blok závěr nemá
                     if (!blok->r[TblokS::rel::Z]) {
                         stavOK = false; // zavěr musí být, když cesta již je postavená
-                        this->upoZavery += QString("ne zav %1,").arg(blok->name);
+                        upoL.append(QString("ne zav %1,").arg(blok->name));
                     }
                 }
             } else {
                 if (blok->r[TblokS::rel::Z]) {
                     stavOK = false; // závěr nesmí být, když cestu stavíme
-                    this->upoZavery += QString("zav %1,").arg(blok->name);
+                    upoL.append(QString("zav %1,").arg(blok->name));
                 }
             }
         }
@@ -85,14 +85,14 @@ bool TdohledCesty::cestaPodDohledem::kontrolaZavery(bool cestaKompletni)
 
                     if (!(blok->r[TblokK::X1]) && !(blok->r[TblokK::X2])) {
                         stavOK = false; // musí být aspoň 1 výluka
-                        this->upoZavery += QString("ne vyl %1").arg(blok->name);
+                        upoL.append(QString("ne vyl %1").arg(blok->name));
                     }
 
                 } else {
                     // vlaková cesta se dívá jen na výluky
                     if (!(blok->r[TblokK::X1]) && !(blok->r[TblokK::X2])) {
                         stavOK = false; // musí být aspoň 1 výluka
-                        this->upoZavery += QString("ne vyl %1").arg(blok->name);
+                        upoL.append(QString("ne vyl %1").arg(blok->name));
                     }
                 }
             } else {
@@ -101,13 +101,13 @@ bool TdohledCesty::cestaPodDohledem::kontrolaZavery(bool cestaKompletni)
                     // u posunu kontrolujeme výluky i konce posunové K1, K2
                     if ((blok->r[TblokK::X1] && !(blok->r[TblokK::K1])) || (blok->r[TblokK::X2] && !(blok->r[TblokK::K2]))) {
                         stavOK = false;
-                        this->upoZavery += QString("proti ces. %1,").arg(blok->name);
+                        upoL.append(QString("proti ces. %1,").arg(blok->name));
                     }
                 } else {
                     // vlaková cesta se dívá jen na výluky
                     if (blok->r[TblokK::X1] || blok->r[TblokK::X2]) {
                         stavOK = false;
-                        this->upoZavery += QString("proti ces. %1,").arg(blok->name);
+                        upoL.append(QString("proti ces. %1,").arg(blok->name));
                     }
                 }
             }
@@ -123,7 +123,7 @@ bool TdohledCesty::cestaPodDohledem::kontrolaZavery(bool cestaKompletni)
                 // pro kontrolu návstidla musí být závěr
                 if (!(vyh->r[TblokV::rel::Z])) {
                     stavOK = false;
-                    this->upoZavery.append(QString("ne zav %1").arg(vymena.pBlok->name));
+                    upoL.append(QString("ne zav %1").arg(vymena.pBlok->name));
                 }
             } else {
                 // pro kontrolu stavění cesty závěr nekontrolujeme
@@ -136,21 +136,24 @@ bool TdohledCesty::cestaPodDohledem::kontrolaZavery(bool cestaKompletni)
                 // pro kontrolu návstidla musí být závěr
                 if (!(vyh->r[TblokEMZ::rel::Z])) {
                     stavOK = false;
-                    this->upoZavery.append(QString("ne zav %1").arg(vymena.pBlok->name));
+                    upoL.append(QString("ne zav %1").arg(vymena.pBlok->name));
                 }
             } else {
                 // pro kontrolu stavění cesty závěr nekontrolujeme
             }
         }
     }
-    //if (upoZavery.endsWith(",")) upoZavery.removeLast();
+    // sestavý UPO
+    upoZavery.clear();
+    upoZavery = upoL.join(',');
     return stavOK;
 }
 
 bool TdohledCesty::cestaPodDohledem::kontrolaVolnosti()
 {
     bool stavOK = true;
-    upoVolnosti.clear();
+    QStringList upoL;
+    upoL.clear();
 
     // kontrola kolejových relé J
     for(Tblok *blok : pCesta->bloky) {
@@ -158,7 +161,7 @@ bool TdohledCesty::cestaPodDohledem::kontrolaVolnosti()
             // blok S - kontrolujeme volnost
             if (blok->r[TblokS::J]) {
                 stavOK = false;
-                this->upoVolnosti += QString("obs %1,").arg(blok->name);
+                this->upoVolnosti.append(QString("obs %1").arg(blok->name));
             }
         }
         if (blok->typ == Tblok::btK) {
@@ -167,26 +170,28 @@ bool TdohledCesty::cestaPodDohledem::kontrolaVolnosti()
                 // kontrolujeme volnost (jen u VC)
                 if (blok->r[TblokK::J]) {
                     stavOK = false;
-                    this->upoVolnosti += QString("obs %1,").arg(blok->name);
+                    this->upoVolnosti.append(QString("obs %1").arg(blok->name));
                 }
             }
         }
     };
-    //if (upoVolnosti.endsWith(",")) upoVolnosti.removeAt(upoVolnosti.count()-1);
+    upoVolnosti.clear();
+    this->upoVolnosti = upoL.join(',');
     return stavOK;
 }
 
 bool TdohledCesty::cestaPodDohledem::kontrolaPolohVymen()
 {
     bool stavOK = true;
-    upoPolohy.clear();
+    QStringList upoL;
+    upoL.clear();
     // kontrola pojížděných výhybek
     foreach (struct Tcesta::Tvyh vymena, pCesta->polohy) {
         // EMZ
         if (vymena.pBlok->typ == Tblok::btEMZ) {
             if (vymena.pBlok->r[TblokEMZ::UK]) {
                 stavOK = false;
-                upoPolohy += QString("EMZ ");
+                upoL.append(QString("EMZ"));
             }
         }
         // Přestavník
@@ -196,21 +201,21 @@ bool TdohledCesty::cestaPodDohledem::kontrolaPolohVymen()
             // vždy kontroluje uvedenou výhybku
             if (!(vymena.minus) && (!(vyh->r[TblokV::rel::DP]))) {
                 stavOK = false;
-                upoPolohy += QString("%1+ ").arg(vymena.pBlok->name);
+                upoL.append(QString("%1+").arg(vymena.pBlok->name));
             }
             if ( (vymena.minus) && (!(vyh->r[TblokV::rel::DM]))) {
                 stavOK = false;
-                upoPolohy += QString("%1- ").arg(vymena.pBlok->name);
+                upoL.append(QString("%1-").arg(vymena.pBlok->name));
             }
             if (dvojiceBlok != nullptr) {
                 // pokud je dvojice, tak kontroluje i druhou půlku
                 if (!(vymena.minus) && (!(dvojiceBlok->r[TblokV::rel::DP]))) {
                     stavOK = false;
-                    upoPolohy += QString("%1+ ").arg(dvojiceBlok->name);
+                    upoL.append(QString("%1+").arg(dvojiceBlok->name));
                 }
                 if ( (vymena.minus) && (!(dvojiceBlok->r[TblokV::rel::DM]))) {
                     stavOK = false;
-                    upoPolohy += QString("%1- ").arg(dvojiceBlok->name);
+                    upoL.append(QString("%1-").arg(dvojiceBlok->name));
                 }
             }
         }
@@ -223,7 +228,7 @@ bool TdohledCesty::cestaPodDohledem::kontrolaPolohVymen()
         if (vymena->typ == Tblok::btEMZ) {
             if (vymena->r[TblokEMZ::rel::UK]) {
                 stavOK = false;
-                upoPolohy += QString("EMZ ");
+                upoL.append(QString("oEMZ"));
             }
         }
         // Přestavník
@@ -232,26 +237,43 @@ bool TdohledCesty::cestaPodDohledem::kontrolaPolohVymen()
             TblokV *dvojiceBlok = static_cast<TblokV*>(vymena)->dvojceBlok;
             if (!(odv.minus) && (!(vyh->r[TblokV::rel::DP]))) {
                 stavOK = false;
-                upoPolohy += QString("o%1+ ").arg(vyh->name);
+                upoL.append(QString("o%1+").arg(vyh->name));
             }
-            if ( (odv.minus) && (!(vyh->r[TblokV::rel::DM]))) {
+            if ((odv.minus) && (!(vyh->r[TblokV::rel::DM]))) {
                 stavOK = false;
-                upoPolohy += QString("o%1- ").arg(vyh->name);
+                upoL.append(QString("o%1-").arg(vyh->name));
             }
             if (dvojiceBlok != nullptr) {
                 // pokud je dvojice, tak kontroluje i druhou půlku
                 if (!(odv.minus) && (!(dvojiceBlok->r[TblokV::rel::DP]))) {
                     stavOK = false;
-                    upoPolohy += QString("o%1+ ").arg(dvojiceBlok->name);
+                    upoL.append(QString("o%1+").arg(dvojiceBlok->name));
                 }
                 if ( (odv.minus) && (!(dvojiceBlok->r[TblokV::rel::DM]))) {
                     stavOK = false;
-                    upoPolohy += QString("o%1- ").arg(dvojiceBlok->name);
+                    upoL.append(QString("o%1-").arg(dvojiceBlok->name));
                 }
             }
         }
     };
-
+    // odstatění duplicit výhybka a odvrat
+    QString name1;
+    QString name2;
+    for(int i = 0; i < upoL.count(); i++) {
+        name1 = upoL.at(i);
+        for(int j = 0; j < upoL.count(); j++) {
+            name2 = upoL.at(j);
+            if (name1 == name2.remove(name2.length()-1, 1)) {
+                // stavíme výhybku, která je současně odvratem
+                // necháme hlášení jen o odvratu
+                upoL.removeAt(i);
+                break;
+            }
+        }
+    }
+    // sestavý UPO
+    upoPolohy.clear();
+    this->upoPolohy = upoL.join(',');
     return stavOK;
 }
 
@@ -533,6 +555,7 @@ void TdohledCesty::evaluate()
             // povel pro zrušení od volící skupiny
             if (voliciskupina.mtbInRuseniVolby.value()) {
                 cestyNaSmazani.append(d);
+                voliciskupina.probihaVolba = false;
                 d->povelVAvypnout(); // nezapomenou vypnout VA !
                 stavOK = false;
             }
@@ -598,25 +621,10 @@ void TdohledCesty::evaluate()
                     }
                 }
 
+                log(QString("dohled: konec výměnové automatiky"), logging::LogLevel::Commands);
                 d->povelVAvypnout();
-                /*
-                // zrušíme výměnová automatická relé
-                for(int i = 0; i < c->tlacitka.count(); i++) {
-                    TblokTC *t = c->tlacitka[i];
-                    t->r[TblokTC::VA] = false; // zrušeno udělením závěrů useků
-                }
 
-                log(QString("dohled: konec stavění výměn"), logging::LogLevel::Debug);
-                // máme postaveno, můžeme zrušit výměnová automatická relé a VOP, VOM
-                foreach (struct Tcesta::Tvyh vymena, c->polohy) {
-                    if (vymena.pBlok->typ == Tblok::btV) {
-                        log(QString("dohled: deaktivace VOP/VOM na výměně %1").arg(vymena.pBlok->name), logging::LogLevel::Commands);
-                        vymena.pBlok->r[TblokV::VOP] = false;
-                        vymena.pBlok->r[TblokV::VOM] = false;
-                    };
-                };
-    */
-                log(QString("dohled: zhasne tlačítka cesty"), logging::LogLevel::Commands);
+                //log(QString("dohled: zhasne tlačítka cesty"), logging::LogLevel::Commands);
                 //zhasniTlacitka(c->num);
                 log(QString("dohled: cesta č. %1 změna stavu %2-%3").arg(d->num).arg(stavCesty2QString(d->stav)).arg(stavCesty2QString(scKontrolaDN)), logging::LogLevel::Commands);
                 d->stav = scKontrolaDN;
@@ -702,7 +710,11 @@ void TdohledCesty::evaluate()
                 log(QString("dohled: cesta č. %1 kompletně vybavena").arg(d->num), logging::LogLevel::Commands);
                 cestyNaSmazani.append(d);
             } else {
-                // ToDo: aktivovat tlačítko na ruční RC (na daném zhlavý)
+                // zrušit cesty, při stisku tlačítka RC
+                for(cestaPodDohledem *rc : cestyNaVybaveni) {
+                    cestyNaSmazani.append(rc); // označit na zrušení
+                    cestyNaVybaveni.removeAll(rc); // odebrat ze seznamu
+                }
             }
             break;
         case scRC: // RC
@@ -723,7 +735,6 @@ void TdohledCesty::evaluate()
     }
     // smaže cesty, co už nejsou cestami
     foreach (cestaPodDohledem *d, cestyNaSmazani) {
-
         Tcesta *c = cesty->cesty[d->num];
         if ((d->stav == scZvoleno) || (d->stav == scStavime)) {
             for (TblokTC *tc : c->tlacitka) {
@@ -731,12 +742,14 @@ void TdohledCesty::evaluate()
                 tc->r[TblokTC::TZ] = false;
                 tc->r[TblokTC::PO] = false;
                 tc->r[TblokTC::VA] = false;
+                d->povelPOvypnout();
             }
         }
         if (d->stav == scStavime) {
             d->povelVAvypnout();
+            d->povelPOvypnout();
         }
-        if (d->stav == scStavime) {
+        if (d->stav >= scZavery) {
             c->Navestidlo->navestniZnak = 0;
             c->Navestidlo->r[TblokQ::N] = false;
         }

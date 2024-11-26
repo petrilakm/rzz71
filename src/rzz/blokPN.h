@@ -1,9 +1,9 @@
 #ifndef BLOKPN_H
 #define BLOKPN_H
 
-#include "rzz/obecne.h"
 #include "rzz/blok.h"
 #include "rzz/blokQ.h"
+#include "rzz/blokTC.h"
 
 class TblokPN : public Tblok
 {
@@ -12,7 +12,6 @@ public:
 
     enum mtbeIns {
         mtbInPN = 0,
-        mtbInPNEnable = 1,
     };
     enum mtbeOut {
         mtbOutPocitadlo = 0,
@@ -20,10 +19,13 @@ public:
 
     bool evaluate() override;
 
-    enum rel {PN};
-    #define RELAY_COUNT_PN (1)
+    enum rel {PN,BT};
+    #define RELAY_COUNT_PN (2)
+    // PN - připovávací návest sepnuta
+    // BT - blokování tlačítka (vytažení u navěstidla)
 
     TblokQ *navestidlo;
+    TblokTC *tlacitkoUNavestidla;
     QTimer *tim;
 public slots:
     void on_tim();

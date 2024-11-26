@@ -13,7 +13,7 @@ class Tblok : public QObject
 public:
     Tblok();
 
-    enum bloktyp {btNULL, btTC, btPr, btEMZ, btV, btS, btK, btQ, btSimV, btPN};
+    enum bloktyp {btNULL, btTC, btPr, btEMZ, btV, btS, btK, btQ, btSimV, btPN, btTS, btRC};
 
     virtual bool evaluate(); // if change return true
 
@@ -39,7 +39,9 @@ public:
  * blokPN - přivolávací návest - obslužné tlačítko
  * blokEMZ- elektromagnetický zámek - simulace
  * blokTC - tlačítko cestové (počátecní i koncové)
- * blokUV - úvazka (traťové souhlasy, místní i vzdálená)
+ * blokTS - úvazka (traťové souhlasy, místní i vzdálená)
+ * blokPN - přivolávací návest na odjezdová nívěstidla
+ * blokRC - rušení cesty po projetí - místo automatického rozpadu cesty
  *
  */
 

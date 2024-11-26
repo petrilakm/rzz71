@@ -62,6 +62,7 @@ public:
     };
 
     QList<cestaPodDohledem *> cestyPostavene;
+    QList<cestaPodDohledem *> cestyNaVybaveni;
 
     void postavCestu(int i); // předání cesty z volící skupiny
     void evaluate(); // pravidelná kontrola podmínek

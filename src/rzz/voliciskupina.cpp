@@ -31,6 +31,7 @@ bool Tvoliciskupina::vstupZmena(TblokTC *p, bool state)
                     // je postavená cesta od tohoto tlačítka
                     if (cdoh->stav == TdohledCesty::scDN) {
                         // neděláme nic
+                        log(QString("neumíme poznat volbu při postavené cestě !!!"), logging::LogLevel::Error);
                         return false;
                     }
                 }

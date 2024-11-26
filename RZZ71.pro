@@ -23,9 +23,11 @@ SOURCES += \
   src/rzz/blokK.cpp \
   src/rzz/blokPN.cpp \
   src/rzz/blokPr.cpp \
+  src/rzz/blokRC.cpp \
   src/rzz/blokS.cpp \
   src/rzz/blokQ.cpp \
   src/rzz/blokTC.cpp \
+  src/rzz/blokTS.cpp \
   src/rzz/blokV.cpp \
   src/rzz/cesty.cpp \
   src/rzz/dohledcesty.cpp \
@@ -47,9 +49,11 @@ HEADERS += \
   src/rzz/blokK.h \
   src/rzz/blokPN.h \
   src/rzz/blokPr.h \
+  src/rzz/blokRC.h \
   src/rzz/blokS.h \
   src/rzz/blokQ.h \
   src/rzz/blokTC.h \
+  src/rzz/blokTS.h \
   src/rzz/blokV.h \
   src/rzz/cesty.h \
   src/rzz/dohledcesty.h \
