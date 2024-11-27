@@ -103,7 +103,7 @@ bool Tvoliciskupina::evaluate()
 {
     mtbOutProbihaVolba.setValueBool(probihaVolba);
 
-    if (mtbInRuseniVolby.value() && !tlacitkaAktivni.isEmpty()) {
+    if (mtbInRuseniVolby.value() && (!tlacitkaAktivni.isEmpty() || probihaVolba)) {
         // stisknuté tlačítko RV - rušení volby cesty
         log(QString("cesty: rušení volby"), logging::LogLevel::Info);
         ruseniVolbyCesty();
