@@ -59,7 +59,7 @@ TRZZ71::TRZZ71(QObject *parent)
     rQTV = false;
     rD3V = false;
 
-    cfgVybav = true;
+    cfgVybav = false;
 
     simul_puls_timer.setInterval(50);
     simul_puls_timer.setSingleShot(true);
@@ -364,14 +364,16 @@ void TRZZ71::init()
                 }
                 if (lineparam.count() > 0) {
                     QString lastBlokName = lineparam[0];
-                    pBlok = Tblok::findBlokByName(lastBlokName);
-                    if (!pBlok) log(QString("rzz: blok %1 nemuže najít související blok \"%2\"").arg(name).arg(lastBlokName), logging::LogLevel::Error);
-                    if (pBlok) {
-                        pBlokV->predBlok = pBlok;
-                        if ((pBlok->typ == Tblok::btV) && (lineparam.count() > 1)) {
-                            pBlokV->predBlokMinus = (lineparam[1] == "-");
-                        }
-                    };
+                    if ((lastBlokName != "") && (lastBlokName != "_")) {
+                        pBlok = Tblok::findBlokByName(lastBlokName);
+                        if (!pBlok) log(QString("rzz: blok %1 nemuže najít související blok \"%2\"").arg(name).arg(lastBlokName), logging::LogLevel::Error);
+                        if (pBlok) {
+                            pBlokV->predBlok = pBlok;
+                            if ((pBlok->typ == Tblok::btV) && (lineparam.count() > 1)) {
+                                pBlokV->predBlokMinus = (lineparam[1] == "-");
+                            }
+                        };
+                    }
                     if (lineparam.count() > 2) {
                         // slave blok
                         pBlokVmaster = static_cast<TblokV*>(Tblok::findBlokByName(lineparam[2]));
@@ -381,7 +383,9 @@ void TRZZ71::init()
                             pBlokVmaster->rezimMaster = true;
                             pBlokVmaster->dvojceBlok = pBlokV;
                         } else {
-                            log(QString("rzz: blok %1 nemuže najít dvojici \"%2\"").arg(name).arg(lineparam[2]), logging::LogLevel::Error);
+                            if ((lineparam[2] != "") && (lineparam[2] != "_")) {
+                                log(QString("rzz: blok %1 nemuže najít dvojici \"%2\"").arg(name).arg(lineparam[2]), logging::LogLevel::Error);
+                            }
                         }
                     }
                 }
@@ -451,7 +455,7 @@ void TRZZ71::init()
                     pBlok = Tblok::findBlokByName(tlacitkoName);
                     if (pBlok) {
                         if (pBlok->typ == Tblok::btTC) {
-                            pBlokPN->navestidlo = static_cast<TblokQ*>(pBlok);
+                            pBlokPN->tlacitkoUNavestidla = static_cast<TblokTC*>(pBlok);
                         } else {
                             log(QString("rzz: blok PN_%1 nemuže najít související tlačítko, \"%2\" není tlačítko").arg(name).arg(tlacitkoName), logging::LogLevel::Error);
                         }

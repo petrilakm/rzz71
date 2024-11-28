@@ -2,6 +2,7 @@
 
 TblokPN::TblokPN() {
     typ = btPN;
+    name="-";
     for (int i = 0; i < RELAY_COUNT_PN; ++i) {
         r.append(false);
     }
@@ -9,6 +10,8 @@ TblokPN::TblokPN() {
     tim = new QTimer(this);
     tim->setSingleShot(true);
     connect(tim, &QTimer::timeout, this,  &TblokPN::on_tim);
+    tlacitkoUNavestidla = nullptr;
+    navestidlo = nullptr;
 }
 
 bool TblokPN::evaluate()
@@ -42,6 +45,8 @@ bool TblokPN::evaluate()
             log(QString("PN: počítadlo start"), logging::LogLevel::Debug);
             mtbOut[mtbOutPocitadlo].setValueBool(true);
             tim->start(800);
+        } else {
+            log(QString("PN: nemáme návestidlo na PN !"), logging::LogLevel::Warning);
         }
     }
 

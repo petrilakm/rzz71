@@ -13,7 +13,7 @@ bool TblokTC::evaluate()
     QList<bool> rLast = r;
     
     bool mtbVolba = mtbIns[mtbInVolba].value();
-    bool mtbZrus  = mtbIns[mtbInRuseni].value() && !r[rel::BR];
+    bool mtbZrus  = mtbIns[mtbInRuseni].value();
     bool platnaVolba = false;
     if (mtbVolba && !r[TZ] && !r[VA] && !mtbVolbaOpak && !r[PO] && !r[NM]) {
         mtbVolbaOpak = true;
@@ -24,7 +24,7 @@ bool TblokTC::evaluate()
     if (!mtbVolba) {
         mtbVolbaOpak = false;
     }
-    if (mtbZrus && !r[NM]) {
+    if (mtbZrus && !r[rel::NM] & !r[rel::BR]) {
         //r[TZ] = false;
         log("blokTC: vytažení tlačítka", logging::LogLevel::Debug);
         platnaVolba = voliciskupina.vstupZmena(this, false);
