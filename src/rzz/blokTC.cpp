@@ -24,7 +24,7 @@ bool TblokTC::evaluate()
     if (!mtbVolba) {
         mtbVolbaOpak = false;
     }
-    if (mtbZrus && !r[rel::NM] & !r[rel::BR]) {
+    if (mtbZrus && !r[rel::NM] && !r[rel::BR]) {
         //r[TZ] = false;
         log("blokTC: vytažení tlačítka", logging::LogLevel::Debug);
         platnaVolba = voliciskupina.vstupZmena(this, false);

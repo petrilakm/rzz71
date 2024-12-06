@@ -540,6 +540,7 @@ void TdohledCesty::evaluate()
                 d->povelVAzapnout();
                 // posun do dalšího stavu
                 log(QString("dohled: cesta č. %1 změna stavu %2-%3").arg(d->num).arg(stavCesty2QString(d->stav)).arg(stavCesty2QString(scStavime)), logging::LogLevel::Commands);
+                voliciskupina.probihaVolba = false; // volící skupina je připravena na další volbu
                 d->stav = scStavime;
 
             }
@@ -555,7 +556,6 @@ void TdohledCesty::evaluate()
             // povel pro zrušení od volící skupiny
             if (voliciskupina.mtbInRuseniVolby.value()) {
                 cestyNaSmazani.append(d);
-                voliciskupina.probihaVolba = false;
                 d->povelVAvypnout(); // nezapomenou vypnout VA !
                 stavOK = false;
             }
@@ -563,7 +563,6 @@ void TdohledCesty::evaluate()
             if (stavOK) {
                 // cesta se posune do dalšího stavu
                 log(QString("dohled: cesta č. %1 změna stavu %2-%3").arg(d->num).arg(stavCesty2QString(d->stav)).arg(stavCesty2QString(scZavery)), logging::LogLevel::Commands);
-                voliciskupina.probihaVolba = false;
                 d->stav = scZavery;
             }
 
@@ -711,10 +710,12 @@ void TdohledCesty::evaluate()
                 cestyNaSmazani.append(d);
             } else {
                 // zrušit cesty, při stisku tlačítka RC
+                /*
                 for(cestaPodDohledem *rc : cestyNaVybaveni) {
                     cestyNaSmazani.append(rc); // označit na zrušení
                     cestyNaVybaveni.removeAll(rc); // odebrat ze seznamu
                 }
+                */
             }
             break;
         case scRC: // RC
@@ -727,10 +728,23 @@ void TdohledCesty::evaluate()
             c->Navestidlo->navestniZnak = 0;
             c->Navestidlo->r[TblokQ::N] = false;
             if (d->kontrolaZavery(false)) {
-                log(QString("dohled: cesta č. %1 zrušena po kouskách").arg(d->num), logging::LogLevel::Commands);
+                log(QString("dohled: cesta č. %1 se rozpadla, nutné NUZ").arg(d->num), logging::LogLevel::Commands);
                 cestyNaSmazani.append(d);
             }
             break;
+        }
+    }
+    // vybaví určené cesty
+    for(cestaPodDohledem *d : cestyNaVybaveni) {
+        if (d->stav >= scProjeto) {
+            log(QString("dohled: cesta č. %1 rušení závěrů").arg(d->num), logging::LogLevel::Commands);
+            for(Tblok *bl : c->bloky) {
+                if (bl->typ == Tblok::btS) {
+                    static_cast<TblokS *>(bl)->r[TblokS::rel::Z] = false;
+                }
+            }
+            log(QString("dohled: cesta č. %1 zrušit").arg(d->num), logging::LogLevel::Commands);
+            cestyNaSmazani.append(d);
         }
     }
     // smaže cesty, co už nejsou cestami

@@ -9,6 +9,7 @@
 #include "rzz/blokEMZ.h"
 #include "rzz/blokRC.h"
 #include "rzz/blokTS.h"
+#include "rzz/blokOs.h"
 //#include "rzz/blokQ.h"
 #include "rzz/voliciskupina.h"
 #include "rzz/dohledcesty.h"
@@ -20,6 +21,7 @@ bool rQTV; // NUZ, probíhá měření času
 bool rD3V; // NUZ, odměřeno, ruší se závěry
 bool rZ5C, rD5C, rQTC;
 bool rBlik50;
+bool rNavNoc;
 
 bool cfgVybav;
 
@@ -218,6 +220,7 @@ void TRZZ71::init()
     TblokEMZ *pBlokEMZ;
     TblokRC *pBlokRC;
     TblokTS *pBlokTS;
+    TblokOs *pBlokOs;
 
     // načtě bloky ze souboru
     QStringList linelist;
@@ -531,6 +534,19 @@ void TRZZ71::init()
                 }
                 log(QString("rzz: načten blok TS_%1").arg(name), logging::LogLevel::Debug);
                 bl.append(static_cast<Tblok*>(pBlokTS));
+            }
+            if (type == "Os") {
+                // blokOs - Osvetlení nebo obecný vstup/výstup
+                pBlokOs = new TblokOs();
+                pBlokOs->name = name;
+                for (int i = 0; i < mtbLoadInputs.count(); i++) {
+                    pBlokOs->mtbIns[i] = mtbLoadInputs[i];
+                }
+                for (int i = 0; i < mtbLoadOutputs.count(); i++) {
+                    pBlokOs->mtbOut[i] = mtbLoadOutputs[i];
+                }
+                log(QString("rzz: načten blok Os_%1").arg(name), logging::LogLevel::Debug);
+                bl.append(static_cast<Tblok*>(pBlokOs));
             }
         }
     }

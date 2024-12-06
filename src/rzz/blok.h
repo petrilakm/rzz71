@@ -13,7 +13,7 @@ class Tblok : public QObject
 public:
     Tblok();
 
-    enum bloktyp {btNULL, btTC, btPr, btEMZ, btV, btS, btK, btQ, btSimV, btPN, btTS, btRC};
+    enum bloktyp {btNULL, btTC, btPr, btEMZ, btV, btS, btK, btQ, btSimV, btPN, btTS, btRC, btOs};
 
     virtual bool evaluate(); // if change return true
 

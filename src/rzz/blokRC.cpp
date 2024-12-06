@@ -21,6 +21,7 @@ bool TblokRC::evaluate()
                 r[rel::EV] = true;
                 if (mtbIns[mtbInRC].value()) {
                     // stisknuté tlačítko
+                    r[rel::EV] = false;
                     if (!dohledCesty.cestyNaVybaveni.contains(c)) {
                         dohledCesty.cestyNaVybaveni.append(c);
                     }

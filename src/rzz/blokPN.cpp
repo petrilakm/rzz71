@@ -20,6 +20,7 @@ bool TblokPN::evaluate()
     // logika
     bool povelkPN = false;
     bool pouzijTC = (tlacitkoUNavestidla != nullptr);
+    bool tlacNavState = false;
 
     // přečte stav vstupu
     povelkPN = mtbIns[mtbInPN].value();
@@ -27,11 +28,9 @@ bool TblokPN::evaluate()
     // logika bloku PN
     if (pouzijTC) {
         tlacitkoUNavestidla->r[TblokTC::rel::BR] = povelkPN;
-        if (povelkPN) {
-            r[rel::PN] = tlacitkoUNavestidla->mtbIns[TblokTC::mtbeIns::mtbInRuseni].value();
-        } else {
-            r[rel::PN] = false;
-        }
+        tlacNavState = tlacitkoUNavestidla->mtbIns[TblokTC::mtbeIns::mtbInRuseni].value();
+        if (povelkPN && (tlacNavState)) r[rel::PN] = true;
+        if (!tlacNavState)  r[rel::PN] = false;
     } else {
         r[rel::PN] = povelkPN;
     }
