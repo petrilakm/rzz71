@@ -26,6 +26,8 @@ bool TblokV::evaluate()
 {
     QList<bool> rLast = r;
     bBlikUsed = false;
+    //
+    simulace = cfgSimulV;
     // logika
     // vstupy z MTB
     if (rezimSlave) {

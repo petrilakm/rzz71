@@ -27,7 +27,7 @@ bool TblokPN::evaluate()
 
     // logika bloku PN
     if (pouzijTC) {
-        tlacitkoUNavestidla->r[TblokTC::rel::BR] = povelkPN;
+        tlacitkoUNavestidla->r[TblokTC::rel::BR] = povelkPN || r[rel::PN];
         tlacNavState = tlacitkoUNavestidla->mtbIns[TblokTC::mtbeIns::mtbInRuseni].value();
         if (povelkPN && (tlacNavState)) r[rel::PN] = true;
         if (!tlacNavState)  r[rel::PN] = false;

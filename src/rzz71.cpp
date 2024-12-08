@@ -24,6 +24,7 @@ bool rBlik50;
 bool rNavNoc;
 
 bool cfgVybav;
+bool cfgSimulV; // sumulace přestavníku v bloku V
 
 TRZZ71::TRZZ71(QObject *parent)
     : QObject{parent}
@@ -62,6 +63,7 @@ TRZZ71::TRZZ71(QObject *parent)
     rD3V = false;
 
     cfgVybav = false;
+    cfgSimulV = false;
 
     simul_puls_timer.setInterval(50);
     simul_puls_timer.setSingleShot(true);
@@ -356,9 +358,9 @@ void TRZZ71::init()
                 // blokV - výhybka
                 pBlokV = new TblokV();
                 pBlokV->name = name;
-                if (type == "simV") {
-                    pBlokV->simulace = true;
-                }
+                //if (type == "simV") {
+                //    pBlokV->simulace = true;
+                //}
                 for (int i = 0; i < mtbLoadInputs.count(); i++) {
                     pBlokV->mtbIns[i] = mtbLoadInputs[i];
                 }
@@ -548,6 +550,17 @@ void TRZZ71::init()
                 log(QString("rzz: načten blok Os_%1").arg(name), logging::LogLevel::Debug);
                 bl.append(static_cast<Tblok*>(pBlokOs));
             }
+            if (type == "config") {
+                if (mtbLoadInputs.count() >= 4) {
+                    pinConfig1 = mtbLoadInputs[0];
+                    pinConfig2 = mtbLoadInputs[1];
+                    pinConfig3 = mtbLoadInputs[2];
+                    pinConfig4 = mtbLoadInputs[3];
+                }
+                for (int i = 0; i < mtbLoadInputs.count(); i++) {
+                    pBlokOs->mtbIns[i] = mtbLoadInputs[i];
+                }
+            }
         }
     }
 
@@ -683,6 +696,10 @@ void TRZZ71::oneval()
         ret |= b->bBlikUsed;
     }
     pinOutKmitac.setValueBool(ret);
+
+    // čte nastavení
+    cfgVybav = pinConfig1.value();
+    cfgSimulV = pinConfig2.value();
 
     //spočítíme přestavný proud
     prestavnyProud = 0;

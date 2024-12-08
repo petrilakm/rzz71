@@ -109,6 +109,7 @@ extern bool rNavNoc; // noční návestidla
 
 // konfigurace
 extern bool cfgVybav; // vybavování závěrů průjezdem vlaku
+extern bool cfgSimulV; // sumulace přestavníku v bloku V
 
 class Tblok;
 extern QList<Tblok *> bl;
