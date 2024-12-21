@@ -573,6 +573,12 @@ void TdohledCesty::evaluate()
             stavOK &= d->kontrolaZavery(false);
             if (d->upoZavery.length() > 0) d->upo.append(d->upoZavery);
             if (d->upoPolohy.length() > 0) d->upo.append(d->upoPolohy);
+            // povel pro zrušení od volící skupiny - stále můžeme
+            if (voliciskupina.mtbInRuseniVolby.value()) {
+                cestyNaSmazani.append(d);
+                d->povelVAvypnout(); // nezapomenou vypnout VA !
+                stavOK = false;
+            }
             if (stavOK) {
                 // úseky jsou volné a nemají závěr z jiné cesty
                 log(QString("dohled: provedeme závěr celé cesty číslo %1").arg(d->num), logging::LogLevel::Commands);

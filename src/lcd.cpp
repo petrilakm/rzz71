@@ -56,27 +56,12 @@ Tlcd::~Tlcd()
 
 void Tlcd::on_tim()
 {
+    // uloží starou verzi
     QByteArray old_buf[40];
     for(int i=0; i<40; i++) {
         old_buf[i] = lcd_buffer[i];
     }
-    int linecur = 1;
-    QString line;
-    for (TdohledCesty::cestaPodDohledem *cpd : dohledCesty.cestyPostavene) {
-        QString cestaName = QString("%1_%2").arg(cpd->pCesta->tlacitka[0]->name).arg(cpd->pCesta->tlacitka[1]->name);
-        line = QString("%1 > %2").arg(cestaName).arg(dohledCesty.stavCesty2QString(cpd->stav));
-        lcd_buffer[linecur] = line.left(20).toLatin1();
-        linecur++;
-        for (QString upo1 : cpd->upo) {
-            line = tr("UPO %1").arg(upo1);
-            lcd_buffer[linecur] = line.left(20).toLatin1();
-            linecur++;
-        }
-    }
-    // clear remaining lines, if any
-    for (int i = linecur; i<4; i++) {
-        lcd_buffer[i] = " ";
-    }
+    // sestavý 1. řádek - důležitá oznámení
     if (rzz != nullptr) {
         // zobrazení časových souborů
         lcd_buffer[0] = "";
@@ -97,24 +82,48 @@ void Tlcd::on_tim()
             lcd_buffer[0] = QString("T5C = ").toLatin1() + QString::number(rem / 1000).toLatin1() + QString(" ").toLatin1();
         }
 
-        // zkrat (má přednost, proto na konec
-        if (rZkrat) lcd_buffer[0] = tr("!! ZKRAT !! ZKRAT !!").left(20).toLatin1();
+        // zkrat (má přednost, proto na konec)
+        if (rDCCVypadek) lcd_buffer[0] = tr("!!  VYPADEK DCC   !!").left(20).toLatin1();
+        if (rDCCZkrat) lcd_buffer[0] =   tr("!! ZKRAT !! ZKRAT !!").left(20).toLatin1();
     } else {
         lcd_buffer[0] = " --- ";
     }
 
+    // zjistí, zda je něco na 1. řádku
+    int linecur = 1;
+    if (lcd_buffer[0] == "") linecur = 0;
 
+    // sestavý informace o cestách
+    QString line;
+    for (TdohledCesty::cestaPodDohledem *cpd : dohledCesty.cestyPostavene) {
+        QString cestaName = QString("%1_%2").arg(cpd->pCesta->tlacitka[0]->name).arg(cpd->pCesta->tlacitka[1]->name);
+        line = QString("%1 > %2").arg(cestaName).arg(dohledCesty.stavCesty2QString(cpd->stav));
+        lcd_buffer[linecur] = line.left(20).toLatin1();
+        linecur++;
+        for (QString upo1 : cpd->upo) {
+            line = tr("UPO %1").arg(upo1);
+            lcd_buffer[linecur] = line.left(20).toLatin1();
+            linecur++;
+        }
+    }
+    // clear remaining lines, if any
+    for (int i = linecur; i<4; i++) {
+        lcd_buffer[i] = " ";
+    }
 
+    // detekuje změnu na LCD
     bool same=true;
     for(int i=0; i<20; i++) {
         if (old_buf[i] != lcd_buffer[i]) same = false;
     }
 
+    // při změně se odešlou data do LCD
     if (!same) redraw();
 }
 
 void Tlcd::redraw()
 {
+    // zobrazí LCD v logu
     log("lcd: redraw", logging::LogLevel::Info);
     for(int i=0; i<4; i++) {
         QString line = QString("lcd: *%1").arg(lcd_buffer[i]);
@@ -122,6 +131,7 @@ void Tlcd::redraw()
         line.append(QString("*"));
         log(line, logging::LogLevel::Info);
     }
+    // pokud jsme na linuxu, tak odešle do skutečného LCD
 #ifndef Q_OS_WIN
     if (use_lcd) {
         QByteArray tmp;

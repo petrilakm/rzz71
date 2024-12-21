@@ -15,7 +15,8 @@
 #include "rzz/dohledcesty.h"
 
 bool rKPV;
-bool rZkrat;
+bool rDCCZkrat;
+bool rDCCVypadek;
 bool rZ3V; // NUZ, je něco vybráno
 bool rQTV; // NUZ, probíhá měření času
 bool rD3V; // NUZ, odměřeno, ruší se závěry
@@ -57,7 +58,8 @@ TRZZ71::TRZZ71(QObject *parent)
     connect(&t5C, SIGNAL(timeout()), this, SLOT(ont5C()));
 
     rKPV = false;
-    rZkrat = false;
+    rDCCZkrat = false;
+    rDCCVypadek = false;
     rZ3V = false;
     rQTV = false;
     rD3V = false;
@@ -655,7 +657,8 @@ void TRZZ71::oneval()
     //log(QString("rzz: eval"), logging::LogLevel::Info);
     timer.start();
     // zkrat zesilovače - výpadek DCC
-    rZkrat = pinInZkrat.value();
+    rDCCZkrat = pinInDCCZkrat.value();
+    rDCCVypadek = pinInDCCVypadek.value();
     // KPV
     rKPV = pinInKPV.value();
     // NUZ

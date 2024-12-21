@@ -136,7 +136,6 @@ void tcpsocket::readyRead()
                             emit getModuleStateIn(lvl2);
                         }
                     }
-
                 }
             }
         }

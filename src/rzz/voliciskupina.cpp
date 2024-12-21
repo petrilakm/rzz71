@@ -76,6 +76,7 @@ bool Tvoliciskupina::vstupZmena(TblokTC *p, bool state)
         }
         return ret;
     } else {
+        // vytačení tlačítka
         if (!tlacitkaAktivni.isEmpty()) {
             if (tlacitkaAktivni.indexOf(p) >= 0) {
                 p->r[TblokTC::TZ] = false;

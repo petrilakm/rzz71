@@ -99,7 +99,8 @@ public:
 //typedef struct Tmtbpin mtbpin;
 
 extern bool rKPV; // kontrola polohy výměn
-extern bool rZkrat; // zkrat na zesilovači (vypadek DCC)
+extern bool rDCCZkrat; // zkrat na zesilovači (vypadek DCC)
+extern bool rDCCVypadek;
 extern bool rRV; // rušení volby
 extern bool rZ3V; // NUZ, je něco vybráno
 extern bool rQTV; // NUZ, probíhá měření času

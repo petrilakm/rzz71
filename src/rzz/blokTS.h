@@ -12,25 +12,35 @@ public:
 
     enum mtbeIns {
         mtbInObsaz = 0,
-        mtbInZadost = 1,
+        mtbInSouhlasUdeleni = 1,
+        mtbInSouhlasZruseni = 2,
+        mtbInOdhlaska = 3,
+        mtbInVzdaleneSouhlasUdeleni = 4,
+        mtbInVzdaleneSouhlasZruseni = 5,
+        mtbInVzdaleneOdhlaska = 6
     };
     enum mtbeOut {
-        mtbOutScom = 0,
-        mtbOutMakHorniZluta = 1,
-        mtbOutMakZelena = 2,
-        mtbOutMakCervena = 3,
-        mtbOutMakBila = 4,
-        mtbOutMakDNVC = 5,
+        mtbOutUsekBila = 0,
+        mtbOutUsekRuda = 1,
+        mtbOutVolnost = 2,
+        mtbOutSouhlasUdeleni = 3,
+        mtbOutSouhlasPrijeti = 4,
+        mtbOutOdhlaska = 5,
+        mtbOutVzdaleneVolnost = 6,
+        mtbOutVzdaleneSouhlasUdeleni = 7,
+        mtbOutVzdaleneSouhlasPrijeti = 8,
+        mtbOutVzdaleneOdhlaska = 9
     };
 
     bool evaluate() override;
 
-    enum rel {VT,SA,SB};
-    #define RELAY_COUNT_TS (3)
+    enum rel {VT,SA,SB,EV,EO};
+    #define RELAY_COUNT_TS (5)
     // VT - volnost tratě
     // SA - souhlas A
     // SB - souhlas B
     // EV - evidence vjezdu do stanice
+    // EO - evidence odjezdu
 
 };
 

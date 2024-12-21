@@ -50,7 +50,8 @@ private:
     mtbpin pinInNUZ;
     mtbpin pinOutNUZ;
     mtbpin pinOutKmitac;
-    mtbpin pinInZkrat;
+    mtbpin pinInDCCZkrat;
+    mtbpin pinInVypadek;
     Tblok* findBlokByName(QString name);
 
 signals:
