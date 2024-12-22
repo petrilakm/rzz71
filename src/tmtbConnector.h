@@ -52,6 +52,7 @@ signals:
 public slots:
     void subscribeModule(int addr);
     void setOutput(int addr, int pin, int state); // send to MTB
+    void setOutputScom(int addr, int pin, int state); // send to MTB
 
 private slots:
     // timer

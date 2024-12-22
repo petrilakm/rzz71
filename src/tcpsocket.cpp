@@ -288,6 +288,31 @@ void tcpsocket::setServoOuts(int module, int servo, int state)
     sendJson(tmpObj);
 }
 
+void tcpsocket::setOutputsSCOM(int module, int port, int state)
+{
+    QJsonObject tmpOut;
+    QJsonObject tmpOutOne;
+
+    log(QString("socket: nastav S-Com výstup %1/%2 = %3").arg(module).arg(port).arg(state), logging::LogLevel::Debug);
+
+    tmpOutOne["type"] = QJsonValue("s-com");
+    tmpOutOne["value"] = QJsonValue(state);
+    tmpOut[QString::number(port)] = tmpOutOne;
+
+    QJsonObject tmpObj;
+    tmpObj["type"] = "request";
+
+    tmpObj["id"] = QJsonValue(this->id++);
+    tmpObj["command"] = QJsonValue("module_set_outputs");
+    tmpObj["address"] = QJsonValue(module);
+    tmpObj["outputs"] = tmpOut;
+    //tmpObj["state"] = QJsonValue(false);
+
+    sendJson(tmpObj);
+    return;
+}
+
+
 void tcpsocket::setServoManual(int module, int servo, uint8_t position)
 {
     // main json

@@ -123,6 +123,21 @@ void TmtbConnector::setOutput(int addr, int pin, int state)
             logging::LogLevel::Debug);
         tcpSocket.setOutputs(addr, pin, state);
     } else {
-        log(QString("mtb: není připojeno, výstup %1/%2 = %3").arg(addr).arg(pin).arg(state), logging::LogLevel::Warning);
+        log(QString("mtb%1: není připojeno, výstup %2/%3 = %4").arg(num).arg(addr).arg(pin).arg(state), logging::LogLevel::Warning);
+    }
+}
+
+void TmtbConnector::setOutputScom(int addr, int pin, int state)
+{
+    if (tcpSocket.isConnected) {
+        log(QString("mtb%1: pokus o nastavení Scom výstupu %2/%3 = %4")
+                .arg(num)
+                .arg(addr)
+                .arg(pin)
+                .arg(state),
+            logging::LogLevel::Debug);
+        tcpSocket.setOutputsSCOM(addr, pin, state);
+    } else {
+        log(QString("mtb%1: není připojeno, výstup %2/%3 = %4").arg(num).arg(addr).arg(pin).arg(state), logging::LogLevel::Warning);
     }
 }

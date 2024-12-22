@@ -22,6 +22,7 @@ public:
     void getModuleList();
     void getModuleInfo(int module);
     void setOutputs(int module, int port, int state);
+    void setOutputsSCOM(int module, int port, int state);
     void getOutputs(int module);
     void subscribeModule(int addr);
     void unsubscribeModule(int arrd);

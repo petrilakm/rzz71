@@ -36,7 +36,7 @@ bool TblokQ::evaluate()
     mtbOut[mtbOutMakCervena].setValueBool(bC);
     mtbOut[mtbOutMakBila].setValueBool(bB);
     mtbOut[mtbOutMakDNVC].setValueBool(bDN);
-    mtbOut[mtbOutScom].setValue(navestniZnak);
+    mtbOut[mtbOutScom].setValueScom(navestniZnak);
 
     if (r != rLast) return true; else return false;
 }

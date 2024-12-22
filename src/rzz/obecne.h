@@ -76,6 +76,22 @@ public:
             }
         }
     }
+    void setValueScom(uint8_t val) {
+        if (!valid) return;
+        if (this->addr > 100) {
+            /*
+            if (mtb_stanice.module[this->addr-100].outputs[pin] != val) {
+                mtb_stanice.module[this->addr-100].outputs[pin] = val;
+                mtb_stanice.setOutput(this->addr-100, pin, val);
+            }
+            */
+        } else {
+            if (mtb.module[addr].outputs[pin] != val) {
+                mtb.module[addr].outputs[pin] = val;
+                mtb.setOutputScom(addr, pin, val);
+            }
+        }
+    }
     void setValueBool(bool valbool) {
         if (!valid) return;
         uint8_t val = (valbool) ? 1 : 0;
