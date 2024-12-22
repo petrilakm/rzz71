@@ -738,12 +738,7 @@ void TdohledCesty::evaluate()
                 cestyNaSmazani.append(d);
             } else {
                 // zrušit cesty, při stisku tlačítka RC
-                /*
-                for(cestaPodDohledem *rc : cestyNaVybaveni) {
-                    cestyNaSmazani.append(rc); // označit na zrušení
-                    cestyNaVybaveni.removeAll(rc); // odebrat ze seznamu
-                }
-                */
+                // blok RC vyřeší zbytek
             }
             break;
         case scRC: // RC
