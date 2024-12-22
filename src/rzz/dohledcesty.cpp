@@ -473,6 +473,7 @@ void TdohledCesty::evaluate()
     cestyNaSmazani.clear();
     TblokK *pBlokK;
     TblokV *pBlokV;
+    TblokS *pBlokS;
     TblokEMZ *pBlokEMZ;
     bool stavOK;
     bool obs1 = false;
@@ -665,16 +666,34 @@ void TdohledCesty::evaluate()
                     }
                 }
             } else {
-                if (c->Navestidlo) {
-                    c->Navestidlo->navestniZnak = 0;
-                    c->Navestidlo->r[TblokQ::N] = false;
+                if (!(c->posun)) {
+                    if (c->Navestidlo) {
+                        c->Navestidlo->navestniZnak = 0;
+                        c->Navestidlo->r[TblokQ::N] = false;
+                        log(QString("dohled: cesta č. %1 zhoď návěstidlo %2").arg(d->num).arg(c->Navestidlo->name), logging::LogLevel::Commands);
+                    }
                 }
                 log(QString("dohled: cesta č. %1 změna stavu %2-%3").arg(d->num).arg(stavCesty2QString(d->stav)).arg(stavCesty2QString(scPrujezdVlaku)), logging::LogLevel::Commands);
                 d->stav = scPrujezdVlaku;
             }
             break;
         case scPrujezdVlaku:
-            // ToDo: dodělat logiku čela a koncevlaku
+            // shození návestidla pro posunovou cestu
+            if ((c->posun)) {
+                if (c->Navestidlo && (c->Navestidlo->navestniZnak != 0)) {
+                    if (c->bloky[0]) {
+                        if (c->bloky[0]->typ == Tblok::btS) {
+                            pBlokS = static_cast<TblokS *>(c->bloky[0]);
+                            if (pBlokS->r[TblokS::rel::Z] == false) {
+                                c->Navestidlo->navestniZnak = 0;
+                                c->Navestidlo->r[TblokQ::N] = false;
+                                log(QString("dohled: cesta č. %1 zhoď seřaďovací návěstidlo %2").arg(d->num).arg(c->Navestidlo->name), logging::LogLevel::Commands);
+                            }
+                        }
+                    }
+
+                }
+            }
             // pokud nejsme na konci, hýbene s čelem vlaku
             if (d->vlakCelo < c->bloky.count()) {
                 obs1 = c->zjistiObsazeni(d->vlakCelo);
@@ -684,12 +703,14 @@ void TdohledCesty::evaluate()
                         d->vlakEvidenceCelo = true;
                     }
                     d->vlakCelo++;
+                    log(QString("dohled: cesta č. %1 čelo vlaku +1 = %2").arg(d->num).arg(d->vlakCelo), logging::LogLevel::Debug);
                 }
             }
 
             // inicializace konce při průjezdu
-            if (d->vlakCelo == 0) {
+            if ((d->vlakCelo == 0) && (d->vlakKonec == -1)) {
                 d->vlakKonec = 0;
+                log(QString("dohled: cesta č. %1 konec vlaku inicializace").arg(d->num), logging::LogLevel::Debug);
             }
 
             // pokud nejsme na konci, hýbene s koncem vlaku
@@ -702,11 +723,12 @@ void TdohledCesty::evaluate()
                         c->uvolniZaver(d->vlakKonec);
                     }
                     d->vlakKonec++;
+                    log(QString("dohled: cesta č. %1 konec vlaku +1 = %2").arg(d->num).arg(d->vlakKonec), logging::LogLevel::Debug);
                 }
             }
 
             if ((d->vlakCelo == c->bloky.count()) && ((d->vlakKonec+1) == c->bloky.count())) {
-                log(QString("dohled: cesta č. %1 změna stavu %2-%3").arg(d->num).arg(stavCesty2QString(d->stav)).arg(stavCesty2QString(scProjeto)), logging::LogLevel::Commands);
+                log(QString("dohled: cesta č. %1 změna stavu %2-%3").arg(d->num).arg(stavCesty2QString(d->stav)).arg(stavCesty2QString(scProjeto)), logging::LogLevel::Debug);
                 d->stav = scProjeto;
             }
             break;

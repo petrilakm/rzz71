@@ -15,7 +15,11 @@ bool TblokK::evaluate()
     QList<bool> rLast = r;
     // logika
 
-    r[J] = mtbIns[mtbInObsaz].value();
+    if (mtbIns[mtbInObsaz].valid) {
+        r[J] = mtbIns[mtbInObsaz].value();
+    } else {
+        r[J] = true;
+    }
 
     bool bBila         = (!r[J]) && (r[X1] || r[X2]);
     bool bCervenaKraj  = ( r[J]) && (r[X1] || r[X2]);
