@@ -31,8 +31,8 @@ void TmtbConnector::loadConfig(const QJsonObject& config, int servernum) {
     const QJsonObject serverConfig = config["server"+QString::number(servernum)].toObject();
     this->serverHost = serverConfig["host"].toString();
     this->serverPort = serverConfig["port"].toInt();
-    log(QString("%1: připojení k daemonu na %2:%3")
-            .arg(num)
+    log(QString("připojení k MTB daemonu %1 na %2:%3")
+            .arg(servernum)
             .arg(this->serverHost)
             .arg(this->serverPort),
         logging::LogLevel::Info);

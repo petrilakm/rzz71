@@ -293,7 +293,8 @@ void TRZZ71::init()
                 lineparam.clear();
             }
             if (type == "zkrat") {
-                pinInZkrat = mtbLoadInputs[0];
+                pinInDCCZkrat = mtbLoadInputs[0];
+                pinInDCCVypadek = mtbLoadInputs[1];
             }
             if (type == "KPV") {
                 pinInKPV = mtbLoadInputs[0];
@@ -558,9 +559,6 @@ void TRZZ71::init()
                     pinConfig2 = mtbLoadInputs[1];
                     pinConfig3 = mtbLoadInputs[2];
                     pinConfig4 = mtbLoadInputs[3];
-                }
-                for (int i = 0; i < mtbLoadInputs.count(); i++) {
-                    pBlokOs->mtbIns[i] = mtbLoadInputs[i];
                 }
             }
         }
