@@ -16,7 +16,9 @@ bool TblokK::evaluate()
     // logika
 
     if (mtbIns[mtbInObsaz].valid) {
-        r[J] = mtbIns[mtbInObsaz].value();
+        if (!(rDCCVypadek || rDCCZkrat)) {
+            r[J] = mtbIns[mtbInObsaz].value();
+        }
     } else {
         r[J] = true;
     }

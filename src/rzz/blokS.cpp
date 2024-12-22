@@ -13,7 +13,14 @@ bool TblokS::evaluate()
     QList<bool> rLast = r;
     // logika
 
-    r[J] = mtbIns[mtbInObsaz].value();
+    if (mtbIns[mtbInObsaz].valid) {
+        if (!(rDCCVypadek || rDCCZkrat)) {
+            r[J] = mtbIns[mtbInObsaz].value();
+        }
+    } else {
+        r[J] = true;
+    }
+
     r[V] |= (mtbIns[mtbInNuz].value() && (r[Z]) && (!rQTV));
     r[V] &= (r[Z]);
     //r[Z] = r[A] || r[B];
