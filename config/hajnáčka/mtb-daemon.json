@@ -1,7 +1,168 @@
 {
     "loglevel": 3,
     "modules": {
-        "010": {
+        "001": {
+            "config": {
+                "inputsDelay": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                ],
+                "outputsSafe": [
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    }
+                ],
+                "servoEnabledMask": 0,
+                "servoPosition": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                ],
+                "servoSpeed": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                ]
+            },
+            "name": "Module 1",
+            "type": 80
+        },
+        "002": {
             "config": {
                 "inputsDelay": [
                     0.1,
@@ -137,26 +298,509 @@
                 ],
                 "servoEnabledMask": 63,
                 "servoPosition": [
-                    30,
-                    200,
-                    30,
-                    200,
-                    30,
-                    200,
-                    30,
-                    200,
-                    30,
-                    200,
-                    30,
-                    200
+                    137,
+                    94,
+                    116,
+                    152,
+                    77,
+                    117,
+                    87,
+                    135,
+                    70,
+                    120,
+                    80,
+                    120
                 ],
                 "servoSpeed": [
-                    50,
-                    50,
-                    50,
-                    50,
-                    50,
-                    50
+                    15,
+                    15,
+                    15,
+                    15,
+                    15,
+                    15
+                ]
+            },
+            "name": "Ram 2",
+            "type": 80
+        },
+        "004": {
+            "config": {
+                "inputsDelay": [
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1
+                ],
+                "outputsSafe": [
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    }
+                ],
+                "servoEnabledMask": 15,
+                "servoPosition": [
+                    84,
+                    126,
+                    120,
+                    80,
+                    70,
+                    123,
+                    113,
+                    80,
+                    80,
+                    120,
+                    80,
+                    120
+                ],
+                "servoSpeed": [
+                    15,
+                    15,
+                    15,
+                    15,
+                    20,
+                    20
+                ]
+            },
+            "name": "Ram 4",
+            "type": 80
+        },
+        "006": {
+            "config": {
+                "inputsDelay": [
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1
+                ],
+                "outputsSafe": [
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    }
+                ],
+                "servoEnabledMask": 15,
+                "servoPosition": [
+                    80,
+                    113,
+                    80,
+                    126,
+                    134,
+                    88,
+                    78,
+                    112,
+                    80,
+                    120,
+                    80,
+                    120
+                ],
+                "servoSpeed": [
+                    15,
+                    15,
+                    15,
+                    15,
+                    20,
+                    20
+                ]
+            },
+            "name": "Ram 6",
+            "type": 80
+        },
+        "010": {
+            "config": {
+                "inputsDelay": [
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1
+                ],
+                "outputsSafe": [
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    }
+                ],
+                "servoEnabledMask": 0,
+                "servoPosition": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                ],
+                "servoSpeed": [
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1
                 ]
             },
             "name": "Module 10",
@@ -1264,26 +1908,26 @@
                 ],
                 "servoEnabledMask": 0,
                 "servoPosition": [
-                    0,
-                    0,
-                    0,
-                    0,
-                    0,
-                    0,
-                    0,
-                    0,
-                    0,
-                    0,
-                    0,
-                    0
+                    80,
+                    120,
+                    80,
+                    120,
+                    80,
+                    120,
+                    80,
+                    120,
+                    80,
+                    120,
+                    80,
+                    120
                 ],
                 "servoSpeed": [
-                    1,
-                    1,
-                    1,
-                    1,
-                    1,
-                    1
+                    20,
+                    20,
+                    20,
+                    20,
+                    20,
+                    20
                 ]
             },
             "name": "Module 17",
@@ -1584,7 +2228,7 @@
                         "value": 0
                     }
                 ],
-                "servoEnabledMask": 1,
+                "servoEnabledMask": 7,
                 "servoPosition": [
                     0,
                     255,
@@ -1600,7 +2244,7 @@
                     0
                 ],
                 "servoSpeed": [
-                    100,
+                    5,
                     1,
                     1,
                     1,
@@ -1609,6 +2253,167 @@
                 ]
             },
             "name": "Module 19",
+            "type": 80
+        },
+        "020": {
+            "config": {
+                "inputsDelay": [
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1
+                ],
+                "outputsSafe": [
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    },
+                    {
+                        "type": "plain",
+                        "value": 0
+                    }
+                ],
+                "servoEnabledMask": 0,
+                "servoPosition": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                ],
+                "servoSpeed": [
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1
+                ]
+            },
+            "name": "Module 20",
             "type": 80
         }
     },
@@ -1628,6 +2433,7 @@
     "server": {
         "allowedClients": [
             "127.0.0.1",
+            "192.168.0.1",
             "192.168.21.11"
         ],
         "host": "0.0.0.0",
