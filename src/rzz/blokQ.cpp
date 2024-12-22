@@ -12,6 +12,7 @@ bool TblokQ::evaluate()
 {
     QList<bool> rLast = r;
     // logika
+    // zpoždění 2s odpadení relé N (pro rušení i nesplnění podmínek)
 
     //r[J] = mtbIns[mtbInObsaz].value();
 

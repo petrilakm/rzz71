@@ -679,6 +679,7 @@ void TdohledCesty::evaluate()
             break;
         case scPrujezdVlaku:
             // shození návestidla pro posunovou cestu
+            // ToDo: jen při obs. úseku před návěstidle, jinak při uvolnění před náv.
             if ((c->posun)) {
                 if (c->Navestidlo && (c->Navestidlo->navestniZnak != 0)) {
                     if (c->bloky[0]) {
@@ -768,6 +769,7 @@ void TdohledCesty::evaluate()
             }
             log(QString("dohled: cesta č. %1 zrušit").arg(d->num), logging::LogLevel::Commands);
             cestyNaSmazani.append(d);
+            cestyNaVybaveni.removeOne(d);
         }
     }
     // smaže cesty, co už nejsou cestami
