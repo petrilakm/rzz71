@@ -6,6 +6,7 @@
 
 class TblokS : public Tblok
 {
+    Q_OBJECT
 public:
     TblokS();
 
@@ -17,11 +18,18 @@ public:
     };
 
     bool evaluate() override;
+    void zrusZaver();
 
     enum rel {Z, V, R, J, U, PrB, PrC};
     #define RELAY_COUNT_S (7)
 
     bool typM;
+
+private:
+    QTimer *zpozdeniReleZ;
+
+private slots:
+    void slotReleZpritah();
 };
 
 #endif // BLOKS_S

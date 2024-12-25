@@ -5,10 +5,20 @@ TblokEMZ::TblokEMZ() {
     for (int i = 0; i < RELAY_COUNT_EMZ; ++i) {
         r.append(false);
     }
+    prvniSpusteni = true;
+    prvniSpusteniPocitadlo = 20;
 }
 
 bool TblokEMZ::evaluate()
 {
+    // blok po startu
+    if (prvniSpusteni) {
+        if (prvniSpusteniPocitadlo == 0) {
+            prvniSpusteni = false;
+        } else {
+            prvniSpusteniPocitadlo--;
+        }
+    }
     QList<bool> rLast = r;
     // logika
 
@@ -17,6 +27,11 @@ bool TblokEMZ::evaluate()
     r[ZP] = true;
     for(int i = 0; i < vym.count(); i++) {
         r[ZP] &= vym[i]->r[TblokV::rel::DP]; // základní poloha = dohled plusu
+    }
+
+    // pokud nemáme polohu, tak se klíč uvolní sám
+    if (!prvniSpusteni) {
+        r[UK] |= !r[ZP];
     }
 
     if (!r[UK]) {

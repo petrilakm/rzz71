@@ -61,15 +61,19 @@ bool TblokV::evaluate()
         }
     }
 
+    // pokud je stavění, nemůže být protilehlá kontrola
+    r[KP] &= !r[SM];
+    r[KM] &= !r[SP];
+
     // stavění výhýbky
-    r[SP] &= !(r[SM] || r[KP] || r[KM]);
+    r[SP] &= !(r[SM] || r[KP]);
     if (rezimSlave) {
         r[SP] |= (dvojceBlok->r[KP] && !dvojceBlok->r[SM]);
     }
     r[SP] |= (r[RP] && !r[J]) || (r[RP] && r[J] && r[RN]) || (!r[RP] && !r[RM] && r[VOP] && !r[J]);
     r[SP] &= !(r[KP] || r[Z] || r[BP]);
 
-    r[SM] &= !(r[SP] || r[KP] || r[KM]);
+    r[SM] &= !(r[SP] || r[KM]);
     if (rezimSlave) {
         r[SM] |= (dvojceBlok->r[KM] && !dvojceBlok->r[SP]);
     }

@@ -34,14 +34,23 @@ public:
 
     bool evaluate() override;
 
-    enum rel {VT,SA,SB,EV,EO};
-    #define RELAY_COUNT_TS (5)
+    enum rel {VT,SA,SB,EV,EO,ImSP,ImSU,ImVT,ImOD,IvSP,IvSU,IvVT,IvOD};
+    #define RELAY_COUNT_TS (13)
     // VT - volnost tratě
     // SA - souhlas A
     // SB - souhlas B
     // EV - evidence vjezdu do stanice
     // EO - evidence odjezdu
+    // ImSP - indikace místní souhlas příjem
+    // ImSU - indikace místní souhlas udělení
+    // ImVT - indikace místní volnost tratě
+    // ImOD - indikace místní odhláška
+    // IvSP - indikace vzdálená souhlas příjem
+    // IvSU - indikace vzdálená souhlas udělení
+    // IvVT - indikace vzdálená volnost tratě
+    // IvOD - indikace vzdálená odhláška
 
+    QTimer *casovacObsluhy;
 };
 
 #endif // BLOKTS_H

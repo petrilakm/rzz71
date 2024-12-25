@@ -6,6 +6,11 @@ TblokS::TblokS() {
     for (int i = 0; i < RELAY_COUNT_S; ++i) {
         r.append(false);
     }
+    // časovač pro zpoždění uvolnění závěru
+    zpozdeniReleZ = new QTimer(this);
+    zpozdeniReleZ->setSingleShot(true);
+    zpozdeniReleZ->setInterval(700);
+    connect(zpozdeniReleZ, SIGNAL(timeout()), this, SLOT(slotReleZpritah()));
 }
 
 bool TblokS::evaluate()
@@ -13,6 +18,7 @@ bool TblokS::evaluate()
     QList<bool> rLast = r;
     // logika
 
+    // obsazení úseku - ošetřen výpadek DCC
     if (mtbIns[mtbInObsaz].valid) {
         if (!(rDCCVypadek || rDCCZkrat)) {
             r[J] = mtbIns[mtbInObsaz].value();
@@ -21,29 +27,37 @@ bool TblokS::evaluate()
         r[J] = true;
     }
 
+    // logika nouzového rušení závěru
     r[V] |= (mtbIns[mtbInNuz].value() && (r[Z]) && (!rQTV));
     r[V] &= (r[Z]);
     //r[Z] = r[A] || r[B];
     if (r[V]) {
         r[R] = (rD3V);
     } else {
-        r[R] = false; // doplnit
+        r[R] = false;
     }
     r[Z] &= !r[R];
-    //r[B] &= !r[R];
 
+    // logika průsvitek bílých
     if ((r[Z])) {
         r[PrB] = !r[J] && ((r[V]) ? rBlik50 : 1);
     } else {
         r[PrB] = !typM && rKPV;
     }
+    // logika průsvitek červených
     r[PrC] = r[J];
 
-
-//    mtbOut[mtbOutCervena].setValueBool(false);
-//    mtbOut[mtbOutBila].setValueBool(false);
-
-
-
     if (r != rLast) return true; else return false;
+}
+
+void TblokS::zrusZaver()
+{
+    if (!(zpozdeniReleZ->isActive())) {
+        zpozdeniReleZ->start();
+    }
+}
+
+void TblokS::slotReleZpritah()
+{
+    r[Z] = false;
 }

@@ -18,7 +18,7 @@ TmtbConnector::TmtbConnector(QObject *parent)
     : QObject{parent}
 {
     connect(&tcpSocket, SIGNAL(getModuleStateIn(QJsonObject)),  this, SLOT(getModuleStateIn(QJsonObject)));
-    connect(&tcpSocket, SIGNAL(getModuleStateOut(QJsonObject)), this, SLOT(getModuleStateOut(QJsonObject)));
+    //connect(&tcpSocket, SIGNAL(getModuleStateOut(QJsonObject)), this, SLOT(getModuleStateOut(QJsonObject)));
     connect(&tcpSocket, SIGNAL(connected()), this, SLOT(getConnected()));
     connect(&tcpSocket, SIGNAL(disconnected()), this, SLOT(getDisconnected()));
     // set reconnect timer
@@ -31,7 +31,7 @@ void TmtbConnector::loadConfig(const QJsonObject& config, int servernum) {
     const QJsonObject serverConfig = config["server"+QString::number(servernum)].toObject();
     this->serverHost = serverConfig["host"].toString();
     this->serverPort = serverConfig["port"].toInt();
-    log(QString("připojení k MTB daemonu %1 na %2:%3")
+    log(QString("nastaven MTB daemon %1 na %2:%3")
             .arg(servernum)
             .arg(this->serverHost)
             .arg(this->serverPort),

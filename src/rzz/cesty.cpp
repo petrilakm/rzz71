@@ -24,7 +24,8 @@ void Tcesta::uvolniZaver(int usek)
 
     Tblok *blok = this->bloky[usek];
     if (blok->typ == Tblok::btS) {
-        static_cast<TblokS *>(blok)->r[TblokS::rel::Z] = false;
+        static_cast<TblokS *>(blok)->zrusZaver(); // aktivace časovače
+        //static_cast<TblokS *>(blok)->r[TblokS::rel::Z] = false;
     }
 }
 

@@ -25,6 +25,9 @@ public:
     // ZP - základní poloha výměn
     // Z - závěr aspon jedné z výměn
 
+    bool prvniSpusteni;
+    int prvniSpusteniPocitadlo;
+
     QList<TblokV*> vym; // výměny ovládané zámkem
     QList<Tblok *> odvratneBloky; // seznam bloků, kterým tento zámek tvoří odvrat
 };
