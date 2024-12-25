@@ -472,7 +472,7 @@ void TRZZ71::init()
                     };
                 }
                 bl.append(static_cast<Tblok*>(pBlokPN));
-                log(QString("rzz: načten blok PN_%1").arg(name), logging::LogLevel::Info);
+                log(QString("rzz: načten blok PN_%1").arg(name), logging::LogLevel::Debug);
             }
             if (type == "EMZ") {
                 // blokEMZ - elektromagnetický zámek - simulovaný

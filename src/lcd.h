@@ -26,6 +26,7 @@ private:
     const QByteArray lcdEscapeChar = QByteArray("\x1b",1);
     const QByteArray lcdEscapeSeq = QByteArray("\x1b[L",3);
     const QByteArray lcdEscapeSeqBase = QByteArray("\x1b[",2);
+    bool firstRun;
 private slots:
     void on_tim();
 };

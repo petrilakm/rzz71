@@ -4,6 +4,7 @@
 #include "rzz71.h"
 #include "rzz/dohledcesty.h"
 #include <QFile>
+#include <QNetworkInterface>
 
 Tlcd::Tlcd(QObject *parent)
     : QObject{parent}
@@ -11,6 +12,8 @@ Tlcd::Tlcd(QObject *parent)
     message_critical = "crit";
     message_warning = "warn";
     message_info = "info";
+
+    firstRun = true;
 
     tim = new QTimer(this);
     tim->setInterval(200);
@@ -40,13 +43,13 @@ Tlcd::Tlcd(QObject *parent)
         }
     }
 #endif
-    // fill buffer with spaces (empty display)
+    // fill buffer with 'x' (empty display)
     for(int i=0; i<(40); i++) {
         for(int j=0; j<(4); j++) {
             lcd_buffer[j].append('x');
         }
     }
-    log(QString("lcd: init"), logging::LogLevel::Info);
+    log(QString("lcd: init"), logging::LogLevel::Debug);
 }
 
 Tlcd::~Tlcd()
@@ -111,6 +114,22 @@ void Tlcd::on_tim()
         lcd_buffer[i] = " ";
     }
 
+    if ((firstRun == true) && (linecur > 0)) {
+        firstRun = false;
+    }
+
+    if (firstRun == true) {
+        //firstRun = false;
+        const QHostAddress &localhost = QHostAddress(QHostAddress::LocalHost);
+        int i = 0;
+        for (const QHostAddress &address: QNetworkInterface::allAddresses()) {
+            if (address.protocol() == QAbstractSocket::IPv4Protocol && address != localhost) {
+                lcd_buffer[i].append(address.toString().toLocal8Bit());
+                i++;
+            }
+        }
+    }
+
     // detekuje změnu na LCD
     bool same=true;
     for(int i=0; i<20; i++) {
@@ -124,7 +143,7 @@ void Tlcd::on_tim()
 void Tlcd::redraw()
 {
     // zobrazí LCD v logu
-    log("lcd: redraw", logging::LogLevel::Info);
+    log("lcd: redraw", logging::LogLevel::Debug);
     for(int i=0; i<4; i++) {
         QString line = QString("lcd: *%1").arg(lcd_buffer[i]);
         line.append(QString(" ").repeated(26-line.length()));
