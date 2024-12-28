@@ -40,6 +40,10 @@ private:
     mtbpin pinConfig3;
     mtbpin pinConfig4;
 
+    mtbpin pinInd5C;
+    mtbpin pinInd1C;
+    mtbpin pinInd3C;
+
     QTimer simul_puls_timer;
     mtbpin simul_puls_pin;
     //QList<mtbpin> blikpin;

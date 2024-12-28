@@ -121,12 +121,27 @@ extern bool rRV; // rušení volby
 extern bool rZ3V; // NUZ, je něco vybráno
 extern bool rQTV; // NUZ, probíhá měření času
 extern bool rD3V; // NUZ, odměřeno, zruší se závěry
+extern bool rZ3C; // zapínací relé časového souboru
+extern bool rZ1C;
+extern bool rZ5C;
+extern bool rD3C; // výsledné relé časového souboru
+extern bool rD1C;
+extern bool rD5C;
 extern bool rBlik50; // výstup kmitače
 extern bool rNavNoc; // noční návestidla
 
 // konfigurace
-extern bool cfgVybav; // vybavování závěrů průjezdem vlaku
-extern bool cfgSimulV; // sumulace přestavníku v bloku V
+extern struct sconfig {
+    int tPocitadlo; // ms
+    int tUvolneniZ; // ms
+    int tSimulacePrest; // ms
+    int tProudPrestavniku; // mA
+    int tOdpadN; // ms
+    int tZvonek; // ms
+    bool cfgVybav;
+    bool cfgSimulV; // simulace přestavníku v bloku V
+} config;
+
 
 class Tblok;
 extern QList<Tblok *> bl;

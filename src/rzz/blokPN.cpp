@@ -18,52 +18,44 @@ bool TblokPN::evaluate()
 {
     QList<bool> rLast = r;
     // logika
-    bool povelkPN = false;
     bool pouzijTC = (tlacitkoUNavestidla != nullptr);
     bool tlacNavState = false;
+    bool tlacPN = mtbIns[mtbInPN].value();
 
     // přečte stav vstupu
-    povelkPN = mtbIns[mtbInPN].value();
+
 
     // logika bloku PN
     if (pouzijTC) {
-        tlacitkoUNavestidla->r[TblokTC::rel::BR] = povelkPN || r[rel::PN];
         tlacNavState = tlacitkoUNavestidla->mtbIns[TblokTC::mtbeIns::mtbInRuseni].value();
-        if (povelkPN && (tlacNavState)) r[rel::PN] = true;
-        if (!tlacNavState)  r[rel::PN] = false;
+        r[ZF] |= tlacPN; // společním tlačítkem se nahazuje ZF
+
+        if (r[ZF] && (tlacNavState)) r[F] = true; // pokud máme ZF a povel k PN, sepneme F
+        if (r[ZF] && !(tlacPN) && !r[F]) r[ZF] = false; // pokud není F a pustíme spol. tlačítko, tak ZF odpadne
+        if (!tlacNavState && r[F]) {
+            r[ZF] = false;
+            r[F] = false;
+        }
+        tlacitkoUNavestidla->r[TblokTC::rel::ZFo] = r[ZF];
     } else {
-        r[rel::PN] = povelkPN;
+        r[F] = mtbIns[mtbInPN].value();
     }
 
     // detekce změny
-    if (r[PN] && !rLast[PN]) {
-        // došlo k aktivaci přiloválací návesti
+    if (r[F] && !rLast[F]) {
+        // došlo k aktivaci přivolávací návesti
         if (navestidlo != nullptr) {
-            log(QString("PN: zapnout PN na návěstidle %1").arg(navestidlo->name), logging::LogLevel::Commands);
-            // zapni počítadlo a starti časovače
+
+            // zapni počítadlo a start časovače
             log(QString("PN: počítadlo start"), logging::LogLevel::Debug);
             mtbOut[mtbOutPocitadlo].setValueBool(true);
-            tim->start(800);
+            tim->start(config.tPocitadlo);
         } else {
             log(QString("PN: nemáme návestidlo na PN !"), logging::LogLevel::Warning);
         }
     }
 
-    if (!r[PN] && rLast[PN]) {
-        // došlo k deaktivaci přiloválací návesti
-
-        if (navestidlo != nullptr) {
-            log(QString("PN: vypnout PN na návěstidle %1").arg(navestidlo->name), logging::LogLevel::Commands);
-            navestidlo->navestniZnak = 0;
-        }
-    }
-
-    if (r[PN]) {
-        if (navestidlo != nullptr) {
-            navestidlo->r[TblokQ::N] = false;
-            navestidlo->navestniZnak = 8;
-        }
-    }
+    navestidlo->r[TblokQ::rel::Fo] = r[rel::F];
 
     if (r != rLast) return true; else return false;
 }

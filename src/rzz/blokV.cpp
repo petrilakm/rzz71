@@ -16,7 +16,7 @@ TblokV::TblokV() {
     simulacePoloha = 0;
     prestavnyProud = 0;
     tim = new QTimer();
-    tim->setInterval(3000);
+    tim->setInterval(config.tSimulacePrest);
     tim->setSingleShot(true);
     connect(tim, SIGNAL(timeout()), this, SLOT(onTimTimeout()));
     tim->start();
@@ -27,7 +27,7 @@ bool TblokV::evaluate()
     QList<bool> rLast = r;
     bBlikUsed = false;
     //
-    simulace = cfgSimulV;
+    simulace = config.cfgSimulV;
     // logika
     // vstupy z MTB
     if (rezimSlave) {
@@ -54,7 +54,7 @@ bool TblokV::evaluate()
     // závěry z jiných bloků
     r[Z] = false;
     r[Z] |= predZ;
-    for (Tblok *b : odvratneBloky) {
+    for (Tblok* &b : odvratneBloky) {
         if (b->typ == btS) {
             r[Z] |= b->r[TblokS::rel::Z];
             if (!b->r[TblokS::rel::Z]) odvratneBloky.removeOne(b);
@@ -174,7 +174,7 @@ bool TblokV::evaluate()
 
     // simulace odběru přestavníku
     if (r[SP] || r[SM]) {
-        prestavnyProud = 12;
+        prestavnyProud = config.tProudPrestavniku;
     } else {
         prestavnyProud = 0;
     }

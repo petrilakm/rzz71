@@ -15,7 +15,7 @@ bool TblokRC::evaluate()
     QList<bool> rLast = r;
     bool bCestaNaZruseni = false;
 
-    if (!cfgVybav) {
+    if (!config.cfgVybav) {
         for(TdohledCesty::cestaPodDohledem *c : dohledCesty.cestyPostavene) {
             if (cestyRC.contains(c->num)) {
                 // staráme se o postavenou cestu

@@ -19,7 +19,7 @@ public:
 
     bool evaluate() override;
 
-    enum rel {PN,BT};
+    enum rel {F,ZF};
     #define RELAY_COUNT_PN (2)
     // PN - připovávací návest sepnuta
     // BT - blokování tlačítka (vytažení u navěstidla)

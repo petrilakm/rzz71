@@ -337,15 +337,15 @@ void TRZZ71::init()
                 }
                 if (name == "3C") {
                     t3C.setInterval(casovacCasLim);
-                    pinInd3C = mtbLoadOutputs[0];
+                    pinInd3C = mtbLoadInputs[0];
                 }
                 if (name == "1C") {
                     t1C.setInterval(casovacCasLim);
-                    pinInd1C = mtbLoadOutputs[0];
+                    pinInd1C = mtbLoadInputs[0];
                 }
                 if (name == "5C") {
                     t5C.setInterval(casovacCasLim);
-                    pinInd5C = mtbLoadOutputs[0];
+                    pinInd5C = mtbLoadInputs[0];
                 }
                 if (name == "pocitadlo") config.tPocitadlo = casovacCasLim;
                 if (name == "uvolneniZ") config.tUvolneniZ = casovacCasLim;
@@ -747,9 +747,9 @@ void TRZZ71::oneval()
     bool out5C;
     bool out1C;
     bool out3C;
-    out5C = ((rZ5C && !rD5C) || (rBlik50 && (rD5C && rZ5C))); // indikace časovače 5C
-    out1C = ((rZ1C && !rD1C) || (rBlik50 && (rD5C && rZ5C))); // indikace časovače 1C
-    out3C = ((rZ3C && !rD3C) || (rBlik50 && (rD5C && rZ5C))); // indikace časovače 3C
+    out5C = !(!rZ5C && (rBlik50 || rD5C)); // indikace časovače 5C
+    out1C = !(!rZ1C && (rBlik50 || rD1C)); // indikace časovače 1C
+    out3C = !(!rZ3C && (rBlik50 || rD3C)); // indikace časovače 3C
     pinInd5C.setValueBool(out5C);
     pinInd1C.setValueBool(out1C);
     pinInd3C.setValueBool(out3C);

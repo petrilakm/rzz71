@@ -24,14 +24,13 @@ bool TblokTC::evaluate()
     if (!mtbVolba) {
         mtbVolbaOpak = false;
     }
-    if (mtbZrus && !r[rel::NM] && !r[rel::BR]) {
-        //r[TZ] = false;
+    r[RC] = (mtbZrus && !r[ZFo]);
+    if (mtbZrus && !r[NM]) {
+        // tlačítko vytačeno, ale není od něj zádná cesta postavená
         log("blokTC: vytažení tlačítka", logging::LogLevel::Debug);
         platnaVolba = voliciskupina.vstupZmena(this, false);
-        // if (platnaVolba) {
-            r[TZ] = false;
-            r[PO] = false;
-        //}
+        r[TZ] = false;
+        r[PO] = false;
     }
 
     if (r[VA]) {

@@ -27,6 +27,13 @@ public:
         scRC = 7,
         scZbytek = 8 // zbytek po cestě, lze pouze zrušit NUZem
     };
+    enum ruseniCesty {
+        rcNic = 0,
+        rc5,
+        rc1,
+        rc3
+    };
+
     // scStavime - výměnová automatická relé - aktivní VOP a VOM
     // scZavery - výměny přestaveny, kontrolujeme podmínky pro závěr
     // scKontrolaDN - čekáme na splnění podmínek pro DN
@@ -45,6 +52,8 @@ public:
         int vlakKonec; // pořadové číslo bloku, kde je konec vlaku
         bool vlakEvidenceCelo;
         bool vlakEvidenceKonec;
+        bool vlakEV; // evidenční relé
+        enum ruseniCesty ruseni;
         QStringList upo;
         QString upoZavery;
         QString upoVolnosti;

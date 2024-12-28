@@ -6,6 +6,9 @@
 
 class TblokQ : public Tblok
 {
+    Q_OBJECT
+private:
+    QTimer *tim;
 public:
     TblokQ();
 
@@ -22,10 +25,18 @@ public:
 
     bool evaluate() override;
 
-    enum rel {N};
-    #define RELAY_COUNT_Q (1)
+    enum rel {N,Nreal,Fo};
+    #define RELAY_COUNT_Q (3)
+    // N - požadavek na návestní relé
+    // Nreal - skutečné návestní relé (zpožděný odpad)
+    // Fo - opakovač přivolávací návesti
 
-    int navestniZnak;
+    bool relLastFo;
+
+    int navestniZnak; // co někdo chce, aby svítilo na návestidle
+    int navestniZnakReal; // co bude skutečně svítit na návestidle
+private slots:
+    void onTimTimeout();
 };
 
 #endif // BLOKS_Q

@@ -61,41 +61,58 @@ void Tlcd::on_tim()
 {
     // uloží starou verzi
     QByteArray old_buf[40];
+    QByteArray tmp_buf;
     for(int i=0; i<40; i++) {
         old_buf[i] = lcd_buffer[i];
+        lcd_buffer[i].clear();
     }
+    tmp_buf.clear();
+    int linecur = 0;
     // sestavý 1. řádek - důležitá oznámení
     if (rzz != nullptr) {
+        // zkrat a výpadek
+        if (rDCCZkrat) {
+            lcd_buffer[linecur] =   tr("!! ZKRAT !! ZKRAT !!").left(20).toLatin1();
+            linecur++;
+        }
+        if (rDCCVypadek) {
+            lcd_buffer[linecur] = tr("!!  VYPADEK DCC   !!").left(20).toLatin1();
+            linecur++;
+        }
+
         // zobrazení časových souborů
-        lcd_buffer[0] = "";
+
         int rem = rzz->t3V.remainingTime();
         if (rem != -1) {
-            lcd_buffer[0] = QString("T3V = ").toLatin1() + QString::number(rem / 1000).toLatin1() + QString(" ").toLatin1();
-        }
-        rem = rzz->t3C.remainingTime();
-        if (rem != -1) {
-            lcd_buffer[0] = QString("T3C = ").toLatin1() + QString::number(rem / 1000).toLatin1() + QString(" ").toLatin1();
-        }
-        rem = rzz->t1C.remainingTime();
-        if (rem != -1) {
-            lcd_buffer[0] = QString("T1C = ").toLatin1() + QString::number(rem / 1000).toLatin1() + QString(" ").toLatin1();
+            tmp_buf.append(QString("T3V=%1 ").arg(rem/1000, (int) 3, (int) 10, QChar(' ')).toLatin1());
         }
         rem = rzz->t5C.remainingTime();
         if (rem != -1) {
-            lcd_buffer[0] = QString("T5C = ").toLatin1() + QString::number(rem / 1000).toLatin1() + QString(" ").toLatin1();
+            tmp_buf.append(QString("T5C=%1 ").arg(rem/1000, (int) 3, (int) 10, QChar(' ')).toLatin1());
+        }
+        rem = rzz->t1C.remainingTime();
+        if (rem != -1) {
+            tmp_buf.append(QString("T1C=%1 ").arg(rem/1000, (int) 3, (int) 10, QChar(' ')).toLatin1());
+        }
+        rem = rzz->t3C.remainingTime();
+        if (rem != -1) {
+            tmp_buf.append(QString("T3C=%1 ").arg(rem/1000, (int) 3, (int) 10, QChar(' ')).toLatin1());
+        }
+        bool druhapulka = false;
+        while (tmp_buf.length() != 0) {
+            lcd_buffer[linecur].append(tmp_buf.left(8));
+            tmp_buf = tmp_buf.remove(0,8);
+            druhapulka ^= true;
+            if (druhapulka == false) linecur++;
+        }
+        if (druhapulka == true) {
+            lcd_buffer[linecur].append(QString(" ").repeated(8).toLatin1());
+            linecur++;
         }
 
-        // zkrat (má přednost, proto na konec)
-        if (rDCCVypadek) lcd_buffer[0] = tr("!!  VYPADEK DCC   !!").left(20).toLatin1();
-        if (rDCCZkrat) lcd_buffer[0] =   tr("!! ZKRAT !! ZKRAT !!").left(20).toLatin1();
     } else {
         lcd_buffer[0] = " --- ";
     }
-
-    // zjistí, zda je něco na 1. řádku
-    int linecur = 1;
-    if (lcd_buffer[0] == "") linecur = 0;
-
     // sestavý informace o cestách
     QString line;
     for (TdohledCesty::cestaPodDohledem *cpd : dohledCesty.cestyPostavene) {

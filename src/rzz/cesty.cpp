@@ -3,7 +3,7 @@
 bool Tcesta::zjistiObsazeni(int usek)
 {
     bool obsaz = true;
-    // useky mimo cestu josu obsazení trvale
+    // useky mimo cestu jsou obsazené trvale
     if (usek < 0) return true;
     if (usek >= this->bloky.count()) return true;
 
@@ -16,6 +16,24 @@ bool Tcesta::zjistiObsazeni(int usek)
     }
     return obsaz;
 }
+
+bool Tcesta::zjistiZaver(int usek)
+{
+    bool obsaz = true;
+    // useky mimo cestu jsou bez závěru
+    if (usek < 0) return false;
+    if (usek >= this->bloky.count()) return false;
+
+    Tblok *blok = this->bloky[usek];
+    if (blok->typ == Tblok::btS) {
+        obsaz = static_cast<TblokS *>(blok)->r[TblokS::rel::Z];
+    }
+    if (blok->typ == Tblok::btK) {
+        obsaz = static_cast<TblokK *>(blok)->r[TblokK::rel::X1] || static_cast<TblokK *>(blok)->r[TblokK::rel::X2];
+    }
+    return obsaz;
+}
+
 
 void Tcesta::uvolniZaver(int usek)
 {
@@ -165,10 +183,8 @@ void Tcesty::load()
             if (!ok) pC->navZnak = 5;
 
             cesty.append(pC);
-
         }
     }
-
 }
 
 Tcesty *cesty;

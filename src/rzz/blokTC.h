@@ -18,14 +18,14 @@ public:
 
     bool evaluate() override;
 
-    enum rel {TZ, PO, VA, NM, BR};
-    #define RELAY_COUNT_TC (5)
+    enum rel {TZ, PO, VA, NM, ZFo, RC};
+    #define RELAY_COUNT_TC (6)
     // TZ - tlačítko zapínací
     // PO - protiopakovací relé (PV nebo PS)
     // VA - výměnové automacké relé - stavíme výhybky
     // NM - pokud je DN na návěstidle (N nebo M)
-    // BR - blokování rušení - pro přivolávací návěst
-
+    // ZFo - opakovač ZF - blokování rušení - pro přivolávací návěst
+    // RC - rušení cesty (počátkem)
 
     // proti volbě počítku, když se volí konec
     // každý stisk se do volíví skupiny pošle jen 1x

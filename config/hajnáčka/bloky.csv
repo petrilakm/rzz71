@@ -9,16 +9,32 @@ KPV;;16/10;;;
 volsk;;16/12;16/9;;
 NUZ;;16/11;16/14;;
 Kmitac;;;16/13;;
-cas;3V;;;5;
-cas;3C;;16/12;20;
-cas;1C;;16/11;5;
-cas;5C;;16/10;1;
+cas;3V;;;5000;
+cas;5C;;16/10;2000;
+cas;3C;;16/12;20000;
+cas;1C;;16/11;10000;
+cas;pocitadlo;;;400;
+cas;uvolneniZ;;;400;
+cas;odpadN;;;1000;
+cas;prestavI;;;12;
 
 #typ;název;mtbVstupy;mtbVýstupy;návaznosti;konfigurace
 konfigurace:
 #blokS - není
 #blokV - předchozí blok, + nebo - směr z předchozího bloku (pokud má smysl), vyhybka do dvojce
 #blokPr- předchozí blok, + nebo - směr z předchozího bloku (pokud má smysl)
+
+#S; -;obsaz,výber nuz;;;
+#M; -;obsaz,výber nuz;;;
+#V; -;det+,det-,řadič+,řadič-,nouz.;povel+,povel-,ind+,ind-,indNepol,průsvČ+,průsvČ-;konfig.
+#Pr;-;;bílá,červená;předchozí blok,poloha předchozího bloku [{+,-}]
+#K; -;obsaz;bílá,čer.střed,čer.kraje;;
+#TC;-;stisk,výtažení;indikátor;;
+#Q; -;;s-com,žlut.,zel.,červ.,bílá,DN;;
+#PN;-;;tlačítko PN;počítadlo;návěstidlo kde se zapne PN;
+#PN;-;;společné tlačítko PN;počítadlo;návestidlo,cestové tlačítko zelené;
+#RC;-;tlačítko;indikace;cesty od-do (dle závěrové tabulky);
+#Os;-;řadič;výstup,indikace;;
 
 # zhlavý S
 S;V6-7;6/12,11/10;;;

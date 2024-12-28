@@ -9,7 +9,7 @@ TblokS::TblokS() {
     // časovač pro zpoždění uvolnění závěru
     zpozdeniReleZ = new QTimer(this);
     zpozdeniReleZ->setSingleShot(true);
-    zpozdeniReleZ->setInterval(700);
+    zpozdeniReleZ->setInterval(config.tUvolneniZ);
     connect(zpozdeniReleZ, SIGNAL(timeout()), this, SLOT(slotReleZpritah()));
 }
 
