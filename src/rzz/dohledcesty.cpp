@@ -469,7 +469,7 @@ QString TdohledCesty::stavCesty2QString(stavCesty sc)
     case scZvoleno: return QString("Zvoleno"); break;
     case scStavime: return QString("Stavime"); break;
     case scZavery:  return QString("Zavery"); break;
-    case scKontrolaDN: return QString("KontrolaDN"); break;
+    case scKontrolaDN: return QString("KontroDN"); break;
     case scDN: return QString("DN"); break;
     case scPrujezdVlaku: return QString("Prujezd"); break;
     case scProjeto: return QString("Projeto"); break;
@@ -509,10 +509,12 @@ void TdohledCesty::evaluate()
             if (d->ruseni == rc1) { casUplynul = rD1C; rZ1C = true; }
             if (d->ruseni == rc3) { casUplynul = rD3C; rZ3C = true; }
             if (casUplynul) {
-                // vypne časovač
+                // vypne časovač - to se udělá samo
+                /*
                 if (d->ruseni == rc5) rZ5C = false;
                 if (d->ruseni == rc1) rZ1C = false;
                 if (d->ruseni == rc3) rZ3C = false;
+                */
                 log(QString("dohled: rušení uplynutím času cestu číslo %1").arg(d->num), logging::LogLevel::Commands);
 
                 // zruší cestu
