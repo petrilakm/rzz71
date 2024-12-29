@@ -32,15 +32,16 @@ bool TblokS::evaluate()
     r[V] &= (r[Z]);
     //r[Z] = r[A] || r[B];
     if (r[V]) {
-        r[R] = (rD3V);
+        r[R] = (rD3V); // R je sepnuto časovým souborem
     } else {
         r[R] = false;
     }
-    r[Z] &= !r[R];
+    r[Z] &= !r[R]; // R ruší Z
+    r[P] &= !r[V] && r[Z]; // V ruší P a shozené Z
 
     // logika průsvitek bílých
     if ((r[Z])) {
-        r[PrB] = !r[J] && ((r[V]) ? rBlik50 : 1);
+        r[PrB] = !r[J] && ((r[V]) ? rBlik50 : 1) && ((!r[P] || rBlik100));
     } else {
         r[PrB] = !typM && rKPV;
     }

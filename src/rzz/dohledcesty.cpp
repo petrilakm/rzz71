@@ -361,11 +361,15 @@ void TdohledCesty::cestaPodDohledem::povelVAzapnout()
             v.pBlokVymena->r[TblokV::VOM] =  v.minus;
         }
     }
-    // sepne výměnová automatická relé
+    // sepne výměnová automatická relé pro tlačítka
     for(int i = 0; i < pCesta->tlacitka.count(); i++) {
         TblokTC *t = pCesta->tlacitka[i];
         if (i == 0) t->r[TblokTC::PO] = true; // první tlačítko stále bliká
         t->r[TblokTC::VA] = true; // další tlačítka v cestě svítí trvale - výměnová automatika v činnosti
+    }
+    // zapne VA pro tlačítka mezilehlá
+    for (TblokTC *t : pCesta->tlacitkaMezilehla) {
+        t->r[TblokTC::rel::VA] = true;
     }
 }
 
@@ -392,9 +396,12 @@ void TdohledCesty::cestaPodDohledem::povelVAvypnout()
         }
     }
     // vypne výměnová automatická relé
-    for(int i = 0; i < pCesta->tlacitka.count(); i++) {
-        TblokTC *t = pCesta->tlacitka[i];
+    for (TblokTC *t : pCesta->tlacitka) {
         t->r[TblokTC::rel::VA] =  false; // výměnová automatika vypnout
+    }
+    // vypne VA pro tlačítka mezilehlá
+    for (TblokTC *t : pCesta->tlacitkaMezilehla) {
+        t->r[TblokTC::rel::VA] = false;
     }
 }
 
@@ -793,7 +800,7 @@ void TdohledCesty::evaluate()
             }
 
             // pokud nejsme na konci, hýbene s koncem vlaku
-            if (d->vlakKonec < c->bloky.count()) {
+            if ((d->vlakKonec < c->bloky.count()) && (d->vlakKonec < d->vlakCelo)) {
                 obs1 = c->zjistiObsazeni(d->vlakKonec);
                 obs2 = c->zjistiObsazeni(d->vlakKonec+1);
                 if (!obs1 && obs2) {
@@ -818,6 +825,12 @@ void TdohledCesty::evaluate()
             } else {
                 // zrušit cesty, při stisku tlačítka RC
                 // blok RC vyřeší zbytek
+                // indikace cesty projeté
+                for(int i = 1; i < c->bloky.count(); i++) {
+                    if (c->bloky[i]->typ == Tblok::btS) {
+                        c->bloky[i]->r[TblokS::rel::P] = true;
+                    }
+                }
             }
             break;
         case scRC: // RC
@@ -843,6 +856,12 @@ void TdohledCesty::evaluate()
             for(Tblok *bl : c->bloky) {
                 if (bl->typ == Tblok::btS) {
                     static_cast<TblokS *>(bl)->r[TblokS::rel::Z] = false;
+                }
+            }
+            // ukoncí indikaci cesty projeté
+            for(int i = 1; i < c->bloky.count(); i++) {
+                if (c->bloky[i]->typ == Tblok::btS) {
+                    c->bloky[i]->r[TblokS::rel::P] = true;
                 }
             }
             log(QString("dohled: cesta č. %1 vybaveno").arg(d->num), logging::LogLevel::Commands);

@@ -36,7 +36,7 @@ bool TblokRC::evaluate()
     r[rel::EV] = bCestaNaZruseni;
 
     // výstup na indikaci RC
-    mtbOut[mtbOutRC].setValueBool(r[rel::EV] && rBlik50);
+    mtbOut[mtbOutRC].setValueBool(r[rel::EV] && rBlik100);
 
     if (r != rLast) return true; else return false;
 }

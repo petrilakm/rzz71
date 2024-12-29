@@ -61,31 +61,37 @@ void Tcesty::load()
     int cnt = 0;
     QStringList linelist;
     QStringList lineTC;
+    QStringList lineTCm;
     QStringList lineV;
     QStringList lineO;
     QStringList lineB;
     QStringList lineNav;
     QString lineNavest;
+    // načte cesty
     QFile inputFile("cesty.csv");
     if (inputFile.open(QIODevice::ReadOnly | QIODevice::Text))
     {
         QTextStream in(&inputFile);
         while (!in.atEnd())
         {
-            QString line = in.readLine();
+            QString line = in.readLine().trimmed();
             if (line.startsWith("#")) {
                 continue;
             }
             linelist = line.split(";");
-            if (linelist.count() < 7) {
+            if (linelist.count() < 8) {
                 continue;
             }
-            lineTC = linelist[1].split(','); // tlačítka
-            lineV  = linelist[2].split(','); // výhybky
-            lineO  = linelist[3].split(','); // odvraty
-            lineB  = linelist[4].split(','); // bloky
-            lineNav  = linelist[5].split(','); // návěstidla
-            lineNavest = linelist[6]; // návěst
+            lineTC = linelist[1].trimmed().split(','); // tlačítka volící
+            linelist[2] = linelist[2].trimmed();
+            if (linelist[2] != "") {
+                lineTCm= linelist[2].split(','); // tlačítka mezilehlá, pro VA
+            }
+            lineV  = linelist[3].trimmed().split(','); // výhybky
+            lineO  = linelist[4].trimmed().split(','); // odvraty
+            lineB  = linelist[5].trimmed().split(','); // bloky
+            lineNav  = linelist[6].trimmed().split(','); // návěstidla
+            lineNavest = linelist[7].trimmed(); // návěst
 
             pC = new Tcesta;
             pC->num = cnt++;
@@ -99,7 +105,16 @@ void Tcesty::load()
                 }
                 pC->tlacitka.append(pTC);
             }
-            // 2 - polohy výhybek
+            // 2 - tlačítka mezilehlá pro VA
+            foreach (QString sTC, lineTCm) {
+                pTC = static_cast<TblokTC*>(Tblok::findBlokByName(sTC));
+                if (!pTC) {
+                    log(QString("cesty: nelze najít mezilehlé tlačítko \"%1\" pro cestu %2").arg(sTC).arg(pC->num), logging::LogLevel::Error);
+                    continue;
+                }
+                pC->tlacitkaMezilehla.append(pTC);
+            }
+            // 3 - polohy výhybek
             foreach (QString sV, lineV) {
                 QString sBlokV;
                 QString poloha;
@@ -121,7 +136,7 @@ void Tcesty::load()
                 v.pBlok = pV;
                 pC->polohy.append(v);
             }
-            // 3 - odvraty a jejich bloky
+            // 4 - odvraty a jejich bloky
             for(int i=0; i < lineO.count(); i+=2) {
             //foreach (QString sO, lineO) {
                 QString sBlokUsek;
@@ -155,7 +170,7 @@ void Tcesty::load()
                 pC->odvraty.append(v);
             }
 
-            // 4 - bloky cesty
+            // 5 - bloky cesty
             foreach (QString sB, lineB) {
                 pB = Tblok::findBlokByName(sB);
                 if (!pB) {
@@ -165,7 +180,7 @@ void Tcesty::load()
                 pC->bloky.append(pB);
             }
 
-            // 5 - návestidla (co stavíme, případně na kterém jsme závislí)
+            // 6 - návestidla (co stavíme, případně na kterém jsme závislí)
             pC->Navestidlo = nullptr;
             pC->nasledneNavestidlo = nullptr;
             if (lineNav.count() > 0) {
@@ -177,7 +192,7 @@ void Tcesty::load()
                 if (pC->nasledneNavestidlo == nullptr) log(QString("cesty: cesta %1 nemůže najít následující návěstidlo \"%2\"").arg(pC->num).arg(lineNav[1]), logging::LogLevel::Error);
             }
 
-            // 6 - návěstní znak povolující jízdu
+            // 7 - návěstní znak povolující jízdu
             bool ok;
             pC->navZnak = lineNavest.toInt(&ok);
             if (!ok) pC->navZnak = 5;

@@ -128,6 +128,7 @@ extern bool rD3C; // výsledné relé časového souboru
 extern bool rD1C;
 extern bool rD5C;
 extern bool rBlik50; // výstup kmitače
+extern bool rBlik100; // výstup kmitače
 extern bool rNavNoc; // noční návestidla
 
 // konfigurace

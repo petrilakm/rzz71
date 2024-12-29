@@ -24,6 +24,7 @@ bool rZ5C, rD5C;
 bool rZ1C, rD1C;
 bool rZ3C, rD3C;
 bool rBlik50;
+bool rBlik100;
 bool rNavNoc;
 
 struct sconfig config;
@@ -37,7 +38,7 @@ TRZZ71::TRZZ71(QObject *parent)
     connect(&logger, SIGNAL(logEvent(QString,logging::LogLevel)), tcpcon, SLOT(sendEvent(QString,logging::LogLevel)));
     connect(tcpcon, SIGNAL(newLine(QString)), this, SLOT(readCommand(QString)));
 
-    blik.setInterval(700);
+    blik.setInterval(350);
     blik.setSingleShot(false);
     //blikOut = false;
     connect(&blik, SIGNAL(timeout()), this, SLOT(onblik()));
@@ -698,7 +699,8 @@ void TRZZ71::ont5C()
 
 void TRZZ71::onblik()
 {
-    rBlik50 = !rBlik50;
+    rBlik100 = !rBlik100;
+    if (rBlik100) rBlik50 ^= 1;
 }
 
 // proveď logiku bloků

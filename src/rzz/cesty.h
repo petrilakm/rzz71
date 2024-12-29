@@ -26,6 +26,7 @@ public:
     QList<TblokTC *> tlacitka;
     QList<struct Tvyh> polohy;
     QList<struct Tvyh_odv> odvraty;
+    QList<TblokTC *>tlacitkaMezilehla;
     QList<Tblok *> bloky;
     TblokQ *Navestidlo;
     TblokQ *nasledneNavestidlo;
