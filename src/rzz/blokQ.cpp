@@ -21,24 +21,12 @@ bool TblokQ::evaluate()
     // relé N a proměnná navestniZnak
 
     // logika
-
-    // zpoždění 2s odpadení relé N (pro rušení i nesplnění podmínek)
-    if (!r[N] && r[Nreal] && !tim->isActive()) {
-        tim->start();
-        log(QString("Q: odpad relé N, začátek měření času na návěstidle %1").arg(this->name), logging::LogLevel::Commands);
-    }
-    if (r[N] && tim->isActive()) {
-        tim->stop();
-        log(QString("Q: odpad relé N, konec měření času, relé stále přitaženo na návestidle %1").arg(this->name), logging::LogLevel::Commands);
-    }
-
     // co bude na skutečném návestidle za znak
     if (r[Fo]) {
-        navestniZnakReal = 8;
-        r[N] = false;
+        navestniZnakReal = 8; // PN
+        r[Nv] |= r[N]; // pokud je N, chceme aby odpadlo
     } else {
-        if (r[N]) r[Nreal] = true; // N zapíná hned
-        if (r[Nreal]) {
+        if (r[N]) {
             navestniZnakReal = navestniZnak; // zobrazí požadovaný návestní znak
         } else {
             navestniZnakReal = 0;
@@ -62,7 +50,7 @@ bool TblokQ::evaluate()
     case 8:  bC=1; bB=rBlik50; bBl=1; break; // přivolávačka
     case 9:  bB=1; break; // posun dovolen
     }
-    bBlikUsed=(bBl);
+    bBlikUsed = bBl;
     if (mtbOut[mtbOutMakCervena].valid) {
         // vjezdové návestidlo, má použitou červenou, má kmitavé předvěsti
         bBlikUsed |=(bBl2);
@@ -75,15 +63,29 @@ bool TblokQ::evaluate()
     mtbOut[mtbOutMakDNVC].setValueBool(bDN);
     mtbOut[mtbOutScom].setValueScom(navestniZnakReal);
 
-    if (r != rLast) return true; else return false;
-    r[N] = r[Nreal]; // pokud návestní relé neodpadlo, chová se jako přitažené
+    // zpoždění odpadení relé N (pro rušení i nesplnění podmínek)
+    if (r[N] && r[Nv] && !tim->isActive()) {
+        tim->start();
+        log(QString("Q: odpad relé N, začátek měření času na návěstidle %1").arg(this->name), logging::LogLevel::Debug);
+    }
+    if (r[N] && !r[Nv] && tim->isActive()) {
+        tim->stop();
+        log(QString("Q: odpad relé N, konec měření času, relé stále přitaženo na návestidle %1").arg(this->name), logging::LogLevel::Debug);
+    }
+
+    // konec logiky
+    bool ret;
+    if (r != rLast) ret = true; else ret = false;
+    r[Nv] &= r[N];
+    return ret;
 }
 
 void TblokQ::onTimTimeout()
 {
-    if (r[rel::N] == false) {
-        r[rel::Nreal] = false;
+    if (r[rel::N]) {
+        r[rel::N] = false;
+        r[rel::Nv] = false;
         navestniZnakReal = 0;
-        log(QString("Q: odpad relé N po zpoždění na návěstidle %1").arg(this->name), logging::LogLevel::Commands);
+        log(QString("Q: odpad relé N po zpoždění na návěstidle %1").arg(this->name), logging::LogLevel::Debug);
     }
 }

@@ -49,7 +49,7 @@ void Ttcpconsole::readyRead()
 {
     QTcpSocket *s = static_cast<QTcpSocket *>(sender());
     QString line;
-    QByteArray ar = s->readAll();
+    static QByteArray ar;
     Tclient *cli = nullptr;
     for (Tclient *icli : clients) {
         if (icli->socket == s) {
@@ -57,17 +57,21 @@ void Ttcpconsole::readyRead()
             break;
         }
     }
+    ar.append(s->readAll());
     if (cli == nullptr) {
         log(tr("console: neznámý klient poslal data \"%1\" ( sender %2:%3) - len %4").arg(line).arg(s->peerAddress().toString()).arg(s->peerPort()).arg(ar.length()), logging::LogLevel::Info);
         return;
     }
+
+    if (!ar.contains(13)) return;
 
     if (ar.endsWith(13)) ar.remove(ar.length()-1, 1);
     if (ar.endsWith(10)) ar.remove(ar.length()-1, 1);
     if (ar.endsWith(13)) ar.remove(ar.length()-1, 1);
     if (ar.endsWith(10)) ar.remove(ar.length()-1, 1);
     line = QString::fromUtf8(ar);
-    //log(tr("console: data \"%1\" ( sender %2:%3) - len %4").arg(line).arg(s->peerAddress().toString()).arg(s->peerPort()).arg(ar.length()), logging::LogLevel::Info);
+    log(tr("console: data \"%1\" ( sender %2:%3) - len %4").arg(line).arg(s->peerAddress().toString()).arg(s->peerPort()).arg(ar.length()), logging::LogLevel::Debug);
+    ar.clear();
     // zpracuje příkazy konzole
     if (line == "list") {
         for(Tclient *cli : clients) {
@@ -99,6 +103,7 @@ void Ttcpconsole::readyRead()
     if ((line == "close") || (line == "quit") || (line == "exit")) {
         //sendMsgToSocket(s, tr("quit"));
         s->disconnectFromHost();
+        s->deleteLater();
         return;
     }
 

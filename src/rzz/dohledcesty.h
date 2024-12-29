@@ -53,7 +53,8 @@ public:
         bool vlakEvidenceCelo;
         bool vlakEvidenceKonec;
         bool vlakEV; // evidenční relé
-        enum ruseniCesty ruseni;
+        enum ruseniCesty ruseni; // rele C
+        bool povelRC; // vytažený počátek cesty
         QStringList upo;
         QString upoZavery;
         QString upoVolnosti;

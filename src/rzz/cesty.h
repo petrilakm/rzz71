@@ -32,7 +32,6 @@ public:
     int navZnak;
     int num;
     bool posun;
-    bool ruseni; // relé C
 
     bool zjistiObsazeni(int usek);
     bool zjistiZaver(int usek);

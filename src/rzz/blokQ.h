@@ -25,10 +25,10 @@ public:
 
     bool evaluate() override;
 
-    enum rel {N,Nreal,Fo};
+    enum rel {N,Nv,Fo};
     #define RELAY_COUNT_Q (3)
     // N - požadavek na návestní relé
-    // Nreal - skutečné návestní relé (zpožděný odpad)
+    // Nv - vypínací N - způsobý opožděný odpad N
     // Fo - opakovač přivolávací návesti
 
     bool relLastFo;

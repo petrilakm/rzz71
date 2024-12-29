@@ -95,6 +95,7 @@ void TRZZ71::readCommand(QString cmd)
     if (cmdList.size() > 0) {
         cmd = cmdList[0];
         if ((cmd == "help") || (cmd == "h")) {
+            tcpcon->sendMsg(QString("l        - seznam bloků"));
             tcpcon->sendMsg(QString("b <blok> - informace o bloku"));
             tcpcon->sendMsg(QString("v        - informace o volící skupině"));
             tcpcon->sendMsg(QString("d        - informace o dohledové skupině"));
@@ -125,21 +126,21 @@ void TRZZ71::readCommand(QString cmd)
             for(TblokTC *tc : voliciskupina.tlacitkaAktivni) {
                 tcpcon->sendMsg(QString(" - %1 -> TZ=%2 VA=%3").arg(tc->name).arg(tc->r[TblokTC::TZ]).arg(tc->r[TblokTC::VA]));
             }
-            tcpcon->sendMsg(QString("Postavené cesty = %1").arg(voliciskupina.cestyPostavene.count()));
-            for(int ic : voliciskupina.cestyPostavene) {
-                Tcesta *c = cesty->cesty[ic];
-                if (c->tlacitka.count() > 1) {
-                    tcpcon->sendMsg(QString(" - %1 -> %2 %3").arg(ic).arg(c->tlacitka[0]->name).arg(c->tlacitka[0]->name));
-                }
-            }
         }
         if (cmd == 'd') { // dohledcesty
             tcpcon->sendMsg(QString("Postavené cesty = %1").arg(dohledCesty.cestyPostavene.count()));
             for (TdohledCesty::cestaPodDohledem *cpd : dohledCesty.cestyPostavene) {
-                tcpcon->sendMsg(QString(" - %1 -> stav %2-%3 (vlak v bloku č. %4 až %5)").arg(cpd->num).arg(cpd->stav).arg(dohledCesty.stavCesty2QString(cpd->stav)).arg(cpd->vlakCelo).arg((cpd->vlakKonec)));
+                tcpcon->sendMsg(QString(" - %1 -> stav %2-%3").arg(cpd->num).arg(cpd->stav).arg(dohledCesty.stavCesty2QString(cpd->stav)));
+                tcpcon->sendMsg(QString("   EV = %1, RC = %2").arg(cpd->vlakEV).arg(cpd->ruseni));
+                tcpcon->sendMsg(QString("   vlak v bloku %1 až %2").arg(cpd->vlakCelo).arg(cpd->vlakKonec));
                 for (QString upo1 : cpd->upo) {
                     tcpcon->sendMsg(tr("   UPO - %1").arg(upo1));
                 }
+            }
+        }
+        if (cmd == 'l') { // seznam bloků
+            for (Tblok *b : bl) {
+                tcpcon->sendMsg(QString(" - %1").arg(b->name));
             }
         }
         if (cmd == 'b') { // bloky
@@ -154,6 +155,8 @@ void TRZZ71::readCommand(QString cmd)
                         tcpcon->sendMsg(QString(" - slave  = %1").arg(pBlokV->rezimSlave));
                         if (pBlokV->dvojceBlok) tcpcon->sendMsg(QString(" -- dvojceBlok = %1").arg(pBlokV->dvojceBlok->name));
                         if (pBlokV->predBlok) tcpcon->sendMsg(QString(" -- predBlok = %1").arg(pBlokV->predBlok->name));
+                        if (pBlokV->predBlok) tcpcon->sendMsg(QString(" -- predBlok směr mínus = %1").arg(pBlokV->predBlokMinus));
+                        if (pBlokV->predZ) tcpcon->sendMsg(QString(" -- závěrný blok = %1").arg(pBlokV->predZ));
                         if (pBlokV->odvratneBloky.count() > 0) {
                             tcpcon->sendMsg(QString(" - odvrané bloky:"));
                             for (Tblok *odvBlok : pBlokV->odvratneBloky) {
@@ -206,7 +209,7 @@ void TRZZ71::readCommand(QString cmd)
                         tcpcon->sendMsg(QString("blok Q"));
                         tcpcon->sendMsg(QString(" - Fo = %1").arg(b->r[TblokQ::rel::Fo]));
                         tcpcon->sendMsg(QString(" - N  = %1").arg(b->r[TblokQ::rel::N]));
-                        tcpcon->sendMsg(QString(" - Nr = %1").arg(b->r[TblokQ::rel::Nreal]));
+                        tcpcon->sendMsg(QString(" - Nv = %1").arg(b->r[TblokQ::rel::Nv]));
                         tcpcon->sendMsg(QString(" - kód požada. = %1").arg(static_cast<TblokQ*>(b)->navestniZnak));
                         tcpcon->sendMsg(QString(" - kód návěsti = %1").arg(static_cast<TblokQ*>(b)->navestniZnakReal));
                         break;
@@ -214,6 +217,29 @@ void TRZZ71::readCommand(QString cmd)
                         tcpcon->sendMsg(QString("blok PN"));
                         tcpcon->sendMsg(QString(" - ZF = %1").arg(b->r[TblokPN::rel::ZF]));
                         tcpcon->sendMsg(QString(" -  F = %1").arg(b->r[TblokPN::rel::F]));
+                        if (static_cast<TblokPN*>(b)->navestidlo != nullptr) {
+                            tcpcon->sendMsg(QString(" -- návěstidlo = %1").arg(static_cast<TblokPN*>(b)->navestidlo->name));
+                        }
+                        if (static_cast<TblokPN*>(b)->tlacitkoUNavestidla != nullptr) {
+                            tcpcon->sendMsg(QString(" -- tlačítko = %1").arg(static_cast<TblokPN*>(b)->tlacitkoUNavestidla->name));
+                        }
+                        break;
+                    case Tblok::btOs:
+                        tcpcon->sendMsg(QString("blok Os"));
+                        tcpcon->sendMsg(QString(" - OSV= %1").arg(b->r[TblokOs::rel::OSV]));
+                        break;
+                    case Tblok::btRC:
+                        tcpcon->sendMsg(QString("blok RC"));
+                        tcpcon->sendMsg(QString(" - RC = %1").arg(b->r[TblokRC::rel::EV]));
+                        break;
+                    case Tblok::btPr:
+                        tcpcon->sendMsg(QString("blok Pr"));
+                        tcpcon->sendMsg(QString(" - bílá    = %1").arg(b->r[TblokPr::rel::PrB]));
+                        tcpcon->sendMsg(QString(" - červená = %1").arg(b->r[TblokPr::rel::PrC]));
+                        if (static_cast<TblokPr*>(b)->predBlok != nullptr) {
+                            tcpcon->sendMsg(QString(" -- předblok = %1").arg(static_cast<TblokPr*>(b)->predBlok->name));
+                            tcpcon->sendMsg(QString(" -- předblok směr mínus = %1").arg(static_cast<TblokPr*>(b)->predBlokMinus));
+                        }
                         break;
                     default:
                         tcpcon->sendMsg(QString("blok neumím vypsat"));
