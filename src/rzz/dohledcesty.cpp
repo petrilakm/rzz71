@@ -549,7 +549,6 @@ void TdohledCesty::evaluate()
             }
             if (ruseniOK && ((d->stav == scZavery) || (d->stav == scKontrolaDN) || (d->stav == scDN))) {
                 // spouští časovače pro rušení cest
-                // doplnit aktivaci časového souboru
                 if (d->vlakEV) {
                     if (c->posun) {
                         if (!rZ1C) {
@@ -580,10 +579,16 @@ void TdohledCesty::evaluate()
         // stisknutí tlačítka může obnovit DN, když je správná situace
         if (c->tlacitka[0]->mtbIns[TblokTC::mtbeIns::mtbInVolba].value()) {
             // počáteční tlačítko je stisknuté
-            if (((d->stav == scPrujezdVlaku) || (d->stav == scDN)) && !(c->Navestidlo->r[TblokQ::rel::N])) {
+            if (((d->stav == scPrujezdVlaku) || (d->stav == scDN) || (d->stav == scRC)) && !(c->Navestidlo->r[TblokQ::rel::N])) {
                 // pokud jsou splněny podmínky, přejdeme na znovuzapnutí DN
                 if (d->kontrolaCelistvostiCesty()) {
                     // obnovíme cestu
+                    if (d->stav == scRC) {
+                        if (d->ruseni == rc5) rZ5C = false;
+                        if (d->ruseni == rc1) rZ1C = false;
+                        if (d->ruseni == rc3) rZ3C = false;
+                        d->ruseni = rcNic;
+                    }
                     d->stav = scKontrolaDN;
                     log(QString("dohled: obnova DN cesty číslo %1").arg(d->num), logging::LogLevel::Info);
                 }
@@ -657,14 +662,9 @@ void TdohledCesty::evaluate()
                 // vše v pořádku, provedeme závěr cesty
                 for (int i = 1; i < c->bloky.length(); i++) {
                     Tblok *blok = c->bloky[i];
-                    bool bPosledniBlok = (i == (c->bloky.count() - 1));
                     if (blok->typ == Tblok::btS) {
-                        // poslední úsek pod závěr nedáváme
-                        if (!bPosledniBlok) {
                             blok->r[TblokS::Z] = true; // aktivujeme závěrná relé
-                            //blok->r[TblokS::B] = true;
                         }
-                    }
                     // kolej bude kopírovat záver z předešlého úseku
                     if (blok->typ == Tblok::btK) {
                         pBlokK = static_cast<TblokK *>(blok);
@@ -817,6 +817,10 @@ void TdohledCesty::evaluate()
 
             if ((d->vlakCelo == c->bloky.count()) && ((d->vlakKonec+1) == c->bloky.count())) {
                 log(QString("dohled: cesta č. %1 změna stavu %2-%3").arg(d->num).arg(stavCesty2QString(d->stav)).arg(stavCesty2QString(scProjeto)), logging::LogLevel::Commands);
+                // pokud jsem zkončili v blok M, musíme v něm zrušit závěr
+                if (c->bloky.last()->typ == Tblok::btS) {
+                    c->bloky.last()->r[TblokS::rel::Z] = false;
+                }
                 d->stav = scProjeto;
             }
             break;
@@ -836,8 +840,17 @@ void TdohledCesty::evaluate()
             }
             break;
         case scRC: // RC
-            c->Navestidlo->navestniZnak = 0;
             c->Navestidlo->r[TblokQ::Nv] = true;
+            // pokud se poruší podmínky cesty, zruší se rušení časovým souborem
+            if (!d->kontrolaCelistvostiCesty()) {
+                // zrušíme rušení časovým soborem
+                if (d->stav == scRC) {
+                    if (d->ruseni == rc5) rZ5C = false;
+                    if (d->ruseni == rc1) rZ1C = false;
+                    if (d->ruseni == rc3) rZ3C = false;
+                    d->ruseni = rcNic;
+                }
+            }
             d->stav = scRC;
             break;
         case scZbytek: // bad state
