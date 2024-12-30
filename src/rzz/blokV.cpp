@@ -60,6 +60,12 @@ bool TblokV::evaluate()
             if (!b->r[TblokS::rel::Z]) odvratneBloky.removeOne(b);
         }
     }
+    if (rezimSlave) {
+        r[Z] |= dvojceBlok->r[Z];
+    }
+    if (rezimMaster) {
+        r[Z] |= dvojceBlok->r[Z];
+    }
 
     // pokud je stavění, nemůže být protilehlá kontrola
     r[KP] &= !r[SM];
