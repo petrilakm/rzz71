@@ -713,8 +713,8 @@ void TdohledCesty::evaluate()
                 if (c->Navestidlo) {
                     c->Navestidlo->navestniZnak = urciNavest(c->navZnak, c->nasledneNavestidlo);
                     c->Navestidlo->r[TblokQ::rel::N] = true;
-                    d->vlakCelo = -1;
-                    d->vlakKonec = -1;
+                    d->vlakCelo = 0;
+                    d->vlakKonec = 0;
                     d->vlakEvidenceCelo = false;
                     d->vlakEvidenceKonec = false;
                     d->vlakEV = false;
@@ -761,8 +761,12 @@ void TdohledCesty::evaluate()
                         // obsazený úsek před návěstidlem
                         if (d->vlakKonec != 1) {
                             // závěr v 1. úseku vypbaven
-                            c->Navestidlo->r[TblokQ::Nv] = true;
-                            log(QString("dohled: cesta č. %1 zhoď seř. náv. %2 - vybavení závěru 1. úseku").arg(d->num).arg(c->Navestidlo->name), logging::LogLevel::Info);
+                            if (c->Navestidlo->r[TblokQ::Nv] == false) {
+                                log(QString("dohled: cesta č. %1 zhoď seř. náv. %2 - uvolnění 1. úseku").arg(d->num).arg(c->Navestidlo->name), logging::LogLevel::Info);
+                            }
+                            if (c->Navestidlo->r[TblokQ::N]) {
+                                c->Navestidlo->r[TblokQ::Nv] = true;
+                            }
                         } else {
                             c->Navestidlo->r[TblokQ::Nv] = false;
                         }
@@ -772,7 +776,9 @@ void TdohledCesty::evaluate()
                         if (!c->Navestidlo->r[TblokQ::Nv]) {
                             log(QString("dohled: cesta č. %1 zhoď seř. náv. %2 - volný úsek před náv.").arg(d->num).arg(c->Navestidlo->name), logging::LogLevel::Info);
                         }
-                        c->Navestidlo->r[TblokQ::Nv] = true;
+                        if (c->Navestidlo->r[TblokQ::N]) {
+                            c->Navestidlo->r[TblokQ::Nv] = true;
+                        }
 
                     }
                 }
@@ -788,7 +794,7 @@ void TdohledCesty::evaluate()
                 obs1 = c->zjistiObsazeni(d->vlakCelo);
                 obs2 = c->zjistiObsazeni(d->vlakCelo+1);
                 if (obs1 && obs2) {
-                    if (d->vlakCelo == -1) {
+                    if (d->vlakCelo == 0) {
                         d->vlakEvidenceCelo = true;
                         d->vlakCelo = 0; // vlak za návestidlem, ne před
                     }
@@ -798,7 +804,7 @@ void TdohledCesty::evaluate()
             }
 
             // inicializace konce při průjezdu
-            if ((d->vlakCelo == 1) && (d->vlakKonec == -1)) {
+            if ((d->vlakCelo == 1) && (d->vlakKonec == 0)) {
                 d->vlakKonec = 1;
                 log(QString("dohled: cesta č. %1 konec vlaku inicializace").arg(d->num), logging::LogLevel::Info);
             }
@@ -857,8 +863,9 @@ void TdohledCesty::evaluate()
             break;
         case scZbytek: // bad state
             d->upo.append("nekompletni");
-            c->Navestidlo->navestniZnak = 0;
-            c->Navestidlo->r[TblokQ::Nv] = true;
+            if (c->Navestidlo->r[TblokQ::N]) {
+                c->Navestidlo->r[TblokQ::Nv] = true;
+            }
             if (d->kontrolaZavery(false)) {
                 log(QString("dohled: cesta č. %1 se rozpadla, nutné NUZ").arg(d->num), logging::LogLevel::Commands);
                 cestyNaSmazani.append(d);
