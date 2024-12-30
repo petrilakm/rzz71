@@ -31,9 +31,9 @@ public:
     };
 
     bool evaluate() override;
-    //        0   1   2   3   4   5   6  7  8    9    10  11  12  13  14  15  16  17  18   19   20   21   22    23
-    enum rel {KP, KM, DP, DM, SP, SM, J, Z, BP, VOP, VOM, RP, RM, RN, IP, IM, INe, PB, PC, PBP, PCP, PBM, PCM, PrCP, PrCM};
-    #define RELAY_COUNT_V (25)
+    //        0   1   2   3   4   5   6  7  8   9    10   11  12  13  14  15  16  17  18   19   20   21   22   23    24    25
+    enum rel {KP, KM, DP, DM, SP, SM, J, Z, ZP, BP, VOP, VOM, RP, RM, RN, IP, IM, INe, PB, PC, PBP, PCP, PBM, PCM, PrCP, PrCM};
+    #define RELAY_COUNT_V (26)
     // KP - kontrola +
     // KM - kontrola -
     // DP - dohled +
@@ -42,6 +42,7 @@ public:
     // SM - stavění -
     // J - kolejové relé
     // Z - závěr ( z úseku)
+    // ZP - závěr předchozího bloku (V nebo S)
     // BP - blokování přestavení (např. zámkem)
     // RP - řadič +
     // RM - řadič -
@@ -55,9 +56,7 @@ public:
     // PrCP - průsvitka polohy červená plus
     // PrCM - průsvitka polohy červená mínus
 
-    //TblokS *blokS; // pro obsazení a závěr
     Tblok *predBlok; // předchozí blok ve směru proti hrotu
-    bool predZ;
     QList<Tblok *> odvratneBloky; // seznam bloků, kterým toto V tvoří odvrat
     bool predBlokMinus; // false == plus
     bool rezimMaster;

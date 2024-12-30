@@ -157,7 +157,6 @@ void TRZZ71::readCommand(QString cmd)
                         if (pBlokV->dvojceBlok) tcpcon->sendMsg(QString(" -- dvojceBlok = %1").arg(pBlokV->dvojceBlok->name));
                         if (pBlokV->predBlok) tcpcon->sendMsg(QString(" -- predBlok = %1").arg(pBlokV->predBlok->name));
                         if (pBlokV->predBlok) tcpcon->sendMsg(QString(" -- predBlok směr mínus = %1").arg(pBlokV->predBlokMinus));
-                        if (pBlokV->predZ) tcpcon->sendMsg(QString(" -- závěrný blok = %1").arg(pBlokV->predZ));
                         if (pBlokV->odvratneBloky.count() > 0) {
                             tcpcon->sendMsg(QString(" - odvrané bloky:"));
                             for (Tblok *odvBlok : pBlokV->odvratneBloky) {
@@ -166,6 +165,7 @@ void TRZZ71::readCommand(QString cmd)
                         }
                         tcpcon->sendMsg(QString(" - J   = %1").arg(b->r[TblokV::J]));
                         tcpcon->sendMsg(QString(" - Z   = %1").arg(b->r[TblokV::Z]));
+                        tcpcon->sendMsg(QString(" - ZP  = %1").arg(b->r[TblokV::ZP]));
                         tcpcon->sendMsg(QString(" - BP  = %1").arg(b->r[TblokV::BP]));
                         tcpcon->sendMsg(QString(" - DP  = %1").arg(b->r[TblokV::DP]));
                         tcpcon->sendMsg(QString(" - DM  = %1").arg(b->r[TblokV::DM]));

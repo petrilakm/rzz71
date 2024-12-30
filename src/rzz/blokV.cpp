@@ -3,7 +3,6 @@
 TblokV::TblokV() {
     typ = btV;
     predBlok = NULL;
-    predZ = false;
     dvojceBlok = NULL;
     odvratneBloky.clear();
     rezimMaster = false;
@@ -53,7 +52,8 @@ bool TblokV::evaluate()
 
     // závěry z jiných bloků
     r[Z] = false;
-    r[Z] |= predZ;
+    r[Z] |= r[ZP];
+    if (!r[ZP])
     for (Tblok* &b : odvratneBloky) {
         if (b->typ == btS) {
             r[Z] |= b->r[TblokS::rel::Z];
@@ -61,10 +61,10 @@ bool TblokV::evaluate()
         }
     }
     if (rezimSlave) {
-        r[Z] |= dvojceBlok->r[Z];
+        r[Z] |= dvojceBlok->r[ZP];
     }
     if (rezimMaster) {
-        r[Z] |= dvojceBlok->r[Z];
+        r[Z] |= dvojceBlok->r[ZP];
     }
 
     // pokud je stavění, nemůže být protilehlá kontrola
@@ -122,17 +122,17 @@ bool TblokV::evaluate()
                 r[PC] = predBlok->r[TblokV::rel::PCP];
             }
             r[J] = predBlok->r[TblokV::rel::J];
-            predZ = predBlok->r[TblokV::rel::Z];
+            r[ZP] = predBlok->r[TblokV::rel::Z];
 
         }
         if (predBlok->typ == btS) {
             r[PB] = predBlok->r[TblokS::rel::PrB];
             r[PC] = predBlok->r[TblokS::rel::PrC];
             r[J] = predBlok->r[TblokS::rel::J];
-            predZ = predBlok->r[TblokS::rel::Z];
+            r[ZP] = predBlok->r[TblokS::rel::Z];
         }
     } else {
-        predZ = false;
+        r[ZP] = false;
     }
 
     // průsvitky průchozí
