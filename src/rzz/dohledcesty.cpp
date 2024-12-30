@@ -579,7 +579,7 @@ void TdohledCesty::evaluate()
         // stisknutí tlačítka může obnovit DN, když je správná situace
         if (c->tlacitka[0]->mtbIns[TblokTC::mtbeIns::mtbInVolba].value()) {
             // počáteční tlačítko je stisknuté
-            if (((d->stav == scPrujezdVlaku) || (d->stav == scDN) || (d->stav == scRC)) && !(c->Navestidlo->r[TblokQ::rel::N])) {
+            if ((d->stav == scPrujezdVlaku) || (d->stav == scDN) || (d->stav == scRC)) {
                 // pokud jsou splněny podmínky, přejdeme na znovuzapnutí DN
                 if (d->kontrolaCelistvostiCesty()) {
                     // obnovíme cestu
@@ -755,14 +755,16 @@ void TdohledCesty::evaluate()
         case scPrujezdVlaku:
             // shození návestidla pro posunovou cestu
             // ToDo: jen při obs. úseku před návěstidle, jinak při uvolnění před náv.
-            if ((c->posun)) {
+            if (c->posun) {
                 if (c->Navestidlo && (c->Navestidlo->r[TblokQ::N] == true)) {
                     if (c->zjistiObsazeni(0)) {
                         // obsazený úsek před návěstidlem
-                        if (c->zjistiZaver(1) == false) {
+                        if (d->vlakKonec != 1) {
                             // závěr v 1. úseku vypbaven
                             c->Navestidlo->r[TblokQ::Nv] = true;
                             log(QString("dohled: cesta č. %1 zhoď seř. náv. %2 - vybavení závěru 1. úseku").arg(d->num).arg(c->Navestidlo->name), logging::LogLevel::Info);
+                        } else {
+                            c->Navestidlo->r[TblokQ::Nv] = false;
                         }
                     } else {
                         // volný úsek před návěstidlem

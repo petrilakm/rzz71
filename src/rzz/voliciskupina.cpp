@@ -29,7 +29,7 @@ bool Tvoliciskupina::vstupZmena(TblokTC *p, bool state)
             for (TdohledCesty::cestaPodDohledem *cdoh : dohledCesty.cestyPostavene) {
                 if (cdoh->pCesta->tlacitka.first() == p) {
                     // je postavená cesta od tohoto tlačítka
-                    if (cdoh->stav == TdohledCesty::scDN) {
+                    if ((cdoh->stav == TdohledCesty::scDN) || (cdoh->kontrolaCelistvostiCesty())) {
                         // neděláme nic - obnovu DN řeší dohledcesty
                         return false;
                     }
