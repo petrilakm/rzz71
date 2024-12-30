@@ -83,6 +83,7 @@ void Tcesty::load()
                 continue;
             }
             lineTC = linelist[1].trimmed().split(','); // tlačítka volící
+            lineTCm.clear();
             linelist[2] = linelist[2].trimmed();
             if (linelist[2] != "") {
                 lineTCm= linelist[2].split(','); // tlačítka mezilehlá, pro VA
