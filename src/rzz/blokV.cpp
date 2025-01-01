@@ -1,6 +1,6 @@
 #include "blokV.h"
 
-TblokV::TblokV() {
+TblokV::TblokV(QObject *parent) : Tblok{parent} {
     typ = btV;
     predBlok = NULL;
     dvojceBlok = NULL;

@@ -5,8 +5,9 @@
 
 class TblokTC : public Tblok
 {
+    Q_OBJECT
 public:
-    TblokTC();
+    explicit TblokTC(QObject *parent = nullptr);
 
     enum mtbeIns {
         mtbInVolba = 0,

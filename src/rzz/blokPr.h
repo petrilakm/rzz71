@@ -6,8 +6,9 @@
 
 class TblokPr : public Tblok
 {
+    Q_OBJECT
 public:
-    TblokPr();
+    explicit TblokPr(QObject *parent = nullptr);
 
     enum mtbeOut {
         mtbOutPrusvBila = 0,

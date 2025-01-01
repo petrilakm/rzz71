@@ -4,7 +4,7 @@
 
 QList<Tblok *> bl;
 
-Tblok::Tblok() {
+Tblok::Tblok(QObject *parent) : QObject{parent} {
     for(int i = 0; i < BLOK_MTB_MAX; i++) {
         mtbIns[i].valid = false;
         mtbOut[i].valid = false;

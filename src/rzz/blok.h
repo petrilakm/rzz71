@@ -11,9 +11,9 @@ class Tblok : public QObject
 {
     Q_OBJECT
 public:
-    Tblok();
+    explicit Tblok(QObject *parent);
 
-    enum bloktyp {btNULL, btTC, btPr, btEMZ, btV, btS, btK, btQ, btSimV, btPN, btTS, btRC, btOs};
+    enum bloktyp {btNULL, btTC, btPr, btEMZ, btV, btS, btK, btQ, btSimV, btPN, btTS, btRC, btOs, btKU};
 
     virtual bool evaluate(); // if change return true
 
@@ -42,6 +42,7 @@ public:
  * blokTS - úvazka (traťové souhlasy, místní i vzdálená)
  * blokPN - přivolávací návest na odjezdová nívěstidla
  * blokRC - rušení cesty po projetí - místo automatického rozpadu cesty
+ * blokKU - kolejové rele, pro přibližovací úseky
  *
  */
 

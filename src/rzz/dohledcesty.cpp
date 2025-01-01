@@ -2,6 +2,7 @@
 #include "cesty.h"
 #include "rzz/blokK.h"
 #include "rzz/blokEMZ.h"
+#include "rzz/blokKU.h"
 #include "voliciskupina.h"
 
 TdohledCesty::TdohledCesty(){
@@ -37,12 +38,6 @@ void TdohledCesty::zhasniTlacitka(int i)
         }
     }
 }
-
-void TdohledCesty::t3C()
-{
-
-}
-
 
 /****************************************************************************/
 // cestaKompletni = true -> závěry musí být všede, false -> závěr nesmí být nikde
@@ -169,14 +164,21 @@ bool TdohledCesty::cestaPodDohledem::kontrolaVolnosti()
         }
         // blok S - kontrolujeme volnost
         if (blok->typ == Tblok::btS) {
-            if (blok->r[TblokS::J]) {
+            if (blok->r[TblokS::rel::J]) {
                 stavOK = false;
                 upoL.append(QString("obs %1").arg(blok->name));
             }
         }
         // blok K - kontrolujeme volnost
         if (blok->typ == Tblok::btK) {
-            if (blok->r[TblokK::J]) {
+            if (blok->r[TblokK::rel::J]) {
+                stavOK = false;
+                upoL.append(QString("obs %1").arg(blok->name));
+            }
+        }
+        // blok KU - kolejové relé
+        if (blok->typ == Tblok::btKU) {
+            if (blok->r[TblokKU::rel::J]) {
                 stavOK = false;
                 upoL.append(QString("obs %1").arg(blok->name));
             }
@@ -472,6 +474,7 @@ QString TdohledCesty::stavCesty2QString(stavCesty sc)
     case scKontrolaDN: return QString("KontroDN"); break;
     case scDN: return QString("DN"); break;
     case scPrujezdVlaku: return QString("Prujezd"); break;
+    case scPoruchaDN: return QString("Por.DN"); break;
     case scProjeto: return QString("Projeto"); break;
     case scRC: return QString("RC"); break;
     case scZbytek: return QString("Zbytek"); break;
@@ -595,6 +598,21 @@ void TdohledCesty::evaluate()
             }
         }
 
+        // rušení stavění tlačítkem RVN
+        if (voliciskupina.mtbInRuseniVolby.value() || (rDCCVypadek) || (rDCCZkrat)) {
+            switch (d->stav) {
+            case scStavime:
+            case scZavery:
+                d->povelVAvypnout(); // nezapomenou vypnout VA !
+                [[fallthrough]];
+            case scZvoleno:
+                cestyNaSmazani.append(d);
+                break;
+            default:
+                ;
+            }
+        }
+
         // chování podle stavu cesty
         switch (d->stav) {
         case scZvoleno:
@@ -607,10 +625,6 @@ void TdohledCesty::evaluate()
             if (d->upoZavery.length() > 0) d->upo.append(d->upoZavery);
             if (d->upoVOPVOM.length() > 0) d->upo.append(d->upoVOPVOM);
             // povel pro zrušení od volící skupiny
-            if (voliciskupina.mtbInRuseniVolby.value()) {
-                cestyNaSmazani.append(d);
-                stavOK = false;
-            }
             // povel pro stavění
             if (stavOK) {
                 // sepne VOP/VOM a výměnová automatická relé
@@ -630,13 +644,6 @@ void TdohledCesty::evaluate()
             if (d->upoZavery.length() > 0) d->upo.append(d->upoZavery);
             if (d->upoPolohy.length() > 0) d->upo.append(d->upoPolohy);
 
-            // povel pro zrušení od volící skupiny
-            if (voliciskupina.mtbInRuseniVolby.value()) {
-                cestyNaSmazani.append(d);
-                d->povelVAvypnout(); // nezapomenou vypnout VA !
-                stavOK = false;
-            }
-
             if (stavOK) {
                 // cesta se posune do dalšího stavu
                 log(QString("dohled: cesta č. %1 změna stavu %2-%3").arg(d->num).arg(stavCesty2QString(d->stav)).arg(stavCesty2QString(scZavery)), logging::LogLevel::Commands);
@@ -651,11 +658,6 @@ void TdohledCesty::evaluate()
             if (d->upoZavery.length() > 0) d->upo.append(d->upoZavery);
             if (d->upoPolohy.length() > 0) d->upo.append(d->upoPolohy);
             // povel pro zrušení od volící skupiny - stále můžeme
-            if (voliciskupina.mtbInRuseniVolby.value()) {
-                cestyNaSmazani.append(d);
-                d->povelVAvypnout(); // nezapomenou vypnout VA !
-                stavOK = false;
-            }
             if (stavOK) {
                 // úseky jsou volné a nemají závěr z jiné cesty
                 log(QString("dohled: provedeme závěr celé cesty číslo %1").arg(d->num), logging::LogLevel::Commands);
@@ -752,6 +754,7 @@ void TdohledCesty::evaluate()
                 d->stav = scPrujezdVlaku;
             }
             break;
+        case scPoruchaDN:
         case scPrujezdVlaku:
             // shození návestidla pro posunovou cestu
             // ToDo: jen při obs. úseku před návěstidle, jinak při uvolnění před náv.
@@ -876,7 +879,7 @@ void TdohledCesty::evaluate()
     // vybaví určené cesty
     for(cestaPodDohledem *d : cestyNaVybaveni) {
         if (d->stav >= scProjeto) {
-            log(QString("dohled: cesta č. %1 rušení závěrů").arg(d->num), logging::LogLevel::Commands);
+            log(QString("dohled: cesta č. %1 rušení závěrů po projetí").arg(d->num), logging::LogLevel::Commands);
             for(Tblok *bl : c->bloky) {
                 if (bl->typ == Tblok::btS) {
                     static_cast<TblokS *>(bl)->r[TblokS::rel::Z] = false;

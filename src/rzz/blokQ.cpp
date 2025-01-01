@@ -1,6 +1,6 @@
 #include "blokQ.h"
 
-TblokQ::TblokQ() {
+TblokQ::TblokQ(QObject *parent) : Tblok{parent} {
     typ = btQ;
     for (int i = 0; i < RELAY_COUNT_Q; ++i) {
         r.append(false);

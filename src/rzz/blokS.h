@@ -1,14 +1,14 @@
 #ifndef BLOKS_H
 #define BLOKS_H
 
-//#include "rzz/obecne.h"
+#include <QObject>
 #include "rzz/blok.h"
 
 class TblokS : public Tblok
 {
     Q_OBJECT
 public:
-    TblokS();
+    explicit TblokS(QObject *parent = nullptr);
 
     enum mtbeIns {
         mtbInObsaz = 0, // kolejový obvod

@@ -1,7 +1,7 @@
 #include "blokRC.h"
 #include "dohledcesty.h"
 
-TblokRC::TblokRC()
+TblokRC::TblokRC(QObject *parent) : Tblok{parent}
 {
     typ = btRC;
     for (int i = 0; i < RELAY_COUNT_RC; ++i) {

@@ -21,6 +21,7 @@ SOURCES += \
   src/rzz/blok.cpp \
   src/rzz/blokEMZ.cpp \
   src/rzz/blokK.cpp \
+  src/rzz/blokKU.cpp \
   src/rzz/blokOs.cpp \
   src/rzz/blokPN.cpp \
   src/rzz/blokPr.cpp \
@@ -48,6 +49,7 @@ HEADERS += \
   src/rzz/blok.h \
   src/rzz/blokEMZ.h \
   src/rzz/blokK.h \
+  src/rzz/blokKU.h \
   src/rzz/blokOs.h \
   src/rzz/blokPN.h \
   src/rzz/blokPr.h \

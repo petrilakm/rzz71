@@ -7,8 +7,8 @@ class TblokTS : public Tblok
 {
     Q_OBJECT
 public:
-    //explicit TblokTS(QObject *parent = nullptr);
-    explicit TblokTS();
+    explicit TblokTS(QObject *parent = nullptr);
+    //explicit TblokTS();
 
     enum mtbeIns {
         mtbInObsaz = 0,

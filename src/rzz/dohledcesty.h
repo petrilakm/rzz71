@@ -25,7 +25,8 @@ public:
         scPrujezdVlaku = 5, // už se nedá zrušit vytažením počátku
         scProjeto = 6, // již projetá cesta
         scRC = 7,
-        scZbytek = 8 // zbytek po cestě, lze pouze zrušit NUZem
+        scZbytek = 8, // zbytek po cestě, lze pouze zrušit NUZem
+        scPoruchaDN // porucha DN - někdo nám narušil cestu
     };
     enum ruseniCesty {
         rcNic = 0,

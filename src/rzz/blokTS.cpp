@@ -1,6 +1,6 @@
 #include "blokTS.h"
 
-TblokTS::TblokTS()
+TblokTS::TblokTS(QObject *parent) : Tblok{parent}
 {
     typ = btTS;
     casovacObsluhy = new QTimer(this);

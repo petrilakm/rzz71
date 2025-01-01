@@ -7,7 +7,7 @@ class TblokRC : public Tblok
 {
     Q_OBJECT
 public:
-    explicit TblokRC();
+    explicit TblokRC(QObject *parent = nullptr);
 
     enum mtbeIns {
         mtbInRC = 0,

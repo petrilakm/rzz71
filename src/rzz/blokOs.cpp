@@ -1,6 +1,6 @@
 #include "blokOs.h"
 
-TblokOs::TblokOs()
+TblokOs::TblokOs(QObject *parent) : Tblok{parent}
 {
     typ = btOs;
     for (int i = 0; i < RELAY_COUNT_OS; ++i) {

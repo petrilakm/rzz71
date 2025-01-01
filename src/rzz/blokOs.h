@@ -7,7 +7,7 @@ class TblokOs : public Tblok
 {
     Q_OBJECT
 public:
-    explicit TblokOs();
+    explicit TblokOs(QObject *parent = nullptr);
 
     enum mtbeIns {
         mtbInOsv = 0,

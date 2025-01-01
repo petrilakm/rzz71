@@ -7,7 +7,7 @@
 class TblokK : public Tblok
 {
 public:
-    TblokK();
+    explicit TblokK(QObject *parent = nullptr);
 
     enum mtbeIns {
         mtbInObsaz = 0,

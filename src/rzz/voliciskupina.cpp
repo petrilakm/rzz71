@@ -12,7 +12,7 @@ void Tvoliciskupina::ruseniVolbyCesty()
     foreach (TblokTC * tl, tlacitkaAktivni) {
         tl->r[TblokTC::TZ] = false;
         tl->r[TblokTC::PO] = false;
-        tl->r[TblokTC::VA] = false;
+        //tl->r[TblokTC::VA] = false;
     }
     tlacitkaAktivni.clear();
     probihaVolba = false;
@@ -108,6 +108,9 @@ bool Tvoliciskupina::evaluate()
         log(QString("cesty: rušení volby"), logging::LogLevel::Info);
         ruseniVolbyCesty();
         return true;
+    }
+    if (rDCCVypadek || rDCCZkrat) {
+        ruseniVolbyCesty();
     }
     return false;
 }

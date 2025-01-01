@@ -1,7 +1,7 @@
 #include "blokTC.h"
 #include "voliciskupina.h"
 
-TblokTC::TblokTC() {
+TblokTC::TblokTC(QObject *parent) : Tblok{parent} {
     typ = btTC;
     for (int i = 0; i < RELAY_COUNT_TC; ++i) {
         r.append(false);

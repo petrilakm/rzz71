@@ -1,7 +1,7 @@
 #include "blokK.h"
 #include "blokS.h"
 
-TblokK::TblokK() {
+TblokK::TblokK(QObject *parent) : Tblok{parent} {
     typ = btK;
     for (int i = 0; i < RELAY_COUNT_K; ++i) {
         r.append(false);

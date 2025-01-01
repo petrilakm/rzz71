@@ -7,8 +7,9 @@
 
 class TblokPN : public Tblok
 {
+    Q_OBJECT
 public:
-    TblokPN();
+    explicit TblokPN(QObject *parent = nullptr);
 
     enum mtbeIns {
         mtbInPN = 0,

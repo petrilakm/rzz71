@@ -10,7 +10,7 @@
 #include "rzz/blokRC.h"
 #include "rzz/blokTS.h"
 #include "rzz/blokOs.h"
-//#include "rzz/blokQ.h"
+#include "rzz/blokKU.h"
 #include "rzz/voliciskupina.h"
 #include "rzz/dohledcesty.h"
 
@@ -269,6 +269,7 @@ void TRZZ71::init()
     TblokRC *pBlokRC;
     TblokTS *pBlokTS;
     TblokOs *pBlokOs;
+    TblokKU *pBlokKU;
 
     // načtě bloky ze souboru
     QStringList linelist;
@@ -378,6 +379,7 @@ void TRZZ71::init()
                 if (name == "uvolneniZ") config.tUvolneniZ = casovacCasLim;
                 if (name == "odpadN") config.tOdpadN = casovacCasLim;
                 if (name == "prestavI") config.tProudPrestavniku = casovacCas;
+                if (name == "zvonek") config.tZvonek = casovacCasLim;
             }
             if (type == "volsk") {
                 voliciskupina.mtbInRuseniVolby = mtbLoadInputs[0];
@@ -385,7 +387,7 @@ void TRZZ71::init()
             }
             if (type == "TC") {
                 // blokTC - tlačítko cestové
-                pBlokTC = new TblokTC();
+                pBlokTC = new TblokTC(this);
                 pBlokTC->name = name;
                 for (int i = 0; i < mtbLoadInputs.count(); i++) {
                     pBlokTC->mtbIns[i] = mtbLoadInputs[i];
@@ -398,7 +400,7 @@ void TRZZ71::init()
             }
             if (type == "Pr") {
                 // blokPr - průsvitka
-                pBlokPr = new TblokPr();
+                pBlokPr = new TblokPr(this);
                 pBlokPr->name = name;
                 for (int i = 0; i < mtbLoadOutputs.count(); i++) {
                     pBlokPr->mtbOut[i] = mtbLoadOutputs[i];
@@ -421,7 +423,7 @@ void TRZZ71::init()
             }
             if (type == "V" || type == "simV") {
                 // blokV - výhybka
-                pBlokV = new TblokV();
+                pBlokV = new TblokV(this);
                 pBlokV->name = name;
                 //if (type == "simV") {
                 //    pBlokV->simulace = true;
@@ -464,7 +466,7 @@ void TRZZ71::init()
             }
             if (type == "S" || type == "M") {
                 // blokS - úsek výhýbkový i bezvýhybkový
-                pBlokS = new TblokS();
+                pBlokS = new TblokS(this);
                 pBlokS->name = name;
                 if (type == "M") pBlokS->typM = true;
                 for (int i = 0; i < mtbLoadInputs.count(); i++) {
@@ -478,7 +480,7 @@ void TRZZ71::init()
             }
             if (type == "K") {
                 // blokK - staniční kolej
-                pBlokK = new TblokK();
+                pBlokK = new TblokK(this);
                 pBlokK->name = name;
                 for (int i = 0; i < mtbLoadInputs.count(); i++) {
                     pBlokK->mtbIns[i] = mtbLoadInputs[i];
@@ -499,7 +501,7 @@ void TRZZ71::init()
                 log(QString("rzz: načten blok Q_%1").arg(name), logging::LogLevel::Debug);
             }
             if (type == "PN") {
-                pBlokPN = new TblokPN();
+                pBlokPN = new TblokPN(this);
                 pBlokPN->name = name;
                 for (int i = 0; i < mtbLoadInputs.count(); i++) {
                     pBlokPN->mtbIns[i] = mtbLoadInputs[i];
@@ -538,7 +540,7 @@ void TRZZ71::init()
             }
             if (type == "EMZ") {
                 // blokEMZ - elektromagnetický zámek - simulovaný
-                pBlokEMZ = new TblokEMZ();
+                pBlokEMZ = new TblokEMZ(this);
                 pBlokEMZ->name = name;
                 for (int i = 0; i < mtbLoadInputs.count(); i++) {
                     pBlokEMZ->mtbIns[i] = mtbLoadInputs[i];
@@ -562,7 +564,7 @@ void TRZZ71::init()
             };
             if (type == "RC") {
                 // blokRC - tlačítko na rušení cesty pro projetí vlakem (TEST)
-                pBlokRC = new TblokRC();
+                pBlokRC = new TblokRC(this);
                 pBlokRC->name = name;
                 for (int i = 0; i < mtbLoadInputs.count(); i++) {
                     pBlokRC->mtbIns[i] = mtbLoadInputs[i];
@@ -591,7 +593,7 @@ void TRZZ71::init()
             }
             if (type == "TS") {
                 // blokTS - traťový souhlas
-                pBlokTS = new TblokTS();
+                pBlokTS = new TblokTS(this);
                 pBlokTS->name = name;
                 for (int i = 0; i < mtbLoadInputs.count(); i++) {
                     pBlokTS->mtbIns[i] = mtbLoadInputs[i];
@@ -604,7 +606,7 @@ void TRZZ71::init()
             }
             if (type == "Os") {
                 // blokOs - Osvetlení nebo obecný vstup/výstup
-                pBlokOs = new TblokOs();
+                pBlokOs = new TblokOs(this);
                 pBlokOs->name = name;
                 for (int i = 0; i < mtbLoadInputs.count(); i++) {
                     pBlokOs->mtbIns[i] = mtbLoadInputs[i];
@@ -614,6 +616,18 @@ void TRZZ71::init()
                 }
                 log(QString("rzz: načten blok Os_%1").arg(name), logging::LogLevel::Debug);
                 bl.append(static_cast<Tblok*>(pBlokOs));
+            }
+            if (type == "KU") {
+                pBlokKU = new TblokKU(this);
+                pBlokKU->name = name;
+                for (int i = 0; i < mtbLoadInputs.count(); i++) {
+                    pBlokKU->mtbIns[i] = mtbLoadInputs[i];
+                }
+                for (int i = 0; i < mtbLoadOutputs.count(); i++) {
+                    pBlokKU->mtbOut[i] = mtbLoadOutputs[i];
+                }
+                log(QString("rzz: načten blok KU_%1").arg(name), logging::LogLevel::Debug);
+                bl.append(static_cast<Tblok*>(pBlokKU));
             }
             if (type == "config") {
                 if (mtbLoadInputs.count() >= 4) {

@@ -1,6 +1,6 @@
 #include "blokEMZ.h"
 
-TblokEMZ::TblokEMZ() {
+TblokEMZ::TblokEMZ(QObject *parent) : Tblok{parent} {
     typ = btEMZ;
     for (int i = 0; i < RELAY_COUNT_EMZ; ++i) {
         r.append(false);

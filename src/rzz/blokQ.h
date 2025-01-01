@@ -10,7 +10,7 @@ class TblokQ : public Tblok
 private:
     QTimer *tim;
 public:
-    TblokQ();
+    TblokQ(QObject *parent = nullptr);
 
     enum mtbeIns {
     };

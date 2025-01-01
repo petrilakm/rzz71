@@ -1,6 +1,6 @@
 #include "blokS.h"
 
-TblokS::TblokS() {
+TblokS::TblokS(QObject *parent) : Tblok{parent} {
     typ = btS;
     typM = false;
     for (int i = 0; i < RELAY_COUNT_S; ++i) {

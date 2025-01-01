@@ -11,7 +11,7 @@ class TblokV : public Tblok
 private:
     QTimer *tim;
 public:
-    TblokV();
+    explicit TblokV(QObject *parent = nullptr);
 
     enum mtbeIns {
         mtbInKontrolaPlus = 0,

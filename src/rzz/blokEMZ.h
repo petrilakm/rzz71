@@ -6,8 +6,9 @@
 
 class TblokEMZ : public Tblok
 {
+    Q_OBJECT
 public:
-    TblokEMZ();
+    explicit TblokEMZ(QObject *parent = nullptr);
 
     enum mtbeIns {
         mtbInPrevzeti = 0,

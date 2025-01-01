@@ -2,7 +2,7 @@
 #include "blokS.h"
 #include "blokV.h"
 
-TblokPr::TblokPr()
+TblokPr::TblokPr(QObject *parent) : Tblok{parent}
 {
     typ = btPr;
     for (int i = 0; i < RELAY_COUNT_Pr; ++i) {

@@ -1,6 +1,6 @@
 #include "blokPN.h"
 
-TblokPN::TblokPN() {
+TblokPN::TblokPN(QObject *parent) : Tblok{parent} {
     typ = btPN;
     name="-";
     for (int i = 0; i < RELAY_COUNT_PN; ++i) {
