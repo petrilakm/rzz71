@@ -61,7 +61,11 @@ bool TblokQ::evaluate()
     mtbOut[mtbOutMakCervena].setValueBool(bC);
     mtbOut[mtbOutMakBila].setValueBool(bB);
     mtbOut[mtbOutMakDNVC].setValueBool(bDN);
-    mtbOut[mtbOutScom].setValueScom(navestniZnakReal);
+    int navestniZnakRealOut = navestniZnakReal;
+    if (rNavNoc) {
+        navestniZnakRealOut += 32;
+    }
+    mtbOut[mtbOutScom].setValueScom(navestniZnakRealOut);
 
     // zpoždění odpadení relé N (pro rušení i nesplnění podmínek)
     if (r[N] && r[Nv] && !tim->isActive()) {

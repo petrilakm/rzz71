@@ -69,6 +69,7 @@ TRZZ71::TRZZ71(QObject *parent)
     rZ5C = rD5C =false;
     rZ1C = rD1C =false;
     rZ3C = rD3C =false;
+    rNavNoc = false;
 
     config.tOdpadN = 300;
     config.tPocitadlo = 400;
@@ -359,6 +360,9 @@ void TRZZ71::init()
             }
             if (type == "KPV") {
                 pinInKPV = mtbLoadInputs[0];
+            }
+            if (type == "NavNoc") {
+                pinInNavNoc = mtbLoadInputs[0];
             }
             if (type == "NUZ") {
                 pinInNUZ = mtbLoadInputs[0];
@@ -752,6 +756,8 @@ void TRZZ71::oneval()
     rDCCVypadek = pinInDCCVypadek.value();
     // KPV
     rKPV = pinInKPV.value();
+    // NavNoc
+    rNavNoc = pinInNavNoc.value();
     // NUZ - časovač 3V
     rZ3V = false; // pokud ho nikdo neaktivuje, tak aktivní není (nemá přídržný kontakt)
     for (Tblok *b : bl) {

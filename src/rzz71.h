@@ -52,6 +52,7 @@ private:
     //void blikpinRemove(mtbpin p);
     mtbpin pinInKPV;
     mtbpin pinInNUZ;
+    mtbpin pinInNavNoc;
     mtbpin pinOutNUZ;
     mtbpin pinOutKmitac;
     mtbpin pinInDCCZkrat;
