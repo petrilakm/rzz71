@@ -72,6 +72,14 @@ void Ttcpconsole::readyRead()
     line = QString::fromUtf8(ar);
     log(tr("console: data \"%1\" ( sender %2:%3) - len %4").arg(line).arg(s->peerAddress().toString()).arg(s->peerPort()).arg(ar.length()), logging::LogLevel::Debug);
     ar.clear();
+    // opakovaný příkaz
+    if (line == ".") {
+        line = lastLine;
+    } else {
+        if (line.length() > 0) {
+            lastLine = line;
+        }
+    }
     // zpracuje příkazy konzole
     if (line == "list") {
         for(Tclient *cli : clients) {

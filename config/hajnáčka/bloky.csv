@@ -64,15 +64,15 @@ K;3k;4/12;15/8,15/7,15/6;;
 K;Vl;;;;
 K;5ak;;;;
 
-#; přibližováky a záhlavý
-M;1a;2/12;;;
-Pr;P1a;;11/9,11/10;1a;
+#; záhlaví
+#M;1a;2/12;;;
+#Pr;P1a;;11/9,11/10;1a;
 M;1b;2/13,11/7;;;
 Pr;P1b;;11/7,11/8;1b;
 M;1c;6/13,11/11;;;
 Pr;P1c;;19/7,19/8;1c;
-M;1d;6/14;;;
-Pr;P1d;;19/5,19/6;1d;
+#M;1d;6/14;;;
+#Pr;P1d;;19/5,19/6;1d;
 
 #; zhlavý L
 S;V3a-3b;2/15,11/9;;;
@@ -153,6 +153,10 @@ RC;RC1;13/15;20/1;12-29;
 
 Os;Osv;14/13;20/2,4/0;;
 Os;NavN;18/3;20/5,20/8;;
+
+#KU;;
+KU;1a;2/12;11/9,11/10,20/8;;
+KU;1d;6/14;19/5,19/6,20/9;;
 
 #TS;;obs. přibl.,souh. udelění,souh. vezmutí,odháška,vzd. udělení,vzd. vezmutí,vzd. odháška;přiblB,přiblR,voln,uděl,převz,odhl,vzd.voln,vzd.uděl,vzd.převz,vzd.odhl
 TS;Ur;6/14,19/0,19/1,19/9,o/o,o/o,o/o;19/5,19/6,19/2,19/0,19/1,18/6,o/o,o/o,o/o,o/o;

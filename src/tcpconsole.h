@@ -39,6 +39,7 @@ private:
 
     QList<Tclient *> clients;
     void sendMsgToSocket(QTcpSocket *socket, QString msg);
+    QString lastLine;
     //QList<QTcpSocket*> clients;
 };
 

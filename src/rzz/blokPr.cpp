@@ -2,6 +2,8 @@
 #include "blokS.h"
 #include "blokV.h"
 
+// Blok průsvitky
+
 TblokPr::TblokPr(QObject *parent) : Tblok{parent}
 {
     typ = btPr;

@@ -1,5 +1,7 @@
 #include "blokKU.h"
 
+// Blok přibližovacho úseku (kolejový usek)
+
 TblokKU::TblokKU(QObject *parent)
     : Tblok{parent}
 {
@@ -30,10 +32,12 @@ bool TblokKU::evaluate()
     }
 
     r[Zv] &= r[J]; // volný usek resetuje zvonek
-    r[ZP] &= r[J]; // volný usek resetuje zvonek;
+    r[ZP] &= r[J]; // volný usek resetuje zvonek
     r[OC] &= (r[J] || (!r[EVO])); // OC se resetuje volným úsekem a proběhlým odjezdem
+    r[OCP] |= r[OC] && (!r[J]); // pro správne vyhodnocení EVO, musí být úsek někdy volný
+    r[OCP] &= r[OC]; // odpadem OC odpadne i OCP
     r[EVO] &= r[J]; // volný úsek resetuje EVO
-    r[EVO] |= r[J] && r[OC];
+    r[EVO] |= r[J] && r[OC] && r[OCP];
 
     // vystupy
     mtbOut[mtbOutIndBila].setValueBool(!r[J]);

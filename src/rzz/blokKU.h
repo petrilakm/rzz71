@@ -21,11 +21,12 @@ public:
 
     bool evaluate() override;
 
-    enum rel {J, OC, EVO, Zv, ZP};
-    #define RELAY_COUNT_KU (4)
-    // J - obsazeno
+    enum rel {J, OC, OCP, EVO, Zv, ZP};
+    #define RELAY_COUNT_KU (6)
+    //  J - obsazeno
     // OC - odjezdová cesta  -> nezvonit při obsazení
-    // EVO - evidence odjezdu - zda už se odjelo
+    // OCP- odjezdová cesta protiopakovací -> proti vybavení EVO předchozím vlakem
+    // EVO- evidence odjezdu - zda už se odjelo
     // Zv - zvonek
     // ZP - zvonek protiopakovací
 

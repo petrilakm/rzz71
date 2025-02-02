@@ -102,6 +102,13 @@ void TRZZ71::readCommand(QString cmd)
             tcpcon->sendMsg(QString("d        - informace o dohledové skupině"));
             tcpcon->sendMsg(QString("m <addr> <pin> <stav> - simulace změny vstupu"));
             tcpcon->sendMsg(QString("M <addr> <pin> - simulace impulsu na vstupu"));
+            tcpcon->sendMsg(QString(""));
+            tcpcon->sendMsg(QString("přikazy pro konzoli:"));
+            tcpcon->sendMsg(QString(".    (tečka) - opakuj poslední příkaz"));
+            tcpcon->sendMsg(QString("loglevel     - vypiš aktuální loglevel"));
+            tcpcon->sendMsg(QString("loglevel <n> - nastav loglevel na <n> (0-6)"));
+            tcpcon->sendMsg(QString("exit         - odpojit klienta"));
+            tcpcon->sendMsg(QString("list         - seznam připojených klientů"));
         }
         if (cmd == 'm') { // mtb simulace
             if (cmdList.length() < 4) {
@@ -183,15 +190,15 @@ void TRZZ71::readCommand(QString cmd)
                         break;
                     case Tblok::btS:
                         tcpcon->sendMsg(QString("blok S"));
-                        tcpcon->sendMsg(QString(" - J = %1").arg(b->r[TblokS::rel::J]));
-                        tcpcon->sendMsg(QString(" - Z = %1").arg(b->r[TblokS::rel::Z]));
-                        //tcpcon->sendMsg(QString(" - B = %1").arg(b->r[TblokS::B]));
-                        tcpcon->sendMsg(QString(" - V = %1").arg(b->r[TblokS::rel::V]));
+                        tcpcon->sendMsg(QString(" - J  = %1").arg(b->r[TblokS::rel::J]));
+                        tcpcon->sendMsg(QString(" - Z  = %1").arg(b->r[TblokS::rel::Z]));
+                        //tcpcon->sendMsg(QString(" - B  = %1").arg(b->r[TblokS::B]));
+                        tcpcon->sendMsg(QString(" - V  = %1").arg(b->r[TblokS::rel::V]));
                         break;
                     case Tblok::btK:
                         tcpcon->sendMsg(QString("blok K"));
                         // V, R, J, U, X1, X2, K1, K2
-                        tcpcon->sendMsg(QString(" - J = %1").arg(b->r[TblokK::J]));
+                        tcpcon->sendMsg(QString(" - J  = %1").arg(b->r[TblokK::J]));
                         tcpcon->sendMsg(QString(" - X1 = %1").arg(b->r[TblokK::X1]));
                         tcpcon->sendMsg(QString(" - X2 = %1").arg(b->r[TblokK::X2]));
                         tcpcon->sendMsg(QString(" - K1 = %1").arg(b->r[TblokK::K1]));
@@ -217,7 +224,7 @@ void TRZZ71::readCommand(QString cmd)
                     case Tblok::btPN:
                         tcpcon->sendMsg(QString("blok PN"));
                         tcpcon->sendMsg(QString(" - ZF = %1").arg(b->r[TblokPN::rel::ZF]));
-                        tcpcon->sendMsg(QString(" -  F = %1").arg(b->r[TblokPN::rel::F]));
+                        tcpcon->sendMsg(QString(" - F  = %1").arg(b->r[TblokPN::rel::F]));
                         if (static_cast<TblokPN*>(b)->navestidlo != nullptr) {
                             tcpcon->sendMsg(QString(" -- návěstidlo = %1").arg(static_cast<TblokPN*>(b)->navestidlo->name));
                         }
@@ -241,6 +248,14 @@ void TRZZ71::readCommand(QString cmd)
                             tcpcon->sendMsg(QString(" -- předblok = %1").arg(static_cast<TblokPr*>(b)->predBlok->name));
                             tcpcon->sendMsg(QString(" -- předblok směr mínus = %1").arg(static_cast<TblokPr*>(b)->predBlokMinus));
                         }
+                        break;
+                    case Tblok::btKU:
+                        tcpcon->sendMsg(QString("blok KU"));
+                        tcpcon->sendMsg(QString(" - J  = %1").arg(b->r[TblokKU::rel::J]));
+                        tcpcon->sendMsg(QString(" - ZP = %1").arg(b->r[TblokKU::rel::ZP]));
+                        tcpcon->sendMsg(QString(" - OC = %1").arg(b->r[TblokKU::rel::OC]));
+                        tcpcon->sendMsg(QString(" - OCP= %1").arg(b->r[TblokKU::rel::OCP]));
+                        tcpcon->sendMsg(QString(" - EVO= %1").arg(b->r[TblokKU::rel::EVO]));
                         break;
                     default:
                         tcpcon->sendMsg(QString("blok neumím vypsat"));

@@ -491,6 +491,7 @@ void TdohledCesty::evaluate()
     TblokK *pBlokK;
     TblokV *pBlokV;
     TblokEMZ *pBlokEMZ;
+    TblokKU *pBlokKU;
     bool stavOK;
     bool obs1 = false;
     bool obs2 = false;
@@ -523,7 +524,7 @@ void TdohledCesty::evaluate()
                 // zruší cestu
                 for (Tblok *b : c->bloky) {
                     if (b->typ == Tblok::btS) {
-                        b->r[TblokS::Z] = false;
+                        b->r[TblokS::rel::Z] = false;
                     }
                 }
                 // cestu lze zrušit
@@ -633,7 +634,6 @@ void TdohledCesty::evaluate()
                 log(QString("dohled: cesta č. %1 změna stavu %2-%3").arg(d->num).arg(stavCesty2QString(d->stav)).arg(stavCesty2QString(scStavime)), logging::LogLevel::Commands);
                 voliciskupina.probihaVolba = false; // volící skupina je připravena na další volbu
                 d->stav = scStavime;
-
             }
 
             break;
@@ -681,8 +681,13 @@ void TdohledCesty::evaluate()
                             if (c->posun) pBlokK->r[TblokK::K1] = true;
                         }
                     }
+                    // kolejové relé - pokud je v ceste, tak jde o odjezdovou cestu
+                    // zablokujeme zvonek předhlášky
+                    if (blok->typ == Tblok::btKU) {
+                        pBlokKU = static_cast<TblokKU *>(blok);
+                        pBlokKU->r[TblokKU::rel::OC] = true; // odjezdová cesta (je nebo bude)
+                    }
                 };
-
 
                 log(QString("dohled: nastavení závěru odvratným výměnám"), logging::LogLevel::Commands);
                 // nastaví závěrné useky odvratným výhybkám
