@@ -845,10 +845,10 @@ void TRZZ71::oneval()
     pinAmp10.setValueBool(((prestavnyProud >> 4) & 1));
     pinAmp20.setValueBool(((prestavnyProud >> 5) & 1));
 
-    double oneEvalTime = static_cast<double>(timer.nsecsElapsed()) * 1E-6; // ms
-    if (i>0) {
+    //double oneEvalTime = static_cast<double>(timer.nsecsElapsed()) * 1E-6; // ms
+    //if (i>0) {
         // optimalizace pro display
-        log(QString("i=%1,t=%2,%3").arg(i).arg(oneEvalTime,0, 'f', 3).arg(debug_changer), logging::LogLevel::Info);
-    }
+        //log(QString("i=%1,t=%2,%3").arg(i).arg(oneEvalTime,0, 'f', 3).arg(debug_changer), logging::LogLevel::Info);
+    //}
 
 }

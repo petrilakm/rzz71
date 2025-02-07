@@ -32,6 +32,8 @@ bool TblokQ::evaluate()
             navestniZnakReal = 0;
         }
     }
+    
+    if (!r[N]) navestniZnak = 0;
 
     bool bHZ,bZ,bC,bB,bDN;
     bool bBl  = false; // kmitání na návestidle

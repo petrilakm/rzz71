@@ -451,7 +451,7 @@ int TdohledCesty::urciNavest(int navZnak, TblokQ *nasledneNavestidlo)
     if (!nasledneNavestidlo) {
         nasl = 0;
     } else {
-        nasl = nasledneNavestidlo->navestniZnak;
+        nasl = nasledneNavestidlo->navestniZnakReal;
     }
     // nasledující znaky (test, přivol., posun, zhasnuté) se berou jako stůj
     if ((nasl == 5) || (nasl == 8) || (nasl==9) || (nasl==10) || (nasl==13)) nasl = 0;
@@ -884,6 +884,7 @@ void TdohledCesty::evaluate()
     // vybaví určené cesty
     for(cestaPodDohledem *d : cestyNaVybaveni) {
         if (d->stav >= scProjeto) {
+            Tcesta *c = cesty->cesty[d->num];
             log(QString("dohled: cesta č. %1 rušení závěrů po projetí").arg(d->num), logging::LogLevel::Commands);
             for(Tblok *bl : c->bloky) {
                 if (bl->typ == Tblok::btS) {
