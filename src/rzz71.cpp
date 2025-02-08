@@ -89,6 +89,8 @@ TRZZ71::TRZZ71(QObject *parent)
 void TRZZ71::readCommand(QString cmd)
 {
     TblokV *pBlokV;
+    TblokRC *pBlokRC;
+    QString tmp; // pro sestavování stringu
     //
     log(QString("rzz: command \"%1\"").arg(cmd), logging::LogLevel::Debug);
 
@@ -238,8 +240,14 @@ void TRZZ71::readCommand(QString cmd)
                         tcpcon->sendMsg(QString(" - OSV= %1").arg(b->r[TblokOs::rel::OSV]));
                         break;
                     case Tblok::btRC:
+                        pBlokRC = static_cast<TblokRC*>(b);
                         tcpcon->sendMsg(QString("blok RC"));
                         tcpcon->sendMsg(QString(" - RC = %1").arg(b->r[TblokRC::rel::EV]));
+                        tmp = "";
+                        for(int i = 0; i < pBlokRC->cestyRC.count(); i++) {
+                            tmp.append(QString("%1,").arg(pBlokRC->cestyRC[i]));
+                        }
+                        tcpcon->sendMsg(QString(" - cesty = %1").arg(tmp));
                         break;
                     case Tblok::btPr:
                         tcpcon->sendMsg(QString("blok Pr"));

@@ -14,6 +14,9 @@ bool Tcesta::zjistiObsazeni(int usek)
     if (blok->typ == Tblok::btK) {
         obsaz = static_cast<TblokK *>(blok)->r[TblokK::rel::J];
     }
+    if (blok->typ == Tblok::btKU) {
+        obsaz = static_cast<TblokKU *>(blok)->r[TblokKU::rel::J];
+    }
     return obsaz;
 }
 

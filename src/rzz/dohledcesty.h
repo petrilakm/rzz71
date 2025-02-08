@@ -20,7 +20,7 @@ public:
         scZvoleno = 0, // víme jakou cestu stavíme
         scStavime = 1, // cesta stále ve volící skupině, výměny
         scZavery = 2, // padání závěrů
-        scKontrolaDN = 3, // cesta je již postavená
+        scKontrolaDN = 3, // esta je již postavená
         scDN = 4,
         scPrujezdVlaku = 5, // už se nedá zrušit vytažením počátku
         scProjeto = 6, // již projetá cesta
@@ -54,8 +54,8 @@ public:
         bool vlakEvidenceCelo;
         bool vlakEvidenceKonec;
         bool vlakEV; // evidenční relé
-        enum ruseniCesty ruseni; // rele C
-        bool povelRC; // vytažený počátek cesty
+        enum ruseniCesty ruseni; // rele C - probíhá požadavek na rušení (čas. soubor)
+        bool povelRC; // vytažený počátek cesty (protiopakovací proměnná)
         QStringList upo;
         QString upoZavery;
         QString upoVolnosti;

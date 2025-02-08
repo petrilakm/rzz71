@@ -6,6 +6,7 @@
 #include "rzz/blokK.h"
 #include "rzz/blokS.h"
 #include "rzz/blokQ.h"
+#include "rzz/blokKU.h"
 
 class Tcesta
 {
@@ -30,9 +31,9 @@ public:
     QList<Tblok *> bloky;
     TblokQ *Navestidlo;
     TblokQ *nasledneNavestidlo;
-    int navZnak;
-    int num;
-    bool posun;
+    int navZnak; // vávěstní znak, ideální
+    int num; // číslo cesty v zav. tabulce
+    bool posun; // jde o posun? jinak vlaková
 
     bool zjistiObsazeni(int usek);
     bool zjistiZaver(int usek);

@@ -551,7 +551,11 @@ void TdohledCesty::evaluate()
                     ruseniOK = false; // zatím nerušíme
                 }
             }
-            if (ruseniOK && ((d->stav == scZavery) || (d->stav == scKontrolaDN) || (d->stav == scDN))) {
+            // vytažením jde zrušit cesta, kde (1)padají závěry, (2) kontrolaDN, (3) postaveno, (4) proběhl pokus o rušení a nebyl volný časový soubor
+            if (ruseniOK && ((d->stav == scZavery) || (d->stav == scKontrolaDN) || (d->stav == scDN) || (d->stav == scRC))) {
+                if (d->stav == scZavery) {
+                    d->povelVAvypnout(); // nezapomenou vypnout VA !
+                }
                 // spouští časovače pro rušení cest
                 if (d->vlakEV) {
                     if (c->posun) {
@@ -858,7 +862,7 @@ void TdohledCesty::evaluate()
         case scRC: // RC
             c->Navestidlo->r[TblokQ::Nv] = true;
             // pokud se poruší podmínky cesty, zruší se rušení časovým souborem
-            if (!d->kontrolaCelistvostiCesty()) {
+            if (!d->kontrolaCelistvostiCesty() && (d->vlakEV)) {
                 // zrušíme rušení časovým soborem
                 if (d->stav == scRC) {
                     if (d->ruseni == rc5) rZ5C = false;
